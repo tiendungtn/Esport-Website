@@ -12,6 +12,7 @@ import authRoutes from "./routes/auth.routes.js";
 import teamRoutes from "./routes/teams.routes.js";
 import tournamentRoutes from "./routes/tournaments.routes.js";
 import matchRoutes from "./routes/matches.routes.js";
+import usersRoutes from "./routes/users.routes.js";
 
 const app = express();
 
@@ -39,10 +40,10 @@ app.get("/health", (req, res) => {
 
 // --- routes ---
 app.use("/api/auth", authRoutes);
-app.use("/api/teams", teamRoutes);
 app.use("/api/tournaments", tournamentRoutes);
-// matchRoutes định nghĩa /tournaments/:id/matches & /matches/:id/*
-app.use("/api", matchRoutes);
+app.use("/api/teams", teamRoutes);
+app.use("/api/matches", matchRoutes); // matchRoutes định nghĩa /tournaments/:id/matches & /matches/:id/*
+app.use("/api/users", usersRoutes);
 
 // --- error handler ---
 app.use((err, req, res, next) => {

@@ -41,6 +41,30 @@ export async function reportMatch(req, res) {
   res.json(m);
 }
 
+export async function updateMatch(req, res) {
+  const { id } = req.params;
+  const parse = reportSchema.partial().safeParse(req.body);
+  if (!parse.success) {
+    return res.status(400).json({ message: "Invalid payload" });
+  }
+
+  const m = await Match.findByIdAndUpdate(
+    id,
+    { $set: parse.data },
+    { new: true }
+  );
+
+  if (!m) return res.status(404).json({ message: "Match not found" });
+
+  io.to(`match:${id}`).emit("score:update", {
+    matchId: id,
+    scoreA: m.scoreA,
+    scoreB: m.scoreB,
+  });
+
+  res.json(m);
+}
+
 export async function confirmMatch(req, res) {
   const { id } = req.params; // match id
   const m = await Match.findByIdAndUpdate(

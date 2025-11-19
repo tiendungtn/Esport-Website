@@ -7,6 +7,8 @@ import {
   registerTeam,
   seedTournament,
   generateBracket,
+  updateTournament,
+  deleteTournament,
 } from "../controllers/tournaments.controller.js";
 
 const r = Router();
@@ -14,6 +16,8 @@ const r = Router();
 r.get("/", listTournaments);
 r.get("/:id", getTournament);
 r.post("/", auth(["organizer", "admin"]), createTournament);
+r.put("/:id", auth(["organizer", "admin"]), updateTournament);
+r.delete("/:id", auth(["organizer", "admin"]), deleteTournament);
 r.post(
   "/:id/registrations",
   auth(["organizer", "player", "admin"]),

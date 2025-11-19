@@ -49,6 +49,38 @@ export async function getTournament(req, res) {
   res.json(t);
 }
 
+export async function updateTournament(req, res) {
+  const { id } = req.params;
+  const parse = createSchema.partial().safeParse(req.body);
+  if (!parse.success) {
+    return res.status(400).json({ message: "Invalid payload" });
+  }
+
+  const t = await Tournament.findOneAndUpdate(
+    { _id: id, organizerUser: req.user.id },
+    parse.data,
+    { new: true }
+  );
+  if (!t)
+    return res
+      .status(404)
+      .json({ message: "Tournament not found or unauthorized" });
+  res.json(t);
+}
+
+export async function deleteTournament(req, res) {
+  const { id } = req.params;
+  const t = await Tournament.findOneAndDelete({
+    _id: id,
+    organizerUser: req.user.id,
+  });
+  if (!t)
+    return res
+      .status(404)
+      .json({ message: "Tournament not found or unauthorized" });
+  res.json({ message: "Tournament deleted" });
+}
+
 const registerSchema = z.object({
   teamId: z.string().min(1),
 });
