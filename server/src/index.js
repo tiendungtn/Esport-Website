@@ -1,0 +1,73 @@
+import "dotenv/config";
+import http from "http";
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
+import cookieParser from "cookie-parser";
+import rateLimit from "express-rate-limit";
+import { Server } from "socket.io";
+import { connectDB } from "./config/db.js";
+import authRoutes from "./routes/auth.routes.js";
+import teamRoutes from "./routes/teams.routes.js";
+import tournamentRoutes from "./routes/tournaments.routes.js";
+import matchRoutes from "./routes/matches.routes.js";
+
+const app = express();
+
+// --- middlewares ---
+app.use(helmet());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL?.split(",") || "http://localhost:5173",
+    credentials: true,
+  })
+);
+app.use(express.json());
+app.use(cookieParser());
+app.use(morgan("dev"));
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 500,
+});
+app.use("/api", apiLimiter);
+
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
+});
+
+// --- routes ---
+app.use("/api/auth", authRoutes);
+app.use("/api/teams", teamRoutes);
+app.use("/api/tournaments", tournamentRoutes);
+// matchRoutes định nghĩa /tournaments/:id/matches & /matches/:id/*
+app.use("/api", matchRoutes);
+
+// --- error handler ---
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ message: "Internal server error" });
+});
+
+const server = http.createServer(app);
+
+export const io = new Server(server, {
+  cors: {
+    origin: process.env.CLIENT_URL?.split(",") || "http://localhost:5173",
+  },
+});
+
+io.on("connection", (socket) => {
+  socket.on("join", (room) => socket.join(room));
+});
+
+const PORT = process.env.PORT || 4000;
+const MONGO_URI =
+  process.env.MONGO_URI || "mongodb://127.0.0.1:27017/mern_esports";
+
+connectDB(MONGO_URI).then(() => {
+  server.listen(PORT, () => {
+    console.log(`API on http://localhost:${PORT}`);
+  });
+});

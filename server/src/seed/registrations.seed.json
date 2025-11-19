@@ -1,0 +1,242 @@
+[
+  {
+    "tournamentIndex": 0,
+    "teamName": "Hanoi Legends",
+    "status": "approved",
+    "seed": 1
+  },
+  {
+    "tournamentIndex": 0,
+    "teamName": "SaiGon Storm",
+    "status": "approved",
+    "seed": 2
+  },
+  {
+    "tournamentIndex": 0,
+    "teamName": "Dragon Esports",
+    "status": "approved",
+    "seed": 3
+  },
+  {
+    "tournamentIndex": 0,
+    "teamName": "Midlane Magic",
+    "status": "approved",
+    "seed": 4
+  },
+  {
+    "tournamentIndex": 0,
+    "teamName": "Blue Phoenix",
+    "status": "approved",
+    "seed": 5
+  },
+  {
+    "tournamentIndex": 0,
+    "teamName": "Shadow Wolves",
+    "status": "approved",
+    "seed": 6
+  },
+  {
+    "tournamentIndex": 0,
+    "teamName": "Golden Rift",
+    "status": "approved",
+    "seed": 7
+  },
+  {
+    "tournamentIndex": 0,
+    "teamName": "Infinity Core",
+    "status": "approved",
+    "seed": 8
+  },
+  {
+    "tournamentIndex": 1,
+    "teamName": "WildFlash",
+    "status": "approved",
+    "seed": 1
+  },
+  {
+    "tournamentIndex": 1,
+    "teamName": "Neo Titans",
+    "status": "approved",
+    "seed": 2
+  },
+  {
+    "tournamentIndex": 1,
+    "teamName": "Delta Wolves",
+    "status": "approved",
+    "seed": 3
+  },
+  {
+    "tournamentIndex": 1,
+    "teamName": "Sky Hunters",
+    "status": "approved",
+    "seed": 4
+  },
+  {
+    "tournamentIndex": 1,
+    "teamName": "StormBorn",
+    "status": "approved",
+    "seed": 5
+  },
+  {
+    "tournamentIndex": 1,
+    "teamName": "Nova Fire",
+    "status": "approved",
+    "seed": 6
+  },
+  {
+    "tournamentIndex": 1,
+    "teamName": "RedZone",
+    "status": "approved",
+    "seed": 7
+  },
+  {
+    "tournamentIndex": 1,
+    "teamName": "Vortex Esports",
+    "status": "approved",
+    "seed": 8
+  },
+  {
+    "tournamentIndex": 2,
+    "teamName": "AOV Empire",
+    "status": "approved",
+    "seed": 1
+  },
+  {
+    "tournamentIndex": 2,
+    "teamName": "Galaxy Rivals",
+    "status": "approved",
+    "seed": 2
+  },
+  {
+    "tournamentIndex": 2,
+    "teamName": "Moonlight",
+    "status": "approved",
+    "seed": 3
+  },
+  {
+    "tournamentIndex": 2,
+    "teamName": "SkyBreakers",
+    "status": "approved",
+    "seed": 4
+  },
+  {
+    "tournamentIndex": 2,
+    "teamName": "Nova Elite",
+    "status": "approved",
+    "seed": 5
+  },
+  {
+    "tournamentIndex": 2,
+    "teamName": "ShadowStrike",
+    "status": "approved",
+    "seed": 6
+  },
+  {
+    "tournamentIndex": 2,
+    "teamName": "EagleEyes",
+    "status": "approved",
+    "seed": 7
+  },
+  {
+    "tournamentIndex": 2,
+    "teamName": "IronFist",
+    "status": "approved",
+    "seed": 8
+  },
+  {
+    "tournamentIndex": 3,
+    "teamName": "Vanguard",
+    "status": "approved",
+    "seed": 1
+  },
+  {
+    "tournamentIndex": 3,
+    "teamName": "SilentKill",
+    "status": "approved",
+    "seed": 2
+  },
+  {
+    "tournamentIndex": 3,
+    "teamName": "CrimsonFox",
+    "status": "approved",
+    "seed": 3
+  },
+  {
+    "tournamentIndex": 3,
+    "teamName": "HyperEdge",
+    "status": "approved",
+    "seed": 4
+  },
+  {
+    "tournamentIndex": 3,
+    "teamName": "NightRunners",
+    "status": "approved",
+    "seed": 5
+  },
+  {
+    "tournamentIndex": 3,
+    "teamName": "EchoWave",
+    "status": "approved",
+    "seed": 6
+  },
+  {
+    "tournamentIndex": 3,
+    "teamName": "VoltGuard",
+    "status": "approved",
+    "seed": 7
+  },
+  {
+    "tournamentIndex": 3,
+    "teamName": "DreamShot",
+    "status": "approved",
+    "seed": 8
+  },
+  {
+    "tournamentIndex": 4,
+    "teamName": "StrikeZone",
+    "status": "approved",
+    "seed": 1
+  },
+  {
+    "tournamentIndex": 4,
+    "teamName": "HeadshotKings",
+    "status": "approved",
+    "seed": 2
+  },
+  {
+    "tournamentIndex": 4,
+    "teamName": "MidRush",
+    "status": "approved",
+    "seed": 3
+  },
+  {
+    "tournamentIndex": 4,
+    "teamName": "AIMGods",
+    "status": "approved",
+    "seed": 4
+  },
+  {
+    "tournamentIndex": 4,
+    "teamName": "BOMBTech",
+    "status": "approved",
+    "seed": 5
+  },
+  {
+    "tournamentIndex": 4,
+    "teamName": "FlashPoint",
+    "status": "approved",
+    "seed": 6
+  },
+  {
+    "tournamentIndex": 4,
+    "teamName": "SmokeLine",
+    "status": "approved",
+    "seed": 7
+  },
+  {
+    "tournamentIndex": 4,
+    "teamName": "RushBoys",
+    "status": "approved",
+    "seed": 8
+  }
+]

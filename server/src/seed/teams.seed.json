@@ -1,0 +1,227 @@
+[
+  {
+    "game": "Liên Minh Huyền Thoại",
+    "teams": [
+      {
+        "name": "Hanoi Legends",
+        "tag": "HNL"
+      },
+      {
+        "name": "SaiGon Storm",
+        "tag": "SGS"
+      },
+      {
+        "name": "Dragon Esports",
+        "tag": "DRG"
+      },
+      {
+        "name": "Midlane Magic",
+        "tag": "MLM"
+      },
+      {
+        "name": "Blue Phoenix",
+        "tag": "BPX"
+      },
+      {
+        "name": "Shadow Wolves",
+        "tag": "SWV"
+      },
+      {
+        "name": "Golden Rift",
+        "tag": "GRF"
+      },
+      {
+        "name": "Infinity Core",
+        "tag": "IFC"
+      },
+      {
+        "name": "Rift Hunters",
+        "tag": "RHT"
+      },
+      {
+        "name": "Omega Team",
+        "tag": "OMG"
+      }
+    ]
+  },
+  {
+    "game": "Tốc Chiến",
+    "teams": [
+      {
+        "name": "WildFlash",
+        "tag": "WF"
+      },
+      {
+        "name": "Neo Titans",
+        "tag": "NTT"
+      },
+      {
+        "name": "Delta Wolves",
+        "tag": "DWV"
+      },
+      {
+        "name": "Sky Hunters",
+        "tag": "SKH"
+      },
+      {
+        "name": "StormBorn",
+        "tag": "SB"
+      },
+      {
+        "name": "Nova Fire",
+        "tag": "NVF"
+      },
+      {
+        "name": "RedZone",
+        "tag": "RZN"
+      },
+      {
+        "name": "Vortex Esports",
+        "tag": "VTX"
+      },
+      {
+        "name": "ThunderFox",
+        "tag": "TFX"
+      },
+      {
+        "name": "Rapid Claw",
+        "tag": "RPC"
+      }
+    ]
+  },
+  {
+    "game": "Liên Quân",
+    "teams": [
+      {
+        "name": "AOV Empire",
+        "tag": "AEM"
+      },
+      {
+        "name": "Galaxy Rivals",
+        "tag": "GLR"
+      },
+      {
+        "name": "Moonlight",
+        "tag": "MNL"
+      },
+      {
+        "name": "SkyBreakers",
+        "tag": "SKB"
+      },
+      {
+        "name": "Nova Elite",
+        "tag": "NEL"
+      },
+      {
+        "name": "ShadowStrike",
+        "tag": "SDS"
+      },
+      {
+        "name": "EagleEyes",
+        "tag": "EGE"
+      },
+      {
+        "name": "IronFist",
+        "tag": "IRF"
+      },
+      {
+        "name": "PhoenixArmy",
+        "tag": "PHX"
+      },
+      {
+        "name": "BlueNova",
+        "tag": "BNV"
+      }
+    ]
+  },
+  {
+    "game": "Valorant",
+    "teams": [
+      {
+        "name": "Vanguard",
+        "tag": "VGD"
+      },
+      {
+        "name": "SilentKill",
+        "tag": "SLK"
+      },
+      {
+        "name": "CrimsonFox",
+        "tag": "CMF"
+      },
+      {
+        "name": "HyperEdge",
+        "tag": "HED"
+      },
+      {
+        "name": "NightRunners",
+        "tag": "NTR"
+      },
+      {
+        "name": "EchoWave",
+        "tag": "ECW"
+      },
+      {
+        "name": "VoltGuard",
+        "tag": "VLG"
+      },
+      {
+        "name": "DreamShot",
+        "tag": "DRS"
+      },
+      {
+        "name": "NovaNine",
+        "tag": "NVN"
+      },
+      {
+        "name": "FlashPoint",
+        "tag": "FLP"
+      }
+    ]
+  },
+  {
+    "game": "CS2",
+    "teams": [
+      {
+        "name": "StrikeZone",
+        "tag": "STZ"
+      },
+      {
+        "name": "HeadshotKings",
+        "tag": "HSK"
+      },
+      {
+        "name": "MidRush",
+        "tag": "MRS"
+      },
+      {
+        "name": "AIMGods",
+        "tag": "AMG"
+      },
+      {
+        "name": "BOMBTech",
+        "tag": "BMT"
+      },
+      {
+        "name": "FlashPoint",
+        "tag": "FLP"
+      },
+      {
+        "name": "SmokeLine",
+        "tag": "SML"
+      },
+      {
+        "name": "RushBoys",
+        "tag": "RSB"
+      },
+      {
+        "name": "SilentOps",
+        "tag": "SOP"
+      },
+      {
+        "name": "ZeroHour",
+        "tag": "ZHR"
+      }
+    ]
+  }
+]

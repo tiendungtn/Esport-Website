@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Liên Minh Huyền Thoại Championship",
+    "game": "Liên Minh Huyền Thoại",
+    "format": "SE",
+    "maxTeams": 16
+  },
+  {
+    "name": "Tốc Chiến Championship",
+    "game": "Tốc Chiến",
+    "format": "SE",
+    "maxTeams": 16
+  },
+  {
+    "name": "Liên Quân Championship",
+    "game": "Liên Quân",
+    "format": "SE",
+    "maxTeams": 16
+  },
+  {
+    "name": "Valorant Championship",
+    "game": "Valorant",
+    "format": "SE",
+    "maxTeams": 16
+  },
+  {
+    "name": "CS2 Championship",
+    "game": "CS2",
+    "format": "SE",
+    "maxTeams": 16
+  }
+]
