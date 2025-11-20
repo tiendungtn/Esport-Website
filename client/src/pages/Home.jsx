@@ -112,14 +112,14 @@ export default function Home() {
         )}
 
         {!isLoading && !error && (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 lg:grid-cols-2">
             {(sample || []).map((t) => {
               const theme = getGameTheme(t.game);
               return (
                 <Link
                   key={t.slug}
                   to={`/t/${t.slug}`}
-                  className={`group relative overflow-hidden rounded-xl border border-white/10 shadow-lg transition-all hover:scale-[1.02] hover:shadow-xl bg-gradient-to-br ${theme.from} ${theme.to}`}
+                  className={`group relative overflow-hidden rounded-xl border border-white/10 shadow-lg transition-all hover:scale-[1.02] hover:shadow-xl bg-gradient-to-br min-h-[300px] ${theme.from} ${theme.to}`}
                 >
                   {/* Background Image/Banner */}
                   <div className="absolute inset-0 opacity-40 mix-blend-overlay">
@@ -130,18 +130,8 @@ export default function Home() {
                     />
                   </div>
 
-                  {/* Main Image (Top) */}
-                  <div className="relative h-32 w-full">
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/10" />
-                    <img
-                      src={getGameImage(t.game)}
-                      alt={t.game}
-                      className="h-full w-full object-contain object-center p-4 drop-shadow-xl"
-                    />
-                  </div>
-
                   {/* Content */}
-                  <div className="relative space-y-3 p-4 pt-0">
+                  <div className="relative space-y-3 p-6">
                     <div className="flex items-start justify-between gap-2">
                       <h3 className="line-clamp-2 text-lg font-bold text-white drop-shadow-md">
                         {t.title}
@@ -206,13 +196,19 @@ function badgeClassForStatus(status) {
   }
 }
 
+import cs2Banner from "../img/CS2-banner.png";
+import valorantBanner from "../img/Valorant-banner.png";
+import aovBanner from "../img/Lien-quan-banner.png";
+import wildRiftBanner from "../img/Toc-chien-banner.png";
+import lolBanner from "../img/Lien-minh-huyen-thoai-banner.png";
+
 function getGameImage(game) {
   const map = {
-    CS2: "https://placehold.co/600x400?text=CS2",
-    VALORANT: "https://placehold.co/600x400?text=VALORANT",
-    "Arena of Valor": "https://placehold.co/600x400?text=AOV",
-    "Wild Rift": "https://placehold.co/600x400?text=Wild+Rift",
-    "League of Legends": "https://placehold.co/600x400?text=LoL",
+    CS2: cs2Banner,
+    VALORANT: valorantBanner,
+    "Arena of Valor": aovBanner,
+    "Wild Rift": wildRiftBanner,
+    "League of Legends": lolBanner,
     "FC Online": "https://placehold.co/600x400?text=FC+Online",
   };
   return map[game] || "https://placehold.co/600x400?text=Esports";

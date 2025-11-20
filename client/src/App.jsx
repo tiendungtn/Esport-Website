@@ -13,6 +13,7 @@ import Admin from "./pages/Admin.jsx";
 import Login from "./pages/Login.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import LoginModal from "./pages/LoginModal.jsx";
+import humgLogo from "./img/icon-humg.png";
 
 function ShellLayout() {
   const location = useLocation();
@@ -33,9 +34,7 @@ function ShellLayout() {
               to="/"
               className="flex items-center gap-2 text-sm font-semibold text-slate-50"
             >
-              <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-sky-500 text-xs font-bold text-slate-950">
-                ES
-              </span>
+              <img src={humgLogo} alt="HUMG" className="h-7 w-7 rounded-md" />
               <span>HUMG eSports</span>
             </Link>
             <nav className="hidden items-center gap-4 text-xs text-slate-300 md:flex">
