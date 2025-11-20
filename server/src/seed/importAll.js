@@ -29,6 +29,7 @@ for (const t of tournaments) {
   for (const team of game.teams) {
     const teamDoc = await Team.create({
       ...team,
+      game: t.game,
       ownerUser: new mongoose.Types.ObjectId(),
       members: [],
     });

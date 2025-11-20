@@ -4,6 +4,7 @@ import Team from "../models/Team.js";
 const teamSchema = z.object({
   name: z.string().min(2),
   tag: z.string().optional(),
+  game: z.string().optional(),
   logoUrl: z.string().url().optional(),
 });
 
@@ -20,8 +21,11 @@ export async function createTeam(req, res) {
 }
 
 export async function listTeams(req, res) {
-  const { search } = req.query;
-  const q = search ? { name: new RegExp(search, "i") } : {};
+  const { search, game } = req.query;
+  const q = {};
+  if (search) q.name = new RegExp(search, "i");
+  if (game) q.game = game;
+
   const teams = await Team.find(q)
     .limit(50)
     .populate("ownerUser", "profile email");

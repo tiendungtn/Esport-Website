@@ -3,6 +3,7 @@ const teamSchema = new mongoose.Schema(
   {
     name: { type: String, required: true /*unique: true*/ },
     tag: String,
+    game: String,
     logoUrl: String,
     ownerUser: {
       type: mongoose.Schema.Types.ObjectId,

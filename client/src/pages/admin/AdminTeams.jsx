@@ -1,7 +1,16 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../../lib/api";
-import { Plus, Edit, Trash2, Users } from "lucide-react";
+import { Plus, Edit, Trash2, Users, Filter } from "lucide-react";
+
+const GAMES = [
+  "Liên Minh Huyền Thoại",
+  "Tốc Chiến",
+  "Liên Quân",
+  "Valorant",
+  "CS2",
+  "FC Online",
+];
 
 export default function AdminTeams() {
   const queryClient = useQueryClient();
@@ -9,10 +18,15 @@ export default function AdminTeams() {
   const [editingTeam, setEditingTeam] = useState(null);
   const [isMembersModalOpen, setIsMembersModalOpen] = useState(false);
   const [selectedTeamForMembers, setSelectedTeamForMembers] = useState(null);
+  const [selectedGame, setSelectedGame] = useState("");
 
   const { data: teams, isLoading } = useQuery({
-    queryKey: ["teams"],
-    queryFn: async () => (await api.get("/api/teams")).data,
+    queryKey: ["teams", selectedGame],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      if (selectedGame) params.append("game", selectedGame);
+      return (await api.get(`/api/teams?${params.toString()}`)).data;
+    },
   });
 
   const deleteMutation = useMutation({
@@ -51,13 +65,33 @@ export default function AdminTeams() {
         <h2 className="text-xl font-semibold text-slate-100">
           Quản lý Đội tuyển
         </h2>
-        <button
-          onClick={handleCreate}
-          className="flex items-center gap-2 rounded-md bg-sky-500 px-4 py-2 text-sm font-medium text-slate-950 hover:bg-sky-400"
-        >
-          <Plus size={16} />
-          Tạo đội mới
-        </button>
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <Filter
+              size={16}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+            />
+            <select
+              value={selectedGame}
+              onChange={(e) => setSelectedGame(e.target.value)}
+              className="rounded-md border border-slate-800 bg-slate-900 py-2 pl-9 pr-4 text-sm text-slate-100 focus:border-sky-500 focus:outline-none"
+            >
+              <option value="">Tất cả game</option>
+              {GAMES.map((g) => (
+                <option key={g} value={g}>
+                  {g}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button
+            onClick={handleCreate}
+            className="flex items-center gap-2 rounded-md bg-sky-500 px-4 py-2 text-sm font-medium text-slate-950 hover:bg-sky-400"
+          >
+            <Plus size={16} />
+            Tạo đội mới
+          </button>
+        </div>
       </div>
 
       <div className="rounded-lg border border-slate-800 bg-slate-900/50 overflow-hidden">
@@ -65,6 +99,7 @@ export default function AdminTeams() {
           <thead className="bg-slate-900 text-slate-200 uppercase">
             <tr>
               <th className="px-6 py-3">Tên đội</th>
+              <th className="px-6 py-3">Game</th>
               <th className="px-6 py-3">Tag</th>
               <th className="px-6 py-3">Đội trưởng</th>
               <th className="px-6 py-3">Thành viên</th>
@@ -77,6 +112,7 @@ export default function AdminTeams() {
                 <td className="px-6 py-4 font-medium text-slate-100">
                   {t.name}
                 </td>
+                <td className="px-6 py-4 text-slate-300">{t.game || "-"}</td>
                 <td className="px-6 py-4">{t.tag}</td>
                 <td className="px-6 py-4">
                   {t.ownerUser?.profile?.displayName || t.ownerUser?.email}
@@ -135,6 +171,7 @@ function TeamModal({ isOpen, onClose, team }) {
   const [form, setForm] = useState({
     name: team?.name || "",
     tag: team?.tag || "",
+    game: team?.game || GAMES[0],
     logoUrl: team?.logoUrl || "",
   });
 
@@ -174,6 +211,20 @@ function TeamModal({ isOpen, onClose, team }) {
               className="w-full rounded-md border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-sky-500 focus:outline-none"
               required
             />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm text-slate-400">Game</label>
+            <select
+              value={form.game}
+              onChange={(e) => setForm({ ...form, game: e.target.value })}
+              className="w-full rounded-md border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-sky-500 focus:outline-none"
+            >
+              {GAMES.map((g) => (
+                <option key={g} value={g}>
+                  {g}
+                </option>
+              ))}
+            </select>
           </div>
           <div>
             <label className="mb-1 block text-sm text-slate-400">
