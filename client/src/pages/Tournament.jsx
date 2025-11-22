@@ -1,11 +1,13 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../lib/api";
+import { socket } from "../lib/socket";
 import BracketViewer from "../components/BracketViewer.jsx";
 
 export default function Tournament() {
   const { id } = useParams();
+  const queryClient = useQueryClient();
 
   const {
     data: tournament,
@@ -26,6 +28,24 @@ export default function Tournament() {
     queryFn: async () => (await api.get(`/api/tournaments/${id}/matches`)).data,
     enabled: !!id,
   });
+
+  React.useEffect(() => {
+    if (!id) return;
+    const channel = `tournament:${id}`;
+    socket.emit("join", channel);
+
+    const handleMatchUpdate = () => {
+      queryClient.invalidateQueries(["matches", id]);
+    };
+
+    socket.on("match:state", handleMatchUpdate);
+    socket.on("score:update", handleMatchUpdate);
+
+    return () => {
+      socket.off("match:state", handleMatchUpdate);
+      socket.off("score:update", handleMatchUpdate);
+    };
+  }, [id, queryClient]);
 
   if (loadingTournament) {
     return <p className="text-sm text-slate-400">Đang tải giải đấu...</p>;
