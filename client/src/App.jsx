@@ -6,7 +6,9 @@ import {
   useNavigate,
   Link,
   Outlet,
+  Navigate,
 } from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 import Home from "./pages/Home.jsx";
 import Tournament from "./pages/Tournament.jsx";
 import Admin from "./pages/Admin.jsx";
@@ -14,23 +16,13 @@ import Login from "./pages/Login.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import LoginModal from "./pages/LoginModal.jsx";
 import Profile from "./pages/Profile.jsx";
+import PublicTeamProfile from "./pages/PublicTeamProfile.jsx";
 import humgLogo from "./img/icon-humg.png";
 
 function ShellLayout() {
   const location = useLocation();
   const navigate = useNavigate();
-
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-
-  React.useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    setIsAuthenticated(!!token);
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    window.location.reload();
-  };
+  const { user, isAuthenticated, logout, isAdmin } = useAuth();
 
   const openLoginModal = () => {
     navigate("/login", {
@@ -54,9 +46,11 @@ function ShellLayout() {
               <Link to="/" className="hover:text-sky-300">
                 Tournaments
               </Link>
-              <Link to="/admin" className="hover:text-sky-300">
-                Organizer
-              </Link>
+              {isAdmin && (
+                <Link to="/admin" className="hover:text-sky-300">
+                  Organizer
+                </Link>
+              )}
             </nav>
           </div>
 
@@ -67,11 +61,11 @@ function ShellLayout() {
                   to="/profile"
                   className="text-xs font-medium text-slate-300 hover:text-sky-300"
                 >
-                  Profile
+                  {user?.displayName || "Profile"}
                 </Link>
                 <button
                   type="button"
-                  onClick={handleLogout}
+                  onClick={logout}
                   className="rounded-full border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-100 hover:border-red-500 hover:text-red-300"
                 >
                   Sign out
@@ -97,7 +91,19 @@ function ShellLayout() {
   );
 }
 
-export default function App() {
+function ProtectedAdminRoute({ children }) {
+  const { isAuthenticated, isAdmin, loading } = useAuth();
+
+  if (loading) return null; // Or a loading spinner
+
+  if (!isAuthenticated || !isAdmin) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+}
+
+function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -111,10 +117,18 @@ export default function App() {
         <Route element={<ShellLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/t/:id" element={<Tournament />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedAdminRoute>
+                <Admin />
+              </ProtectedAdminRoute>
+            }
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/teams/:id" element={<PublicTeamProfile />} />
         </Route>
       </Routes>
 
@@ -128,5 +142,13 @@ export default function App() {
         </Routes>
       )}
     </>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }

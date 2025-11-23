@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 /** Simple Single-Elimination Bracket Viewer */
 export default function BracketViewer({ matches = [] }) {
   if (!matches.length)
@@ -34,11 +36,13 @@ export default function BracketViewer({ matches = [] }) {
                     name={m.teamA?.name}
                     score={m.scoreA}
                     isWinner={m.scoreA > m.scoreB}
+                    teamId={m.teamA?._id}
                   />
                   <MatchRow
                     name={m.teamB?.name}
                     score={m.scoreB}
                     isWinner={m.scoreB > m.scoreA}
+                    teamId={m.teamB?._id}
                   />
                   <div className="mt-1 text-[11px] uppercase tracking-wide text-slate-500">
                     {m.state}
@@ -53,7 +57,7 @@ export default function BracketViewer({ matches = [] }) {
   );
 }
 
-function MatchRow({ name, score, isWinner }) {
+function MatchRow({ name, score, isWinner, teamId }) {
   return (
     <div className="flex items-center justify-between gap-2">
       <div
@@ -61,7 +65,16 @@ function MatchRow({ name, score, isWinner }) {
           isWinner ? "font-semibold text-slate-50" : "text-slate-300"
         }`}
       >
-        {name || "TBD"}
+        {teamId ? (
+          <Link
+            to={`/teams/${teamId}`}
+            className="hover:text-sky-400 hover:underline"
+          >
+            {name || "TBD"}
+          </Link>
+        ) : (
+          name || "TBD"
+        )}
       </div>
       <div className="flex h-6 min-w-[28px] items-center justify-center rounded bg-slate-800 px-2 text-center text-xs text-slate-100">
         {score ?? 0}

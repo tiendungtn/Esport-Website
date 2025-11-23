@@ -1,8 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { api } from "../lib/api";
+import { useAuth } from "../context/AuthContext";
 
 export default function Home() {
+  const { isAdmin } = useAuth();
   const { data, isLoading, error } = useQuery({
     queryKey: ["tournaments"],
     queryFn: async () => (await api.get("/api/tournaments")).data,
@@ -22,12 +24,14 @@ export default function Home() {
           kết quả trực tuyến.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
-          <Link
-            to="/admin"
-            className="inline-flex items-center rounded-full bg-sky-500 px-5 py-2.5 text-sm font-medium text-slate-950 hover:bg-sky-400"
-          >
-            + Tạo giải đấu
-          </Link>
+          {isAdmin && (
+            <Link
+              to="/admin"
+              className="inline-flex items-center rounded-full bg-sky-500 px-5 py-2.5 text-sm font-medium text-slate-950 hover:bg-sky-400"
+            >
+              + Tạo giải đấu
+            </Link>
+          )}
           <a
             href="#tournaments"
             className="inline-flex items-center rounded-full border border-slate-700 px-5 py-2.5 text-sm font-medium text-slate-100 hover:border-slate-500"

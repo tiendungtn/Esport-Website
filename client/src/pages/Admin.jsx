@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import { Trophy, Users, Calendar, User } from "lucide-react";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import AdminTournaments from "./admin/AdminTournaments";
 import AdminTeams from "./admin/AdminTeams";
 import AdminPlayers from "./admin/AdminPlayers";
 import AdminMatches from "./admin/AdminMatches";
 
 export default function Admin() {
+  const { isAdmin, loading } = useAuth();
   const [activeTab, setActiveTab] = useState("tournaments");
+
+  if (loading) return null;
+  if (!isAdmin) return <Navigate to="/" replace />;
 
   const tabs = [
     {

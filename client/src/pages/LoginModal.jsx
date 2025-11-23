@@ -2,6 +2,7 @@ import React from "react";
 import { X } from "lucide-react";
 import Modal from "../components/Model.jsx";
 import { api } from "../lib/api";
+import { useAuth } from "../context/AuthContext";
 
 function Field({ label, type = "text", value, onChange, placeholder }) {
   return (
@@ -19,6 +20,7 @@ function Field({ label, type = "text", value, onChange, placeholder }) {
 }
 
 export default function LoginModal({ open = false, onClose }) {
+  const { login } = useAuth();
   const [mode, setMode] = React.useState("login"); // 'login' | 'register' | 'forgot'
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -41,11 +43,13 @@ export default function LoginModal({ open = false, onClose }) {
       setLoading(true);
       if (mode === "login") {
         const res = await api.post("/api/auth/login", { email, password });
-        localStorage.setItem("accessToken", res.data.accessToken);
+        // Use context login instead of direct localStorage
+        login(res.data.accessToken, res.data.user);
+
         setInfo("Đăng nhập thành công!");
         setTimeout(() => {
           onClose?.();
-          window.location.reload();
+          // No need to reload, context will update state
         }, 400);
       } else if (mode === "register") {
         const res = await api.post("/api/auth/register", {
@@ -53,11 +57,11 @@ export default function LoginModal({ open = false, onClose }) {
           password,
           displayName: displayName || email.split("@")[0],
         });
-        localStorage.setItem("accessToken", res.data.accessToken);
+        login(res.data.accessToken, res.data.user);
+
         setInfo("Tạo tài khoản & đăng nhập thành công!");
         setTimeout(() => {
           onClose?.();
-          window.location.reload();
         }, 400);
       } else if (mode === "forgot") {
         setInfo(
