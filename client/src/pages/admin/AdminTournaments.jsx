@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../../lib/api";
-import { Plus, Edit, Trash2, MoreHorizontal } from "lucide-react";
+import { Plus, Edit, Trash2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { translateGameName } from "../../lib/gameTranslations";
 
 export default function AdminTournaments() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTournament, setEditingTournament] = useState(null);
@@ -21,7 +24,7 @@ export default function AdminTournaments() {
   });
 
   const handleDelete = async (id) => {
-    if (confirm("Bạn có chắc chắn muốn xóa giải đấu này?")) {
+    if (confirm(t("DeleteConfirm"))) {
       deleteMutation.mutate(id);
     }
   };
@@ -42,14 +45,14 @@ export default function AdminTournaments() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold text-slate-100">
-          Quản lý Giải đấu
+          {t("ManageTournaments")}
         </h2>
         <button
           onClick={handleCreate}
           className="flex items-center gap-2 rounded-md bg-sky-500 px-4 py-2 text-sm font-medium text-slate-950 hover:bg-sky-400"
         >
           <Plus size={16} />
-          Tạo giải đấu
+          {t("CreateTournamentBtn")}
         </button>
       </div>
 
@@ -57,44 +60,46 @@ export default function AdminTournaments() {
         <table className="w-full text-left text-sm text-slate-400">
           <thead className="bg-slate-900 text-slate-200 uppercase">
             <tr>
-              <th className="px-6 py-3">Tên giải</th>
-              <th className="px-6 py-3">Game</th>
-              <th className="px-6 py-3">Số đội</th>
-              <th className="px-6 py-3">Trạng thái</th>
-              <th className="px-6 py-3 text-right">Hành động</th>
+              <th className="px-6 py-3">{t("TableName")}</th>
+              <th className="px-6 py-3">{t("TableGame")}</th>
+              <th className="px-6 py-3">{t("TableTeams")}</th>
+              <th className="px-6 py-3">{t("TableStatus")}</th>
+              <th className="px-6 py-3 text-right">{t("TableActions")}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800">
-            {tournaments?.map((t) => (
-              <tr key={t._id} className="hover:bg-slate-800/50">
+            {tournaments?.map((tournament) => (
+              <tr key={tournament._id} className="hover:bg-slate-800/50">
                 <td className="px-6 py-4 font-medium text-slate-100">
-                  {t.name}
+                  {tournament.name}
                 </td>
-                <td className="px-6 py-4">{t.game}</td>
-                <td className="px-6 py-4">{t.maxTeams}</td>
+                <td className="px-6 py-4">
+                  {translateGameName(tournament.game)}
+                </td>
+                <td className="px-6 py-4">{tournament.maxTeams}</td>
                 <td className="px-6 py-4">
                   <span
                     className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${
-                      t.status === "open"
+                      tournament.status === "open"
                         ? "bg-green-500/10 text-green-500"
-                        : t.status === "ongoing"
+                        : tournament.status === "ongoing"
                         ? "bg-blue-500/10 text-blue-500"
                         : "bg-slate-500/10 text-slate-500"
                     }`}
                   >
-                    {t.status}
+                    {tournament.status}
                   </span>
                 </td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-2">
                     <button
-                      onClick={() => handleEdit(t)}
+                      onClick={() => handleEdit(tournament)}
                       className="p-2 text-slate-400 hover:text-sky-400"
                     >
                       <Edit size={16} />
                     </button>
                     <button
-                      onClick={() => handleDelete(t._id)}
+                      onClick={() => handleDelete(tournament._id)}
                       className="p-2 text-slate-400 hover:text-red-400"
                     >
                       <Trash2 size={16} />
@@ -119,6 +124,7 @@ export default function AdminTournaments() {
 }
 
 function TournamentModal({ isOpen, onClose, tournament }) {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [form, setForm] = useState({
     name: tournament?.name || "",
@@ -153,12 +159,12 @@ function TournamentModal({ isOpen, onClose, tournament }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
       <div className="w-full max-w-lg rounded-xl border border-slate-800 bg-slate-950 p-6 shadow-xl">
         <h3 className="mb-4 text-lg font-semibold text-slate-100">
-          {tournament ? "Chỉnh sửa giải đấu" : "Tạo giải đấu mới"}
+          {tournament ? t("EditTournament") : t("CreateNewTournament")}
         </h3>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="mb-1 block text-sm text-slate-400">
-              Tên giải đấu
+              {t("FormName")}
             </label>
             <input
               value={form.name}
@@ -168,7 +174,9 @@ function TournamentModal({ isOpen, onClose, tournament }) {
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm text-slate-400">Game</label>
+            <label className="mb-1 block text-sm text-slate-400">
+              {t("FormGame")}
+            </label>
             <input
               value={form.game}
               onChange={(e) => setForm({ ...form, game: e.target.value })}
@@ -178,7 +186,7 @@ function TournamentModal({ isOpen, onClose, tournament }) {
           </div>
           <div>
             <label className="mb-1 block text-sm text-slate-400">
-              Số đội tối đa
+              {t("FormMaxTeams")}
             </label>
             <input
               type="number"
@@ -190,7 +198,9 @@ function TournamentModal({ isOpen, onClose, tournament }) {
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm text-slate-400">Mô tả</label>
+            <label className="mb-1 block text-sm text-slate-400">
+              {t("FormDescription")}
+            </label>
             <textarea
               value={form.description}
               onChange={(e) =>
@@ -206,14 +216,14 @@ function TournamentModal({ isOpen, onClose, tournament }) {
               onClick={onClose}
               className="rounded-md px-4 py-2 text-sm font-medium text-slate-400 hover:text-slate-200"
             >
-              Hủy
+              {t("Cancel")}
             </button>
             <button
               type="submit"
               disabled={mutation.isPending}
               className="rounded-md bg-sky-500 px-4 py-2 text-sm font-medium text-slate-950 hover:bg-sky-400 disabled:opacity-50"
             >
-              {mutation.isPending ? "Đang lưu..." : "Lưu thay đổi"}
+              {mutation.isPending ? t("Saving") : t("Save")}
             </button>
           </div>
         </form>

@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../../lib/api";
 import { Search } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function AdminPlayers() {
+  const { t } = useTranslation();
   const [search, setSearch] = useState("");
 
   const { data: players, isLoading } = useQuery({
@@ -15,14 +17,14 @@ export default function AdminPlayers() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold text-slate-100">
-          Quản lý Tuyển thủ
+          {t("ManagePlayers")}
         </h2>
         <div className="relative w-64">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Tìm kiếm tuyển thủ..."
+            placeholder={t("SearchPlayerPlaceholder")}
             className="w-full rounded-md border border-slate-800 bg-slate-900 py-2 pl-9 pr-4 text-sm text-slate-100 focus:border-sky-500 focus:outline-none"
           />
         </div>
@@ -32,10 +34,10 @@ export default function AdminPlayers() {
         <table className="w-full text-left text-sm text-slate-400">
           <thead className="bg-slate-900 text-slate-200 uppercase">
             <tr>
-              <th className="px-6 py-3">Tên hiển thị</th>
-              <th className="px-6 py-3">Email</th>
-              <th className="px-6 py-3">Vai trò</th>
-              <th className="px-6 py-3">Ngày tham gia</th>
+              <th className="px-6 py-3">{t("DisplayName")}</th>
+              <th className="px-6 py-3">{t("Email")}</th>
+              <th className="px-6 py-3">{t("Role")}</th>
+              <th className="px-6 py-3">{t("JoinDate")}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800">

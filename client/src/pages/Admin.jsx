@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { Trophy, Users, Calendar, User } from "lucide-react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useTranslation } from "react-i18next";
 import AdminTournaments from "./admin/AdminTournaments";
 import AdminTeams from "./admin/AdminTeams";
 import AdminPlayers from "./admin/AdminPlayers";
 import AdminMatches from "./admin/AdminMatches";
 
 export default function Admin() {
+  const { t } = useTranslation();
   const { isAdmin, loading } = useAuth();
   const [activeTab, setActiveTab] = useState("tournaments");
 
@@ -17,15 +19,20 @@ export default function Admin() {
   const tabs = [
     {
       id: "tournaments",
-      label: "Giải đấu",
+      label: t("TournamentsTab"),
       icon: Trophy,
       component: AdminTournaments,
     },
-    { id: "teams", label: "Đội tuyển", icon: Users, component: AdminTeams },
-    { id: "players", label: "Tuyển thủ", icon: User, component: AdminPlayers },
+    { id: "teams", label: t("TeamsTab"), icon: Users, component: AdminTeams },
+    {
+      id: "players",
+      label: t("PlayersTab"),
+      icon: User,
+      component: AdminPlayers,
+    },
     {
       id: "matches",
-      label: "Lịch thi đấu",
+      label: t("MatchesTab"),
       icon: Calendar,
       component: AdminMatches,
     },

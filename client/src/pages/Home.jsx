@@ -2,8 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
+import { useTranslation } from "react-i18next";
+import { translateGameName } from "../lib/gameTranslations";
 
 export default function Home() {
+  const { t } = useTranslation();
   const { isAdmin } = useAuth();
   const { data, isLoading, error } = useQuery({
     queryKey: ["tournaments"],
@@ -14,14 +17,13 @@ export default function Home() {
     <div className="space-y-8">
       <section className="rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-950 p-6 shadow-xl md:p-8">
         <p className="text-xs font-semibold uppercase tracking-[0.15em] text-sky-400">
-          HUMG eSports
+          {t("HUMG_Esports")}
         </p>
         <h1 className="mt-3 text-3xl font-semibold text-slate-50 md:text-4xl">
-          Quản lý & tổ chức giải đấu eSports cho CLB, lớp và trường.
+          {t("HeroTitle")}
         </h1>
         <p className="mt-3 max-w-2xl text-sm text-slate-300 md:text-base">
-          Tạo giải đấu, đăng ký đội, sinh bracket Single Elimination và theo dõi
-          kết quả trực tuyến.
+          {t("HeroSubtitle")}
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
           {isAdmin && (
@@ -29,14 +31,14 @@ export default function Home() {
               to="/admin"
               className="inline-flex items-center rounded-full bg-sky-500 px-5 py-2.5 text-sm font-medium text-slate-950 hover:bg-sky-400"
             >
-              + Tạo giải đấu
+              {t("CreateTournamentBtn")}
             </Link>
           )}
           <a
             href="#tournaments"
             className="inline-flex items-center rounded-full border border-slate-700 px-5 py-2.5 text-sm font-medium text-slate-100 hover:border-slate-500"
           >
-            Xem các giải đang mở
+            {t("ViewOpenTournaments")}
           </a>
         </div>
       </section>
@@ -44,34 +46,32 @@ export default function Home() {
       <section id="tournaments" className="space-y-6">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold text-slate-100">
-            Giải đấu nổi bật
+            {t("FeaturedTournaments")}
           </h2>
         </div>
 
         {isLoading && (
-          <p className="text-sm text-slate-400">Đang tải danh sách giải...</p>
+          <p className="text-sm text-slate-400">{t("LoadingTournaments")}</p>
         )}
         {error && (
-          <p className="text-sm text-red-400">
-            Không tải được danh sách giải đấu.
-          </p>
+          <p className="text-sm text-red-400">{t("ErrorLoadingTournaments")}</p>
         )}
 
         {!isLoading && !error && data?.length > 0 && (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {data.map((t) => {
-              const theme = getGameTheme(t.game);
+            {data.map((tournament) => {
+              const theme = getGameTheme(tournament.game);
               return (
                 <Link
-                  key={t._id}
-                  to={`/t/${t.slug || t._id}`}
+                  key={tournament._id}
+                  to={`/t/${tournament.slug || tournament._id}`}
                   className={`group relative overflow-hidden rounded-xl border border-white/10 shadow-lg transition-all hover:scale-[1.02] hover:shadow-xl bg-gradient-to-br min-h-[200px] ${theme.from} ${theme.to}`}
                 >
                   {/* Background Image/Banner */}
                   <div className="absolute inset-0 opacity-40 mix-blend-overlay">
                     <img
-                      src={getGameImage(t.game)}
-                      alt={t.game}
+                      src={getGameImage(tournament.game)}
+                      alt={tournament.game}
                       className="h-full w-full object-cover grayscale transition-all group-hover:grayscale-0"
                     />
                   </div>
@@ -81,24 +81,24 @@ export default function Home() {
                     <div className="space-y-3">
                       <div className="flex items-start justify-between gap-2">
                         <h3 className="line-clamp-2 text-xl font-bold text-white drop-shadow-md leading-tight">
-                          {t.name}
+                          {tournament.name}
                         </h3>
                         <span
                           className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white/90 shadow-sm backdrop-blur-md ${badgeClassForStatus(
-                            t.status
+                            tournament.status
                           )}`}
                         >
-                          {labelForStatus(t.status)}
+                          {labelForStatus(tournament.status, t)}
                         </span>
                       </div>
                     </div>
 
                     <div className="mt-4 space-y-1">
                       <p className="text-xs font-bold text-white/90 uppercase tracking-wide">
-                        {t.game}
+                        {translateGameName(tournament.game)}
                       </p>
                       <p className="text-xs font-medium text-white/70">
-                        Tối đa {t.maxTeams} đội
+                        {t("MaxTeams", { count: tournament.maxTeams })}
                       </p>
                     </div>
                   </div>
@@ -109,25 +109,23 @@ export default function Home() {
         )}
 
         {!isLoading && !error && data?.length === 0 && (
-          <p className="text-sm text-slate-400">
-            Chưa có giải nào. Hãy là người đầu tiên tạo giải ở trang Admin.
-          </p>
+          <p className="text-sm text-slate-400">{t("NoTournaments")}</p>
         )}
       </section>
     </div>
   );
 }
 
-function labelForStatus(status) {
+function labelForStatus(status, t) {
   switch (status) {
     case "open":
-      return "Đăng ký";
+      return t("StatusOpen");
     case "ongoing":
-      return "Đang diễn ra";
+      return t("StatusOngoing");
     case "finished":
-      return "Đã kết thúc";
+      return t("StatusFinished");
     default:
-      return "Nháp";
+      return t("StatusDraft");
   }
 }
 

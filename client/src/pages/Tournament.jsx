@@ -1,12 +1,14 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { api } from "../lib/api";
 import { socket } from "../lib/socket";
 import BracketViewer from "../components/BracketViewer.jsx";
 import RegistrationModal from "../components/RegistrationModal.jsx";
 
 export default function Tournament() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const queryClient = useQueryClient();
   const [showRegisterModal, setShowRegisterModal] = React.useState(false);
@@ -50,10 +52,10 @@ export default function Tournament() {
   }, [id, queryClient]);
 
   if (loadingTournament) {
-    return <p className="text-sm text-slate-400">Đang tải giải đấu...</p>;
+    return <p className="text-sm text-slate-400">{t("LoadingTournament")}</p>;
   }
   if (errorTournament) {
-    return <p className="text-sm text-red-400">Không tìm thấy giải đấu này.</p>;
+    return <p className="text-sm text-red-400">{t("TournamentNotFound")}</p>;
   }
 
   return (
@@ -68,8 +70,7 @@ export default function Tournament() {
               {tournament.name}
             </h1>
             <p className="mt-2 max-w-2xl text-sm text-slate-300">
-              {tournament.description ||
-                "Giải đấu eSports được quản lý bởi hệ thống HUMG Esports."}
+              {tournament.description || t("TournamentDescription")}
             </p>
           </div>
           {tournament.status === "open" && (
@@ -77,7 +78,7 @@ export default function Tournament() {
               onClick={() => setShowRegisterModal(true)}
               className="rounded-xl bg-sky-500 px-6 py-3 font-semibold text-white shadow-lg shadow-sky-500/20 transition-all hover:bg-sky-400 hover:shadow-sky-500/40"
             >
-              Đăng ký tham gia
+              {t("RegisterToJoin")}
             </button>
           )}
         </div>
@@ -92,15 +93,13 @@ export default function Tournament() {
 
       <section className="rounded-xl border border-slate-800 bg-slate-900/40 p-4 md:p-6">
         <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-400">
-          Bracket Single Elimination
+          {t("BracketSE")}
         </h2>
         {loadingMatches && (
-          <p className="text-sm text-slate-400">Đang tải các trận đấu...</p>
+          <p className="text-sm text-slate-400">{t("LoadingMatches")}</p>
         )}
         {errorMatches && (
-          <p className="text-sm text-red-400">
-            Không tải được danh sách trận đấu.
-          </p>
+          <p className="text-sm text-red-400">{t("ErrorLoadingMatches")}</p>
         )}
         {!loadingMatches && !errorMatches && (
           <BracketViewer matches={matches || []} />

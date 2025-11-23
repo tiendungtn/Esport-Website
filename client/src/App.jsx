@@ -8,7 +8,9 @@ import {
   Outlet,
   Navigate,
 } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import LanguageSwitcher from "./components/LanguageSwitcher";
 import Home from "./pages/Home.jsx";
 import Tournament from "./pages/Tournament.jsx";
 import Admin from "./pages/Admin.jsx";
@@ -20,6 +22,7 @@ import PublicTeamProfile from "./pages/PublicTeamProfile.jsx";
 import humgLogo from "./img/icon-humg.png";
 
 function ShellLayout() {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAuthenticated, logout, isAdmin } = useAuth();
@@ -44,11 +47,11 @@ function ShellLayout() {
             </Link>
             <nav className="hidden items-center gap-4 text-xs text-slate-300 md:flex">
               <Link to="/" className="hover:text-sky-300">
-                Tournaments
+                {t("Tournaments")}
               </Link>
               {isAdmin && (
                 <Link to="/admin" className="hover:text-sky-300">
-                  Organizer
+                  {t("Organizer")}
                 </Link>
               )}
             </nav>
@@ -61,14 +64,14 @@ function ShellLayout() {
                   to="/profile"
                   className="text-xs font-medium text-slate-300 hover:text-sky-300"
                 >
-                  {user?.displayName || "Profile"}
+                  {user?.displayName || t("Profile")}
                 </Link>
                 <button
                   type="button"
                   onClick={logout}
                   className="rounded-full border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-100 hover:border-red-500 hover:text-red-300"
                 >
-                  Sign out
+                  {t("SignOut")}
                 </button>
               </>
             ) : (
@@ -77,9 +80,10 @@ function ShellLayout() {
                 onClick={openLoginModal}
                 className="rounded-full border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-100 hover:border-sky-500 hover:text-sky-300"
               >
-                Sign in
+                {t("SignIn")}
               </button>
             )}
+            <LanguageSwitcher />
           </div>
         </div>
       </header>

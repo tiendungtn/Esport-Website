@@ -9,8 +9,10 @@ import {
   X,
   Plus,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function AdminMatches() {
+  const { t } = useTranslation();
   const [selectedTournament, setSelectedTournament] = useState("");
   const [editingMatch, setEditingMatch] = useState(null);
 
@@ -34,17 +36,17 @@ export default function AdminMatches() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold text-slate-100">
-          Quản lý Lịch thi đấu
+          {t("ManageMatches")}
         </h2>
         <select
           value={selectedTournament}
           onChange={(e) => setSelectedTournament(e.target.value)}
           className="rounded-md border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-sky-500 focus:outline-none"
         >
-          <option value="">Chọn giải đấu...</option>
-          {tournaments?.map((t) => (
-            <option key={t._id} value={t._id}>
-              {t.name}
+          <option value="">{t("SelectTournament")}</option>
+          {tournaments?.map((tournament) => (
+            <option key={tournament._id} value={tournament._id}>
+              {tournament.name}
             </option>
           ))}
         </select>
@@ -55,44 +57,44 @@ export default function AdminMatches() {
           <table className="w-full text-left text-sm text-slate-400">
             <thead className="bg-slate-900 text-slate-200 uppercase">
               <tr>
-                <th className="px-6 py-3">Vòng</th>
-                <th className="px-6 py-3">Đội 1</th>
-                <th className="px-6 py-3 text-center">Tỉ số</th>
-                <th className="px-6 py-3">Đội 2</th>
-                <th className="px-6 py-3">Trạng thái</th>
-                <th className="px-6 py-3 text-right">Hành động</th>
+                <th className="px-6 py-3">{t("Round")}</th>
+                <th className="px-6 py-3">{t("Team1")}</th>
+                <th className="px-6 py-3 text-center">{t("Score")}</th>
+                <th className="px-6 py-3">{t("Team2")}</th>
+                <th className="px-6 py-3">{t("TableStatus")}</th>
+                <th className="px-6 py-3 text-right">{t("TableActions")}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800">
-              {matches?.map((m) => (
-                <tr key={m._id} className="hover:bg-slate-800/50">
-                  <td className="px-6 py-4">Round {m.round}</td>
+              {matches?.map((match) => (
+                <tr key={match._id} className="hover:bg-slate-800/50">
+                  <td className="px-6 py-4">Round {match.round}</td>
                   <td className="px-6 py-4 font-medium text-slate-100">
-                    {m.teamA?.name || "TBD"}
+                    {match.teamA?.name || "TBD"}
                   </td>
                   <td className="px-6 py-4 text-center font-bold text-slate-100">
-                    {m.scoreA} - {m.scoreB}
+                    {match.scoreA} - {match.scoreB}
                   </td>
                   <td className="px-6 py-4 font-medium text-slate-100">
-                    {m.teamB?.name || "TBD"}
+                    {match.teamB?.name || "TBD"}
                   </td>
                   <td className="px-6 py-4">
                     <span
                       className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${
-                        m.state === "final"
+                        match.state === "final"
                           ? "bg-green-500/10 text-green-500"
-                          : m.state === "live"
+                          : match.state === "live"
                           ? "bg-red-500/10 text-red-500"
                           : "bg-slate-500/10 text-slate-500"
                       }`}
                     >
-                      {m.state}
+                      {match.state}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-2">
                       <button
-                        onClick={() => setEditingMatch(m)}
+                        onClick={() => setEditingMatch(match)}
                         className="p-2 text-slate-400 hover:text-sky-400"
                       >
                         <Edit size={16} />
@@ -107,8 +109,7 @@ export default function AdminMatches() {
                     colSpan="6"
                     className="px-6 py-8 text-center text-slate-500"
                   >
-                    Chưa có trận đấu nào. Hãy tạo lịch thi đấu trong phần quản
-                    lý giải đấu.
+                    {t("NoMatches")}
                   </td>
                 </tr>
               )}
@@ -117,7 +118,7 @@ export default function AdminMatches() {
         </div>
       ) : (
         <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-8 text-center text-slate-500">
-          Vui lòng chọn một giải đấu để xem lịch thi đấu
+          {t("PleaseSelectTournament")}
         </div>
       )}
 
@@ -133,6 +134,7 @@ export default function AdminMatches() {
 }
 
 function MatchModal({ isOpen, onClose, match }) {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [form, setForm] = useState({
     scoreA: match?.scoreA || 0,
@@ -175,7 +177,7 @@ function MatchModal({ isOpen, onClose, match }) {
       setProofUrls([...proofUrls, res.data.url]);
     } catch (error) {
       console.error("Upload failed:", error);
-      alert("Upload failed");
+      alert(t("UploadFailed"));
     } finally {
       setIsUploading(false);
     }
@@ -203,7 +205,7 @@ function MatchModal({ isOpen, onClose, match }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
       <div className="w-full max-w-md rounded-xl border border-slate-800 bg-slate-950 p-6 shadow-xl max-h-[90vh] overflow-y-auto">
         <h3 className="mb-4 text-lg font-semibold text-slate-100">
-          Cập nhật tỉ số
+          {t("UpdateScore")}
         </h3>
         <div className="mb-6 flex items-center justify-between gap-4">
           <div className="text-center">
@@ -237,13 +239,13 @@ function MatchModal({ isOpen, onClose, match }) {
 
         <div className="mb-6">
           <label className="mb-2 block text-sm font-medium text-slate-300">
-            Minh chứng (Ảnh/Link)
+            {t("Proof")}
           </label>
 
           <div className="mb-3 flex gap-2">
             <label className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed border-slate-700 bg-slate-900/50 py-2 text-sm text-slate-400 hover:border-sky-500 hover:text-sky-500">
               <Upload size={16} />
-              {isUploading ? "Đang tải..." : "Tải ảnh lên"}
+              {isUploading ? t("Uploading") : t("UploadImage")}
               <input
                 type="file"
                 accept="image/*"
@@ -257,7 +259,7 @@ function MatchModal({ isOpen, onClose, match }) {
           <div className="mb-3 flex gap-2">
             <input
               type="text"
-              placeholder="Hoặc dán link ảnh..."
+              placeholder={t("OrPasteLink")}
               value={newLink}
               onChange={(e) => setNewLink(e.target.value)}
               className="flex-1 rounded-md border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-sky-500 focus:outline-none"
@@ -305,7 +307,7 @@ function MatchModal({ isOpen, onClose, match }) {
             disabled={updateMutation.isPending}
             className="w-full rounded-md bg-sky-500 py-2 text-sm font-medium text-slate-950 hover:bg-sky-400 disabled:opacity-50"
           >
-            {updateMutation.isPending ? "Đang cập nhật..." : "Cập nhật tỉ số"}
+            {updateMutation.isPending ? t("Updating") : t("UpdateScoreBtn")}
           </button>
 
           {match.state !== "final" && (
@@ -315,7 +317,7 @@ function MatchModal({ isOpen, onClose, match }) {
               className="flex w-full items-center justify-center gap-2 rounded-md border border-green-500/20 bg-green-500/10 py-2 text-sm font-medium text-green-500 hover:bg-green-500/20"
             >
               <CheckCircle size={16} />
-              Xác nhận kết quả (Kết thúc trận)
+              {t("ConfirmResult")}
             </button>
           )}
 
@@ -323,7 +325,7 @@ function MatchModal({ isOpen, onClose, match }) {
             onClick={onClose}
             className="w-full rounded-md border border-slate-800 py-2 text-sm font-medium text-slate-400 hover:bg-slate-900"
           >
-            Đóng
+            {t("Close")}
           </button>
         </div>
       </div>

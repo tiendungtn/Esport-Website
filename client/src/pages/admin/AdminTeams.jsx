@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../../lib/api";
 import { Plus, Edit, Trash2, Users, Filter } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const GAMES = [
   "Liên Minh Huyền Thoại",
@@ -13,6 +14,7 @@ const GAMES = [
 ];
 
 export default function AdminTeams() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTeam, setEditingTeam] = useState(null);
@@ -37,7 +39,7 @@ export default function AdminTeams() {
   });
 
   const handleDelete = async (id) => {
-    if (confirm("Bạn có chắc chắn muốn xóa đội này?")) {
+    if (confirm(t("DeleteTeamConfirm"))) {
       deleteMutation.mutate(id);
     }
   };
@@ -63,7 +65,7 @@ export default function AdminTeams() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold text-slate-100">
-          Quản lý Đội tuyển
+          {t("ManageTeams")}
         </h2>
         <div className="flex items-center gap-4">
           <div className="relative">
@@ -76,7 +78,7 @@ export default function AdminTeams() {
               onChange={(e) => setSelectedGame(e.target.value)}
               className="rounded-md border border-slate-800 bg-slate-900 py-2 pl-9 pr-4 text-sm text-slate-100 focus:border-sky-500 focus:outline-none"
             >
-              <option value="">Tất cả game</option>
+              <option value="">{t("AllGames")}</option>
               {GAMES.map((g) => (
                 <option key={g} value={g}>
                   {g}
@@ -89,7 +91,7 @@ export default function AdminTeams() {
             className="flex items-center gap-2 rounded-md bg-sky-500 px-4 py-2 text-sm font-medium text-slate-950 hover:bg-sky-400"
           >
             <Plus size={16} />
-            Tạo đội mới
+            {t("CreateTeam")}
           </button>
         </div>
       </div>
@@ -98,43 +100,44 @@ export default function AdminTeams() {
         <table className="w-full text-left text-sm text-slate-400">
           <thead className="bg-slate-900 text-slate-200 uppercase">
             <tr>
-              <th className="px-6 py-3">Tên đội</th>
-              <th className="px-6 py-3">Game</th>
-              <th className="px-6 py-3">Tag</th>
-              <th className="px-6 py-3">Đội trưởng</th>
-              <th className="px-6 py-3">Thành viên</th>
-              <th className="px-6 py-3 text-right">Hành động</th>
+              <th className="px-6 py-3">{t("TeamName")}</th>
+              <th className="px-6 py-3">{t("TableGame")}</th>
+              <th className="px-6 py-3">{t("Tag")}</th>
+              <th className="px-6 py-3">{t("Captain")}</th>
+              <th className="px-6 py-3">{t("Members")}</th>
+              <th className="px-6 py-3 text-right">{t("TableActions")}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800">
-            {teams?.map((t) => (
-              <tr key={t._id} className="hover:bg-slate-800/50">
+            {teams?.map((team) => (
+              <tr key={team._id} className="hover:bg-slate-800/50">
                 <td className="px-6 py-4 font-medium text-slate-100">
-                  {t.name}
+                  {team.name}
                 </td>
-                <td className="px-6 py-4 text-slate-300">{t.game || "-"}</td>
-                <td className="px-6 py-4">{t.tag}</td>
+                <td className="px-6 py-4 text-slate-300">{team.game || "-"}</td>
+                <td className="px-6 py-4">{team.tag}</td>
                 <td className="px-6 py-4">
-                  {t.ownerUser?.profile?.displayName || t.ownerUser?.email}
+                  {team.ownerUser?.profile?.displayName ||
+                    team.ownerUser?.email}
                 </td>
-                <td className="px-6 py-4">{t.members?.length || 0}</td>
+                <td className="px-6 py-4">{team.members?.length || 0}</td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-2">
                     <button
-                      onClick={() => handleManageMembers(t)}
+                      onClick={() => handleManageMembers(team)}
                       className="p-2 text-slate-400 hover:text-sky-400"
-                      title="Quản lý thành viên"
+                      title={t("ManageMembers")}
                     >
                       <Users size={16} />
                     </button>
                     <button
-                      onClick={() => handleEdit(t)}
+                      onClick={() => handleEdit(team)}
                       className="p-2 text-slate-400 hover:text-sky-400"
                     >
                       <Edit size={16} />
                     </button>
                     <button
-                      onClick={() => handleDelete(t._id)}
+                      onClick={() => handleDelete(team._id)}
                       className="p-2 text-slate-400 hover:text-red-400"
                     >
                       <Trash2 size={16} />
@@ -167,6 +170,7 @@ export default function AdminTeams() {
 }
 
 function TeamModal({ isOpen, onClose, team }) {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [form, setForm] = useState({
     name: team?.name || "",
@@ -200,11 +204,13 @@ function TeamModal({ isOpen, onClose, team }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
       <div className="w-full max-w-lg rounded-xl border border-slate-800 bg-slate-950 p-6 shadow-xl">
         <h3 className="mb-4 text-lg font-semibold text-slate-100">
-          {team ? "Chỉnh sửa đội tuyển" : "Tạo đội tuyển mới"}
+          {team ? t("EditTeam") : t("CreateNewTeam")}
         </h3>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="mb-1 block text-sm text-slate-400">Tên đội</label>
+            <label className="mb-1 block text-sm text-slate-400">
+              {t("TeamName")}
+            </label>
             <input
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -213,7 +219,9 @@ function TeamModal({ isOpen, onClose, team }) {
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm text-slate-400">Game</label>
+            <label className="mb-1 block text-sm text-slate-400">
+              {t("TableGame")}
+            </label>
             <select
               value={form.game}
               onChange={(e) => setForm({ ...form, game: e.target.value })}
@@ -228,7 +236,7 @@ function TeamModal({ isOpen, onClose, team }) {
           </div>
           <div>
             <label className="mb-1 block text-sm text-slate-400">
-              Tag (Viết tắt)
+              {t("TeamTag")}
             </label>
             <input
               value={form.tag}
@@ -238,7 +246,7 @@ function TeamModal({ isOpen, onClose, team }) {
           </div>
           <div>
             <label className="mb-1 block text-sm text-slate-400">
-              Logo URL
+              {t("LogoURL")}
             </label>
             <input
               value={form.logoUrl}
@@ -252,14 +260,14 @@ function TeamModal({ isOpen, onClose, team }) {
               onClick={onClose}
               className="rounded-md px-4 py-2 text-sm font-medium text-slate-400 hover:text-slate-200"
             >
-              Hủy
+              {t("Cancel")}
             </button>
             <button
               type="submit"
               disabled={mutation.isPending}
               className="rounded-md bg-sky-500 px-4 py-2 text-sm font-medium text-slate-950 hover:bg-sky-400 disabled:opacity-50"
             >
-              {mutation.isPending ? "Đang lưu..." : "Lưu thay đổi"}
+              {mutation.isPending ? t("Saving") : t("Save")}
             </button>
           </div>
         </form>
@@ -269,6 +277,7 @@ function TeamModal({ isOpen, onClose, team }) {
 }
 
 function MembersModal({ isOpen, onClose, team }) {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [email, setEmail] = useState("");
   const [searchResult, setSearchResult] = useState([]);
@@ -289,8 +298,7 @@ function MembersModal({ isOpen, onClose, team }) {
       setEmail("");
       setSearchResult([]);
     },
-    onError: (err) =>
-      alert(err.response?.data?.message || "Lỗi thêm thành viên"),
+    onError: (err) => alert(err.response?.data?.message || t("AddMemberError")),
   });
 
   const removeMemberMutation = useMutation({
@@ -319,7 +327,7 @@ function MembersModal({ isOpen, onClose, team }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
       <div className="w-full max-w-2xl rounded-xl border border-slate-800 bg-slate-950 p-6 shadow-xl">
         <h3 className="mb-4 text-lg font-semibold text-slate-100">
-          Thành viên đội: {teamData.name}
+          {t("TeamMembers")} {teamData.name}
         </h3>
 
         <div className="mb-6 space-y-4">
@@ -327,20 +335,22 @@ function MembersModal({ isOpen, onClose, team }) {
             <input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Tìm kiếm user bằng email hoặc tên..."
+              placeholder={t("SearchUserPlaceholder")}
               className="flex-1 rounded-md border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-sky-500 focus:outline-none"
             />
             <button
               onClick={handleSearch}
               className="rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-slate-700"
             >
-              Tìm
+              {t("Search")}
             </button>
           </div>
 
           {searchResult.length > 0 && (
             <div className="rounded-md border border-slate-800 bg-slate-900 p-2">
-              <p className="mb-2 text-xs text-slate-400">Kết quả tìm kiếm:</p>
+              <p className="mb-2 text-xs text-slate-400">
+                {t("SearchResults")}
+              </p>
               <div className="space-y-1">
                 {searchResult.map((u) => (
                   <div
@@ -360,7 +370,7 @@ function MembersModal({ isOpen, onClose, team }) {
                       onClick={() => addMemberMutation.mutate(u._id)}
                       className="text-xs font-medium text-sky-500 hover:text-sky-400"
                     >
-                      Thêm
+                      {t("Add")}
                     </button>
                   </div>
                 ))}
@@ -371,7 +381,7 @@ function MembersModal({ isOpen, onClose, team }) {
 
         <div className="space-y-2">
           <h4 className="text-sm font-medium text-slate-400">
-            Danh sách thành viên
+            {t("MemberList")}
           </h4>
           <div className="divide-y divide-slate-800 rounded-md border border-slate-800 bg-slate-900/50">
             {teamData.members?.map((member) => (
@@ -393,17 +403,17 @@ function MembersModal({ isOpen, onClose, team }) {
                     onClick={() => removeMemberMutation.mutate(member._id)}
                     className="text-xs text-red-500 hover:text-red-400"
                   >
-                    Xóa
+                    {t("Remove")}
                   </button>
                 )}
                 {member._id === teamData.ownerUser?._id && (
-                  <span className="text-xs text-sky-500">Đội trưởng</span>
+                  <span className="text-xs text-sky-500">{t("Captain")}</span>
                 )}
               </div>
             ))}
             {teamData.members?.length === 0 && (
               <div className="p-4 text-center text-sm text-slate-500">
-                Chưa có thành viên nào
+                {t("NoMembers")}
               </div>
             )}
           </div>
@@ -414,7 +424,7 @@ function MembersModal({ isOpen, onClose, team }) {
             onClick={onClose}
             className="rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-slate-700"
           >
-            Đóng
+            {t("Close")}
           </button>
         </div>
       </div>
