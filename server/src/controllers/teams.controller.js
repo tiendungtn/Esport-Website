@@ -20,6 +20,13 @@ export async function createTeam(req, res) {
   res.status(201).json(team);
 }
 
+export async function listMyTeams(req, res) {
+  const teams = await Team.find({ ownerUser: req.user.id })
+    .sort({ createdAt: -1 })
+    .populate("members", "profile email");
+  res.json(teams);
+}
+
 export async function listTeams(req, res) {
   const { search, game } = req.query;
   const q = {};

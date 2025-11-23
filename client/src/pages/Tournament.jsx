@@ -4,10 +4,12 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../lib/api";
 import { socket } from "../lib/socket";
 import BracketViewer from "../components/BracketViewer.jsx";
+import RegistrationModal from "../components/RegistrationModal.jsx";
 
 export default function Tournament() {
   const { id } = useParams();
   const queryClient = useQueryClient();
+  const [showRegisterModal, setShowRegisterModal] = React.useState(false);
 
   const {
     data: tournament,
@@ -57,17 +59,36 @@ export default function Tournament() {
   return (
     <div className="space-y-6">
       <section className="rounded-xl border border-slate-800 bg-slate-900/60 p-4 md:p-6">
-        <p className="text-xs uppercase tracking-[0.18em] text-sky-400">
-          {tournament.game}
-        </p>
-        <h1 className="mt-2 text-2xl font-semibold text-slate-50 md:text-3xl">
-          {tournament.name}
-        </h1>
-        <p className="mt-2 max-w-2xl text-sm text-slate-300">
-          {tournament.description ||
-            "Giải đấu eSports được quản lý bởi hệ thống đồ án tốt nghiệp."}
-        </p>
+        <div className="flex items-start justify-between">
+          <div>
+            <p className="text-xs uppercase tracking-[0.18em] text-sky-400">
+              {tournament.game}
+            </p>
+            <h1 className="mt-2 text-2xl font-semibold text-slate-50 md:text-3xl">
+              {tournament.name}
+            </h1>
+            <p className="mt-2 max-w-2xl text-sm text-slate-300">
+              {tournament.description ||
+                "Giải đấu eSports được quản lý bởi hệ thống HUMG Esports."}
+            </p>
+          </div>
+          {tournament.status === "open" && (
+            <button
+              onClick={() => setShowRegisterModal(true)}
+              className="rounded-xl bg-sky-500 px-6 py-3 font-semibold text-white shadow-lg shadow-sky-500/20 transition-all hover:bg-sky-400 hover:shadow-sky-500/40"
+            >
+              Đăng ký tham gia
+            </button>
+          )}
+        </div>
       </section>
+
+      {showRegisterModal && (
+        <RegistrationModal
+          tournamentId={id}
+          onClose={() => setShowRegisterModal(false)}
+        />
+      )}
 
       <section className="rounded-xl border border-slate-800 bg-slate-900/40 p-4 md:p-6">
         <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-400">

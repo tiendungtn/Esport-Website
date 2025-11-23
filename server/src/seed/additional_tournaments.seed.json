@@ -1,0 +1,32 @@
+[
+  {
+    "name": "VCS Mùa Hè 2024",
+    "game": "Liên Minh Huyền Thoại",
+    "format": "DE",
+    "maxTeams": 8
+  },
+  {
+    "name": "WCS Vietnam 2024",
+    "game": "Tốc Chiến",
+    "format": "DE",
+    "maxTeams": 8
+  },
+  {
+    "name": "Đấu Trường Danh Vọng Mùa Đông 2024",
+    "game": "Liên Quân",
+    "format": "DE",
+    "maxTeams": 8
+  },
+  {
+    "name": "VCT Vietnam Stage 2",
+    "game": "Valorant",
+    "format": "DE",
+    "maxTeams": 8
+  },
+  {
+    "name": "CS2 Vietnam Pro League",
+    "game": "CS2",
+    "format": "DE",
+    "maxTeams": 8
+  }
+]

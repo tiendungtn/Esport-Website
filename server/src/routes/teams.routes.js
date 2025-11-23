@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   createTeam,
+  listMyTeams,
   listTeams,
   getTeam,
   updateTeam,
@@ -10,6 +11,7 @@ import {
 } from "../controllers/teams.controller.js";
 import { auth } from "../middleware/auth.js";
 const r = Router();
+r.get("/mine", auth(["organizer", "player", "admin"]), listMyTeams);
 r.get("/", listTeams);
 r.get("/:id", getTeam);
 r.post("/", auth(["organizer", "player", "admin", "viewer"]), createTeam);

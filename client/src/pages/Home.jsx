@@ -2,64 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { api } from "../lib/api";
 
-const sample = [
-  {
-    slug: "cs2-championship",
-    title: "CS2 Championship",
-    game: "CS2",
-    region: "VN",
-    date: "Nov 20 - Dec 20",
-    players: 160,
-    prize: "10.000.000đ",
-    status: "open",
-    image: "https://placehold.co/600x400?text=CS2",
-  },
-  {
-    slug: "valorant-championship",
-    title: "Valorant Championship",
-    game: "VALORANT",
-    region: "VN",
-    date: "Nov 25 - Dec 25",
-    players: 120,
-    prize: "5.000.000đ",
-    status: "open",
-    image: "https://placehold.co/600x400?text=VALORANT",
-  },
-  {
-    slug: "lien-quan-championship",
-    title: "Liên Quân Championship",
-    game: "Arena of Valor",
-    region: "VN",
-    date: "Dec 01 - Dec 30",
-    players: 80,
-    prize: "5.000.000đ",
-    status: "open",
-    image: "https://placehold.co/600x400?text=AOV",
-  },
-  {
-    slug: "toc-chien-championship",
-    title: "Tốc Chiến Championship",
-    game: "Wild Rift",
-    region: "VN",
-    date: "Dec 05 - Jan 05",
-    players: 64,
-    prize: "3.000.000đ",
-    status: "open",
-    image: "https://placehold.co/600x400?text=Wild+Rift",
-  },
-  {
-    slug: "lmht-championship",
-    title: "Liên Minh Huyền Thoại Championship",
-    game: "League of Legends",
-    region: "VN",
-    date: "Dec 10 - Jan 10",
-    players: 100,
-    prize: "10.000.000đ",
-    status: "open",
-    image: "https://placehold.co/600x400?text=LoL",
-  },
-];
-
 export default function Home() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["tournaments"],
@@ -77,7 +19,7 @@ export default function Home() {
         </h1>
         <p className="mt-3 max-w-2xl text-sm text-slate-300 md:text-base">
           Tạo giải đấu, đăng ký đội, sinh bracket Single Elimination và theo dõi
-          kết quả trực tuyến – giao diện gọn, dễ dùng giống start.gg.
+          kết quả trực tuyến.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
@@ -95,7 +37,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="tournaments" className="space-y-3">
+      <section id="tournaments" className="space-y-6">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold text-slate-100">
             Giải đấu nổi bật
@@ -111,15 +53,15 @@ export default function Home() {
           </p>
         )}
 
-        {!isLoading && !error && (
-          <div className="grid gap-4 lg:grid-cols-2">
-            {(sample || []).map((t) => {
+        {!isLoading && !error && data?.length > 0 && (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {data.map((t) => {
               const theme = getGameTheme(t.game);
               return (
                 <Link
-                  key={t.slug}
-                  to={`/t/${t.slug}`}
-                  className={`group relative overflow-hidden rounded-xl border border-white/10 shadow-lg transition-all hover:scale-[1.02] hover:shadow-xl bg-gradient-to-br min-h-[300px] ${theme.from} ${theme.to}`}
+                  key={t._id}
+                  to={`/t/${t.slug || t._id}`}
+                  className={`group relative overflow-hidden rounded-xl border border-white/10 shadow-lg transition-all hover:scale-[1.02] hover:shadow-xl bg-gradient-to-br min-h-[200px] ${theme.from} ${theme.to}`}
                 >
                   {/* Background Image/Banner */}
                   <div className="absolute inset-0 opacity-40 mix-blend-overlay">
@@ -131,39 +73,41 @@ export default function Home() {
                   </div>
 
                   {/* Content */}
-                  <div className="relative space-y-3 p-6">
-                    <div className="flex items-start justify-between gap-2">
-                      <h3 className="line-clamp-2 text-lg font-bold text-white drop-shadow-md">
-                        {t.title}
-                      </h3>
-                      <span
-                        className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white/90 shadow-sm backdrop-blur-md ${badgeClassForStatus(
-                          t.status
-                        )}`}
-                      >
-                        {labelForStatus(t.status)}
-                      </span>
+                  <div className="relative flex flex-col justify-between p-6 h-full">
+                    <div className="space-y-3">
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="line-clamp-2 text-xl font-bold text-white drop-shadow-md leading-tight">
+                          {t.name}
+                        </h3>
+                        <span
+                          className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white/90 shadow-sm backdrop-blur-md ${badgeClassForStatus(
+                            t.status
+                          )}`}
+                        >
+                          {labelForStatus(t.status)}
+                        </span>
+                      </div>
                     </div>
 
-                    <div className="space-y-1">
-                      <p className="text-xs font-medium text-white/80">
-                        {t.game} • Tối đa {t.players} người
+                    <div className="mt-4 space-y-1">
+                      <p className="text-xs font-bold text-white/90 uppercase tracking-wide">
+                        {t.game}
                       </p>
-                      <p className="line-clamp-2 text-xs text-white/60">
-                        {t.description ||
-                          "Giải đấu eSports cho câu lạc bộ / lớp."}
+                      <p className="text-xs font-medium text-white/70">
+                        Tối đa {t.maxTeams} đội
                       </p>
                     </div>
                   </div>
                 </Link>
               );
             })}
-            {data?.length === 0 && (
-              <p className="col-span-full text-sm text-slate-400">
-                Chưa có giải nào. Hãy là người đầu tiên tạo giải ở trang Admin.
-              </p>
-            )}
           </div>
+        )}
+
+        {!isLoading && !error && data?.length === 0 && (
+          <p className="text-sm text-slate-400">
+            Chưa có giải nào. Hãy là người đầu tiên tạo giải ở trang Admin.
+          </p>
         )}
       </section>
     </div>
@@ -173,7 +117,7 @@ export default function Home() {
 function labelForStatus(status) {
   switch (status) {
     case "open":
-      return "Nhập";
+      return "Đăng ký";
     case "ongoing":
       return "Đang diễn ra";
     case "finished":
@@ -206,9 +150,13 @@ function getGameImage(game) {
   const map = {
     CS2: cs2Banner,
     VALORANT: valorantBanner,
+    Valorant: valorantBanner,
     "Arena of Valor": aovBanner,
+    "Liên Quân": aovBanner,
     "Wild Rift": wildRiftBanner,
+    "Tốc Chiến": wildRiftBanner,
     "League of Legends": lolBanner,
+    "Liên Minh Huyền Thoại": lolBanner,
     "FC Online": "https://placehold.co/600x400?text=FC+Online",
   };
   return map[game] || "https://placehold.co/600x400?text=Esports";
@@ -219,15 +167,19 @@ function getGameTheme(game) {
     CS2: { from: "from-slate-900", to: "to-blue-900" },
     "CS:GO": { from: "from-slate-900", to: "to-blue-900" },
     VALORANT: { from: "from-orange-600", to: "to-red-600" },
+    Valorant: { from: "from-orange-600", to: "to-red-600" },
     "League of Legends": { from: "from-yellow-700", to: "to-yellow-900" },
+    "Liên Minh Huyền Thoại": { from: "from-yellow-700", to: "to-yellow-900" },
     "Dota 2": { from: "from-red-900", to: "to-slate-900" },
     PUBG: { from: "from-amber-500", to: "to-yellow-600" },
     "Mobile Legends": { from: "from-blue-600", to: "to-indigo-700" },
     "Arena of Valor": { from: "from-teal-600", to: "to-cyan-700" },
+    "Liên Quân": { from: "from-teal-600", to: "to-cyan-700" },
     "Free Fire": { from: "from-orange-500", to: "to-amber-600" },
     TFT: { from: "from-sky-600", to: "to-blue-700" },
     "FC Online": { from: "from-emerald-600", to: "to-green-700" },
     "Wild Rift": { from: "from-purple-700", to: "to-indigo-900" },
+    "Tốc Chiến": { from: "from-purple-700", to: "to-indigo-900" },
   };
   return themes[game] || { from: "from-slate-800", to: "to-slate-900" };
 }

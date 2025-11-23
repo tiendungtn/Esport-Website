@@ -1,0 +1,42 @@
+[
+  {
+    "game": "Liên Minh Huyền Thoại",
+    "teams": [
+      { "name": "GAM Esports", "tag": "GAM" },
+      { "name": "Team Whales", "tag": "TW" },
+      { "name": "Vikings Esports", "tag": "VKE" }
+    ]
+  },
+  {
+    "game": "Tốc Chiến",
+    "teams": [
+      { "name": "Cerberus Esports", "tag": "CES" },
+      { "name": "Team Flash", "tag": "FL" },
+      { "name": "Royale Esports", "tag": "RYL" }
+    ]
+  },
+  {
+    "game": "Liên Quân",
+    "teams": [
+      { "name": "Saigon Phantom", "tag": "SGP" },
+      { "name": "V Gaming", "tag": "VGM" },
+      { "name": "One Star Esports", "tag": "1S" }
+    ]
+  },
+  {
+    "game": "Valorant",
+    "teams": [
+      { "name": "Fancy United", "tag": "FCY" },
+      { "name": "Rapid Lofi", "tag": "RLF" },
+      { "name": "Lazybutwannawin", "tag": "LBW" }
+    ]
+  },
+  {
+    "game": "CS2",
+    "teams": [
+      { "name": "The MongolZ", "tag": "MGZ" },
+      { "name": "Rare Atom", "tag": "RA" },
+      { "name": "Tyloo", "tag": "TYL" }
+    ]
+  }
+]

@@ -1,0 +1,21 @@
+[
+  { "tournamentIndex": 0, "teamName": "GAM Esports", "status": "approved", "seed": 1 },
+  { "tournamentIndex": 0, "teamName": "Team Whales", "status": "approved", "seed": 2 },
+  { "tournamentIndex": 0, "teamName": "Vikings Esports", "status": "pending", "seed": null },
+  
+  { "tournamentIndex": 1, "teamName": "Cerberus Esports", "status": "approved", "seed": 1 },
+  { "tournamentIndex": 1, "teamName": "Team Flash", "status": "approved", "seed": 2 },
+  { "tournamentIndex": 1, "teamName": "Royale Esports", "status": "rejected", "seed": null },
+
+  { "tournamentIndex": 2, "teamName": "Saigon Phantom", "status": "approved", "seed": 1 },
+  { "tournamentIndex": 2, "teamName": "V Gaming", "status": "approved", "seed": 2 },
+  { "tournamentIndex": 2, "teamName": "One Star Esports", "status": "pending", "seed": null },
+
+  { "tournamentIndex": 3, "teamName": "Fancy United", "status": "approved", "seed": 1 },
+  { "tournamentIndex": 3, "teamName": "Rapid Lofi", "status": "approved", "seed": 2 },
+  { "tournamentIndex": 3, "teamName": "Lazybutwannawin", "status": "pending", "seed": null },
+
+  { "tournamentIndex": 4, "teamName": "The MongolZ", "status": "approved", "seed": 1 },
+  { "tournamentIndex": 4, "teamName": "Rare Atom", "status": "approved", "seed": 2 },
+  { "tournamentIndex": 4, "teamName": "Tyloo", "status": "pending", "seed": null }
+]
