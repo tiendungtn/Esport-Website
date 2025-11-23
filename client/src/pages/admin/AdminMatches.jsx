@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../../lib/api";
-import { Edit, CheckCircle } from "lucide-react";
+import {
+  Edit,
+  CheckCircle,
+  Upload,
+  Link as LinkIcon,
+  X,
+  Plus,
+} from "lucide-react";
 
 export default function AdminMatches() {
   const [selectedTournament, setSelectedTournament] = useState("");
@@ -131,6 +138,9 @@ function MatchModal({ isOpen, onClose, match }) {
     scoreA: match?.scoreA || 0,
     scoreB: match?.scoreB || 0,
   });
+  const [proofUrls, setProofUrls] = useState(match?.proofUrls || []);
+  const [newLink, setNewLink] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
 
   const updateMutation = useMutation({
     mutationFn: async (data) =>
@@ -150,16 +160,48 @@ function MatchModal({ isOpen, onClose, match }) {
     },
   });
 
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    setIsUploading(true);
+    try {
+      const res = await api.post("/api/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setProofUrls([...proofUrls, res.data.url]);
+    } catch (error) {
+      console.error("Upload failed:", error);
+      alert("Upload failed");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleAddLink = () => {
+    if (newLink) {
+      setProofUrls([...proofUrls, newLink]);
+      setNewLink("");
+    }
+  };
+
+  const removeProof = (index) => {
+    setProofUrls(proofUrls.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateMutation.mutate(form);
+    updateMutation.mutate({ ...form, proofUrls });
   };
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div className="w-full max-w-md rounded-xl border border-slate-800 bg-slate-950 p-6 shadow-xl">
+      <div className="w-full max-w-md rounded-xl border border-slate-800 bg-slate-950 p-6 shadow-xl max-h-[90vh] overflow-y-auto">
         <h3 className="mb-4 text-lg font-semibold text-slate-100">
           Cập nhật tỉ số
         </h3>
@@ -191,6 +233,70 @@ function MatchModal({ isOpen, onClose, match }) {
               className="w-20 rounded-md border border-slate-800 bg-slate-900 p-2 text-center text-xl font-bold text-slate-100 focus:border-sky-500 focus:outline-none"
             />
           </div>
+        </div>
+
+        <div className="mb-6">
+          <label className="mb-2 block text-sm font-medium text-slate-300">
+            Minh chứng (Ảnh/Link)
+          </label>
+
+          <div className="mb-3 flex gap-2">
+            <label className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed border-slate-700 bg-slate-900/50 py-2 text-sm text-slate-400 hover:border-sky-500 hover:text-sky-500">
+              <Upload size={16} />
+              {isUploading ? "Đang tải..." : "Tải ảnh lên"}
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleFileUpload}
+                disabled={isUploading}
+              />
+            </label>
+          </div>
+
+          <div className="mb-3 flex gap-2">
+            <input
+              type="text"
+              placeholder="Hoặc dán link ảnh..."
+              value={newLink}
+              onChange={(e) => setNewLink(e.target.value)}
+              className="flex-1 rounded-md border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-sky-500 focus:outline-none"
+            />
+            <button
+              type="button"
+              onClick={handleAddLink}
+              className="rounded-md bg-slate-800 p-2 text-slate-400 hover:bg-slate-700 hover:text-sky-400"
+            >
+              <Plus size={20} />
+            </button>
+          </div>
+
+          {proofUrls.length > 0 && (
+            <div className="space-y-2">
+              {proofUrls.map((url, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between rounded-md border border-slate-800 bg-slate-900 p-2"
+                >
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm text-sky-400 hover:underline truncate max-w-[200px]"
+                  >
+                    <LinkIcon size={14} />
+                    {url.split("/").pop()}
+                  </a>
+                  <button
+                    onClick={() => removeProof(index)}
+                    className="text-slate-500 hover:text-red-500"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col gap-3">

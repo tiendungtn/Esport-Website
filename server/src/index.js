@@ -13,6 +13,12 @@ import teamRoutes from "./routes/teams.routes.js";
 import tournamentRoutes from "./routes/tournaments.routes.js";
 import matchRoutes from "./routes/matches.routes.js";
 import usersRoutes from "./routes/users.routes.js";
+import uploadRoutes from "./routes/upload.routes.js";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -27,6 +33,7 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -44,6 +51,7 @@ app.use("/api/tournaments", tournamentRoutes);
 app.use("/api/teams", teamRoutes);
 app.use("/api/matches", matchRoutes); // matchRoutes định nghĩa /tournaments/:id/matches & /matches/:id/*
 app.use("/api/users", usersRoutes);
+app.use("/api/upload", uploadRoutes);
 
 // --- error handler ---
 app.use((err, req, res, next) => {
