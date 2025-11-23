@@ -13,11 +13,24 @@ import Admin from "./pages/Admin.jsx";
 import Login from "./pages/Login.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import LoginModal from "./pages/LoginModal.jsx";
+import Profile from "./pages/Profile.jsx";
 import humgLogo from "./img/icon-humg.png";
 
 function ShellLayout() {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+
+  React.useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    setIsAuthenticated(!!token);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    window.location.reload();
+  };
 
   const openLoginModal = () => {
     navigate("/login", {
@@ -48,13 +61,31 @@ function ShellLayout() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={openLoginModal}
-              className="rounded-full border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-100 hover:border-sky-500 hover:text-sky-300"
-            >
-              Sign in
-            </button>
+            {isAuthenticated ? (
+              <>
+                <Link
+                  to="/profile"
+                  className="text-xs font-medium text-slate-300 hover:text-sky-300"
+                >
+                  Profile
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="rounded-full border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-100 hover:border-red-500 hover:text-red-300"
+                >
+                  Sign out
+                </button>
+              </>
+            ) : (
+              <button
+                type="button"
+                onClick={openLoginModal}
+                className="rounded-full border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-100 hover:border-sky-500 hover:text-sky-300"
+              >
+                Sign in
+              </button>
+            )}
           </div>
         </div>
       </header>
@@ -83,6 +114,7 @@ export default function App() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
 
