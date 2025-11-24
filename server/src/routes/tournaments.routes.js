@@ -10,11 +10,13 @@ import {
   updateTournament,
   deleteTournament,
 } from "../controllers/tournaments.controller.js";
+import { listMatches } from "../controllers/matches.controller.js";
 
 const r = Router();
 
 r.get("/", listTournaments);
 r.get("/:id", getTournament);
+r.get("/:id/matches", listMatches);
 r.post("/", auth(["organizer", "admin"]), createTournament);
 r.put("/:id", auth(["organizer", "admin"]), updateTournament);
 r.delete("/:id", auth(["organizer", "admin"]), deleteTournament);

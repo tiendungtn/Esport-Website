@@ -64,6 +64,7 @@ const server = http.createServer(app);
 export const io = new Server(server, {
   cors: {
     origin: process.env.CLIENT_URL?.split(",") || "http://localhost:5173",
+    credentials: true,
   },
 });
 
