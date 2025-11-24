@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import { useTranslation } from "react-i18next";
-import { translateGameName } from "../lib/gameTranslations";
+import {
+  translateGameName,
+  translateTournamentName,
+} from "../lib/gameTranslations";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -81,7 +84,7 @@ export default function Home() {
                     <div className="space-y-3">
                       <div className="flex items-start justify-between gap-2">
                         <h3 className="line-clamp-2 text-xl font-bold text-white drop-shadow-md leading-tight">
-                          {tournament.name}
+                          {translateTournamentName(tournament.name)}
                         </h3>
                         <span
                           className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white/90 shadow-sm backdrop-blur-md ${badgeClassForStatus(

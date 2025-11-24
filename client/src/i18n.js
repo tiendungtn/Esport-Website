@@ -130,6 +130,26 @@ const resources = {
       EnterDisplayName: "Enter your display name",
       EnterAvatarURL: "https://example.com/avatar.jpg",
       EnterPhoneNumber: "Enter your phone number",
+
+      // Login / Register
+      SignInTitle: "Sign in",
+      CreateAccount: "Create account",
+      ForgotPasswordTitle: "Forgot password",
+      DisplayNamePlaceholder: "Display name for tournaments",
+      EmailPlaceholder: "you@example.com",
+      PasswordPlaceholder: "••••••••",
+      ForgotPasswordQuestion: "Forgot password?",
+      LoggingIn: "Logging in...",
+      CreatingAccount: "Creating account...",
+      Sending: "Sending...",
+      SendResetLink: "Send reset link (demo)",
+      BackToLogin: "Back to Login",
+      LoginSuccess: "Login successful!",
+      RegisterSuccess: "Account created & logged in successfully!",
+      ForgotDemoMessage:
+        "Demo: simulate sending password reset email (backend not implemented).",
+      GenericError: "An error occurred. Please try again.",
+      PasswordLabel: "Password",
     },
   },
   vi: {
@@ -260,6 +280,26 @@ const resources = {
       EnterDisplayName: "Nhập tên hiển thị của bạn",
       EnterAvatarURL: "https://example.com/avatar.jpg",
       EnterPhoneNumber: "Nhập số điện thoại của bạn",
+
+      // Login / Register
+      SignInTitle: "Đăng nhập",
+      CreateAccount: "Tạo tài khoản",
+      ForgotPasswordTitle: "Quên mật khẩu",
+      DisplayNamePlaceholder: "Tên hiển thị trong giải",
+      EmailPlaceholder: "you@example.com",
+      PasswordPlaceholder: "••••••••",
+      ForgotPasswordQuestion: "Quên mật khẩu?",
+      LoggingIn: "Đang đăng nhập...",
+      CreatingAccount: "Đang tạo tài khoản...",
+      Sending: "Đang gửi...",
+      SendResetLink: "Gửi link khôi phục (demo)",
+      BackToLogin: "Quay lại đăng nhập",
+      LoginSuccess: "Đăng nhập thành công!",
+      RegisterSuccess: "Tạo tài khoản & đăng nhập thành công!",
+      ForgotDemoMessage:
+        "Demo: giả lập gửi email đặt lại mật khẩu (không triển khai backend).",
+      GenericError: "Đã có lỗi xảy ra. Vui lòng kiểm tra lại.",
+      PasswordLabel: "Mật khẩu",
     },
   },
 };

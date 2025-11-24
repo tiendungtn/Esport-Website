@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import Modal from "../components/Model.jsx";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
+import { useTranslation } from "react-i18next";
 
 function Field({ label, type = "text", value, onChange, placeholder }) {
   return (
@@ -20,6 +21,7 @@ function Field({ label, type = "text", value, onChange, placeholder }) {
 }
 
 export default function LoginModal({ open = false, onClose }) {
+  const { t } = useTranslation();
   const { login } = useAuth();
   const [mode, setMode] = React.useState("login"); // 'login' | 'register' | 'forgot'
   const [email, setEmail] = React.useState("");
@@ -46,7 +48,7 @@ export default function LoginModal({ open = false, onClose }) {
         // Use context login instead of direct localStorage
         login(res.data.accessToken, res.data.user);
 
-        setInfo("Đăng nhập thành công!");
+        setInfo(t("LoginSuccess"));
         setTimeout(() => {
           onClose?.();
           // No need to reload, context will update state
@@ -59,20 +61,15 @@ export default function LoginModal({ open = false, onClose }) {
         });
         login(res.data.accessToken, res.data.user);
 
-        setInfo("Tạo tài khoản & đăng nhập thành công!");
+        setInfo(t("RegisterSuccess"));
         setTimeout(() => {
           onClose?.();
         }, 400);
       } else if (mode === "forgot") {
-        setInfo(
-          "Demo: giả lập gửi email đặt lại mật khẩu (không triển khai backend)."
-        );
+        setInfo(t("ForgotDemoMessage"));
       }
     } catch (err) {
-      setError(
-        err?.response?.data?.message ||
-          "Đã có lỗi xảy ra. Vui lòng kiểm tra lại."
-      );
+      setError(err?.response?.data?.message || t("GenericError"));
     } finally {
       setLoading(false);
     }
@@ -82,9 +79,9 @@ export default function LoginModal({ open = false, onClose }) {
     <Modal open={open} onClose={onClose}>
       <div className="flex items-center justify-between border-b border-slate-800 px-5 py-3">
         <div className="text-sm font-semibold text-slate-100">
-          {mode === "login" && "Sign in"}
-          {mode === "register" && "Create account"}
-          {mode === "forgot" && "Forgot password"}
+          {mode === "login" && t("SignInTitle")}
+          {mode === "register" && t("CreateAccount")}
+          {mode === "forgot" && t("ForgotPasswordTitle")}
         </div>
         <button
           type="button"
@@ -108,7 +105,7 @@ export default function LoginModal({ open = false, onClose }) {
                   : "text-slate-300"
               }`}
             >
-              Sign in
+              {t("SignInTitle")}
             </button>
             <button
               type="button"
@@ -119,7 +116,7 @@ export default function LoginModal({ open = false, onClose }) {
                   : "text-slate-300"
               }`}
             >
-              Create account
+              {t("CreateAccount")}
             </button>
           </div>
         )}
@@ -127,26 +124,26 @@ export default function LoginModal({ open = false, onClose }) {
         <form onSubmit={handleSubmit} className="space-y-4">
           {mode === "register" && (
             <Field
-              label="Display name"
+              label={t("DisplayName")}
               value={displayName}
               onChange={setDisplayName}
-              placeholder="Tên hiển thị trong giải"
+              placeholder={t("DisplayNamePlaceholder")}
             />
           )}
           <Field
-            label="Email"
+            label={t("Email")}
             type="email"
             value={email}
             onChange={setEmail}
-            placeholder="you@example.com"
+            placeholder={t("EmailPlaceholder")}
           />
           {(mode === "login" || mode === "register") && (
             <Field
-              label="Password"
+              label={t("PasswordLabel")}
               type="password"
               value={password}
               onChange={setPassword}
-              placeholder="••••••••"
+              placeholder={t("PasswordPlaceholder")}
             />
           )}
 
@@ -157,7 +154,7 @@ export default function LoginModal({ open = false, onClose }) {
                 className="text-sky-400 hover:text-sky-300"
                 onClick={() => switchMode("forgot")}
               >
-                Forgot password?
+                {t("ForgotPasswordQuestion")}
               </button>
             </div>
           )}
@@ -170,11 +167,10 @@ export default function LoginModal({ open = false, onClose }) {
             disabled={loading}
             className="mt-2 w-full rounded-md bg-sky-500 py-2 text-sm font-medium text-slate-950 hover:bg-sky-400 disabled:opacity-60"
           >
-            {mode === "login" && (loading ? "Đang đăng nhập..." : "Sign in")}
+            {mode === "login" && (loading ? t("LoggingIn") : t("SignInTitle"))}
             {mode === "register" &&
-              (loading ? "Đang tạo tài khoản..." : "Create account")}
-            {mode === "forgot" &&
-              (loading ? "Đang gửi..." : "Send reset link (demo)")}
+              (loading ? t("CreatingAccount") : t("CreateAccount"))}
+            {mode === "forgot" && (loading ? t("Sending") : t("SendResetLink"))}
           </button>
         </form>
 
@@ -185,7 +181,7 @@ export default function LoginModal({ open = false, onClose }) {
               className="text-sky-400 underline hover:text-sky-300"
               onClick={() => switchMode("login")}
             >
-              ← Back to Login
+              ← {t("BackToLogin")}
             </button>
           </div>
         )}
