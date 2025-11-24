@@ -42,27 +42,29 @@ export default function Admin() {
     tabs.find((t) => t.id === activeTab)?.component || AdminTournaments;
 
   return (
-    <div className="flex min-h-[calc(100vh-100px)] gap-6">
+    <div className="flex flex-col gap-6 md:flex-row md:min-h-[calc(100vh-100px)]">
       {/* Sidebar */}
-      <div className="w-64 shrink-0 space-y-1">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
-              activeTab === tab.id
-                ? "bg-sky-500/10 text-sky-500"
-                : "text-slate-400 hover:bg-slate-900 hover:text-slate-200"
-            }`}
-          >
-            <tab.icon size={18} />
-            {tab.label}
-          </button>
-        ))}
+      <div className="w-full shrink-0 space-y-1 md:w-64">
+        <div className="flex overflow-x-auto pb-2 md:block md:pb-0">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex shrink-0 items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors whitespace-nowrap ${
+                activeTab === tab.id
+                  ? "bg-sky-500/10 text-sky-500"
+                  : "text-slate-400 hover:bg-slate-900 hover:text-slate-200"
+              }`}
+            >
+              <tab.icon size={18} />
+              {tab.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 rounded-xl border border-slate-800 bg-slate-950/50 p-6">
+      <div className="flex-1 rounded-xl border border-slate-800 bg-slate-950/50 p-4 md:p-6">
         <ActiveComponent />
       </div>
     </div>

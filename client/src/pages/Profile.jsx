@@ -74,8 +74,8 @@ export default function Profile() {
       </h1>
 
       <div className="bg-slate-900 rounded-lg p-6 border border-slate-800">
-        <div className="mb-6 flex items-center gap-4">
-          <div className="h-20 w-20 rounded-full bg-slate-800 flex items-center justify-center overflow-hidden border-2 border-slate-700">
+        <div className="mb-6 flex flex-col items-center gap-4 sm:flex-row">
+          <div className="h-20 w-20 rounded-full bg-slate-800 flex items-center justify-center overflow-hidden border-2 border-slate-700 shrink-0">
             {profile.avatar ? (
               <img
                 src={profile.avatar}
@@ -90,7 +90,7 @@ export default function Profile() {
               </span>
             )}
           </div>
-          <div>
+          <div className="text-center sm:text-left">
             <h2 className="text-xl font-semibold text-slate-100">
               {profile.displayName || t("User")}
             </h2>

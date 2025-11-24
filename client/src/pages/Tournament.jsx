@@ -61,7 +61,7 @@ export default function Tournament() {
   return (
     <div className="space-y-6">
       <section className="rounded-xl border border-slate-800 bg-slate-900/60 p-4 md:p-6">
-        <div className="flex items-start justify-between">
+        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div>
             <p className="text-xs uppercase tracking-[0.18em] text-sky-400">
               {tournament.game}
@@ -76,7 +76,7 @@ export default function Tournament() {
           {tournament.status === "open" && (
             <button
               onClick={() => setShowRegisterModal(true)}
-              className="rounded-xl bg-sky-500 px-6 py-3 font-semibold text-white shadow-lg shadow-sky-500/20 transition-all hover:bg-sky-400 hover:shadow-sky-500/40"
+              className="w-full rounded-xl bg-sky-500 px-6 py-3 font-semibold text-white shadow-lg shadow-sky-500/20 transition-all hover:bg-sky-400 hover:shadow-sky-500/40 md:w-auto"
             >
               {t("RegisterToJoin")}
             </button>
