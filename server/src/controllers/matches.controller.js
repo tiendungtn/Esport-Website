@@ -38,6 +38,16 @@ export async function reportMatch(req, res) {
     scoreB: m.scoreB,
   });
 
+  // Also emit to the tournament room so the bracket updates
+  console.log(
+    `Emitting score:update for match ${id} to tournament:${m.tournamentId}`
+  );
+  io.to(`tournament:${m.tournamentId}`).emit("score:update", {
+    matchId: id,
+    scoreA: m.scoreA,
+    scoreB: m.scoreB,
+  });
+
   res.json(m);
 }
 
@@ -57,6 +67,16 @@ export async function updateMatch(req, res) {
   if (!m) return res.status(404).json({ message: "Match not found" });
 
   io.to(`match:${id}`).emit("score:update", {
+    matchId: id,
+    scoreA: m.scoreA,
+    scoreB: m.scoreB,
+  });
+
+  // Also emit to the tournament room so the bracket updates
+  console.log(
+    `Emitting score:update for match ${id} to tournament:${m.tournamentId}`
+  );
+  io.to(`tournament:${m.tournamentId}`).emit("score:update", {
     matchId: id,
     scoreA: m.scoreA,
     scoreB: m.scoreB,

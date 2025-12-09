@@ -69,7 +69,11 @@ export const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  socket.on("join", (room) => socket.join(room));
+  console.log(`Socket connected: ${socket.id}`);
+  socket.on("join", (room) => {
+    console.log(`Socket ${socket.id} joining room: ${room}`);
+    socket.join(room);
+  });
 });
 
 const PORT = process.env.PORT || 4000;
