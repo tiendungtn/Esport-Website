@@ -137,7 +137,7 @@ export async function registerTeam(req, res) {
     const reg = await Registration.create({
       tournamentId: id,
       teamId: parse.data.teamId,
-      status: "approved", // Tự động duyệt
+      status: "pending", // Chờ duyệt status: "pending"
     });
     res.status(201).json(reg);
   } catch (err) {
@@ -167,25 +167,124 @@ export async function seedTournament(req, res) {
   res.json(regs);
 }
 
-export async function generateBracket(req, res) {
-  const { id } = req.params;
+/* Helper function for bracket generation */
+async function generateBracketInternal(tournamentId) {
+  // Check if matches already exist
+  const existingMatches = await Match.countDocuments({ tournamentId });
+  if (existingMatches > 0) {
+    return { skipped: true, reason: "Bracket already exists" };
+  }
+
   const regs = await Registration.find({
-    tournamentId: id,
+    tournamentId: tournamentId,
     status: "approved",
   }).lean();
 
   const seeds = seedingByRegistration(regs);
   if (seeds.length < 2) {
-    return res.status(400).json({ message: "Not enough teams" });
+    return { skipped: true, reason: "Not enough teams to generate bracket" };
   }
 
-  // Sử dụng thuật toán tạo bracket đầy đủ mới (đã bao gồm ID và Linking)
+  // Use the bracket generation algorithm
   const { generateFullSEBracket } = await import("../utils/bracket.js");
-  const matchesData = generateFullSEBracket(seeds, id);
+  const matchesData = generateFullSEBracket(seeds, tournamentId);
 
-  // Lưu vào DB
-  // Lưu ý: teamA/teamB có thể null cho các vòng sau (được phép theo schema)
+  // Save to DB
   const created = await Match.insertMany(matchesData);
 
-  res.status(201).json({ matches: created });
+  // Optionally update tournament status
+  await Tournament.findByIdAndUpdate(tournamentId, { status: "ongoing" });
+
+  return { skipped: false, matches: created };
+}
+
+export async function generateBracket(req, res) {
+  const { id } = req.params;
+
+  // Check pending
+  const pendingCount = await Registration.countDocuments({
+    tournamentId: id,
+    status: "pending",
+  });
+
+  if (pendingCount > 0) {
+    return res.status(400).json({
+      message: "Cannot generate bracket while there are pending registrations.",
+    });
+  }
+
+  try {
+    const result = await generateBracketInternal(id);
+    if (result.skipped) {
+      return res.status(400).json({ message: result.reason });
+    }
+    res.status(201).json({ matches: result.matches });
+  } catch (error) {
+    console.error("Bracket generation error:", error);
+    res.status(500).json({ message: "Failed to generate bracket" });
+  }
+}
+
+export async function getTournamentRegistrations(req, res) {
+  const { id } = req.params;
+
+  if (req.user.role !== "admin") {
+    const tournament = await Tournament.findById(id);
+    if (!tournament)
+      return res.status(404).json({ message: "Tournament not found" });
+    if (tournament.organizerUser?.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+  }
+
+  const registrations = await Registration.find({ tournamentId: id })
+    .populate("teamId") // Để lấy thông tin team (name, logo, members...)
+    .sort({ createdAt: -1 });
+
+  res.json(registrations);
+}
+
+export async function updateRegistrationStatus(req, res) {
+  const { id, regId } = req.params;
+  const { status } = req.body; // 'approved' | 'rejected' | 'pending'
+
+  if (!["approved", "rejected", "pending"].includes(status)) {
+    return res.status(400).json({ message: "Invalid status" });
+  }
+
+  if (req.user.role !== "admin") {
+    const tournament = await Tournament.findById(id);
+    if (!tournament)
+      return res.status(404).json({ message: "Tournament not found" });
+    if (tournament.organizerUser?.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+  }
+
+  const reg = await Registration.findOneAndUpdate(
+    { _id: regId, tournamentId: id },
+    { status },
+    { new: true }
+  );
+
+  if (!reg) return res.status(404).json({ message: "Registration not found" });
+
+  // Auto-generate bracket if all registrations are processed
+  try {
+    const pendingCount = await Registration.countDocuments({
+      tournamentId: id,
+      status: "pending",
+    });
+
+    if (pendingCount === 0) {
+      console.log(
+        `All registrations processed for tournament ${id}. Attempting to generate bracket...`
+      );
+      await generateBracketInternal(id);
+    }
+  } catch (err) {
+    console.error("Auto bracket generation failed:", err);
+  }
+
+  res.json(reg);
 }

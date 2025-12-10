@@ -9,6 +9,8 @@ import {
   generateBracket,
   updateTournament,
   deleteTournament,
+  getTournamentRegistrations,
+  updateRegistrationStatus,
 } from "../controllers/tournaments.controller.js";
 import { listMatches } from "../controllers/matches.controller.js";
 
@@ -27,5 +29,16 @@ r.post(
 );
 r.post("/:id/seed", auth(["organizer", "admin"]), seedTournament);
 r.post("/:id/generate-bracket", auth(["organizer", "admin"]), generateBracket);
+
+r.get(
+  "/:id/registrations",
+  auth(["organizer", "admin"]),
+  getTournamentRegistrations
+);
+r.put(
+  "/:id/registrations/:regId",
+  auth(["organizer", "admin"]),
+  updateRegistrationStatus
+);
 
 export default r;

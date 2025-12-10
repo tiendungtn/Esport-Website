@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../../lib/api";
-import { Plus, Edit, Trash2 } from "lucide-react";
+import { Plus, Edit, Trash2, ClipboardCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { translateGameName } from "../../lib/gameTranslations";
+import AdminRegistrations from "./AdminRegistrations";
 import "../../styles/pages/admin-tournaments.css";
 
 export default function AdminTournaments() {
@@ -11,6 +12,8 @@ export default function AdminTournaments() {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTournament, setEditingTournament] = useState(null);
+  const [isRegistrationsOpen, setIsRegistrationsOpen] = useState(false);
+  const [selectedTournamentId, setSelectedTournamentId] = useState(null);
 
   const { data: tournaments, isLoading } = useQuery({
     queryKey: ["tournaments"],
@@ -38,6 +41,11 @@ export default function AdminTournaments() {
   const handleCreate = () => {
     setEditingTournament(null);
     setIsModalOpen(true);
+  };
+
+  const handleViewRegistrations = (id) => {
+    setSelectedTournamentId(id);
+    setIsRegistrationsOpen(true);
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -85,6 +93,13 @@ export default function AdminTournaments() {
                 <td className="at-td-right">
                   <div className="at-actions">
                     <button
+                      onClick={() => handleViewRegistrations(tournament._id)}
+                      className="p-1.5 rounded-md bg-indigo-500/20 text-indigo-400 hover:bg-indigo-500/30 transition-colors"
+                      title="Duyệt Đơn"
+                    >
+                      <ClipboardCheck size={16} />
+                    </button>
+                    <button
                       onClick={() => handleEdit(tournament)}
                       className="at-action-btn-edit"
                     >
@@ -109,6 +124,13 @@ export default function AdminTournaments() {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           tournament={editingTournament}
+        />
+      )}
+
+      {isRegistrationsOpen && selectedTournamentId && (
+        <AdminRegistrations
+          tournamentId={selectedTournamentId}
+          onClose={() => setIsRegistrationsOpen(false)}
         />
       )}
     </div>
