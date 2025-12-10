@@ -142,38 +142,12 @@ export async function generateBracket(req, res) {
     return res.status(400).json({ message: "Not enough teams" });
   }
 
-  // Sử dụng thuật toán tạo bracket đầy đủ mới
+  // Sử dụng thuật toán tạo bracket đầy đủ mới (đã bao gồm ID và Linking)
   const { generateFullSEBracket } = await import("../utils/bracket.js");
   const matchesData = generateFullSEBracket(seeds, id);
 
-  // Gán ID trước để liên kết
-  // Chúng ta cần map các tham chiếu object tới ID
-
-  // 1. Tạo ID cho tất cả trận đấu
-  const mongoose = await import("mongoose");
-  matchesData.forEach((m) => {
-    m._id = new mongoose.default.Types.ObjectId();
-  });
-
-  // 2. Link IDs
-  matchesData.forEach((m) => {
-    if (m.nextMatchRef) {
-      if (m.nextMatchSlot === "A") {
-        m.nextMatchIdA = m.nextMatchRef._id;
-      } else {
-        m.nextMatchIdB = m.nextMatchRef._id;
-      }
-      // Xóa các thuộc tính tạm
-      delete m.nextMatchRef;
-      delete m.nextMatchSlot;
-    }
-    // Xóa các thuộc tính tạm
-    delete m.matchIndex;
-  });
-
-  // 3. Lưu vào DB
+  // Lưu vào DB
   // Lưu ý: teamA/teamB có thể null cho các vòng sau (được phép theo schema)
-
   const created = await Match.insertMany(matchesData);
 
   res.status(201).json({ matches: created });

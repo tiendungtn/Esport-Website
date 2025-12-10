@@ -41,27 +41,7 @@ try {
     const seeds = seedingByRegistration(regs);
     const matchesData = generateFullSEBracket(seeds, tour._id);
 
-    // Gán ID trước để liên kết
-    const mongoose = await import("mongoose");
-    matchesData.forEach((m) => {
-      // Dùng _id có sẵn nếu có hoặc tạo mới
-      // script seed tạo object thuần
-      m._id = new mongoose.default.Types.ObjectId();
-    });
-
-    // Liên kết ID
-    matchesData.forEach((m) => {
-      if (m.nextMatchRef) {
-        if (m.nextMatchSlot === "A") {
-          m.nextMatchIdA = m.nextMatchRef._id;
-        } else {
-          m.nextMatchIdB = m.nextMatchRef._id;
-        }
-        delete m.nextMatchRef;
-        delete m.nextMatchSlot;
-      }
-      delete m.matchIndex;
-    });
+    // Dữ liệu đã được liên kết và có ID từ utils/bracket.js
 
     if (matchesData.length > 0) {
       await Match.insertMany(matchesData);

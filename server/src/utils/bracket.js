@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 /** Tiện ích tạo nhánh đấu */
 
 export function padToPowerOfTwo(list) {
@@ -24,7 +26,7 @@ export function generateSERoundPairs(teamIds) {
  * Tạo cấu trúc nhánh đấu loại trực tiếp (Single Elimination) đầy đủ.
  * @param {string[]} teamIds - Mảng ID đội (sẽ được làm đầy).
  * @param {string} tournamentId - ID giải đấu.
- * @returns {object[]} Mảng đối tượng trận đấu (chưa lưu).
+ * @returns {object[]} Mảng đối tượng trận đấu (đã có ID và liên kết, sẵn sàng save).
  */
 export function generateFullSEBracket(teamIds, tournamentId) {
   const padded = padToPowerOfTwo(teamIds);
@@ -32,80 +34,103 @@ export function generateFullSEBracket(teamIds, tournamentId) {
   const totalRounds = Math.log2(n);
 
   // 1. Tạo cấu trúc các vòng đấu
-  // rounds[r] là mảng các trận đấu của vòng r (index từ 1)
   const rounds = {};
+
+  // Tạo trận đấu và ID trước
   for (let r = 1; r <= totalRounds; r++) {
     rounds[r] = [];
     const matchCount = n / Math.pow(2, r);
     for (let i = 0; i < matchCount; i++) {
       rounds[r].push({
+        _id: new mongoose.Types.ObjectId(), // Tạo ID ngay lập tức
         tournamentId,
         round: r,
-        bestOf: r === 1 ? 3 : 5,
-        matchIndex: i, // internal index to help linking
-        // Có thể tạo trước ID ở đây hoặc để caller/mongoose làm
-        // Để liên kết, dùng tham chiếu đối tượng trong bộ nhớ đơn giản hơn
-        // nhưng cần ID để tham chiếu DB.
-        // Giả sử sẽ tạo ID trước khi lưu hoặc dùng tham chiếu tạm.
-        // Tốt nhất là tạo ID giả hoặc logic index dự kiến.
+        bestOf: r === 1 ? 3 : 5, // Round 1 BO3, others BO5
+        matchIndex: i, // dùng để truy xuất
+        // Init fields
+        teamA: null,
+        teamB: null,
+        scoreA: 0,
+        scoreB: 0,
+        state: "scheduled",
       });
     }
   }
 
-  // 2. Liên kết các vòng
-  // Trận ở vòng r dẫn đến vòng r+1
+  // 2. Liên kết các vòng (nextMatchId)
   for (let r = 1; r < totalRounds; r++) {
     const currentRound = rounds[r];
     const nextRound = rounds[r + 1];
 
     for (let i = 0; i < currentRound.length; i++) {
       const currentMatch = currentRound[i];
-      // Parent in next round is index floor(i/2)
       const parentIndex = Math.floor(i / 2);
       const parentMatch = nextRound[parentIndex];
 
-      // Xác định trận này dẫn vào slot Team A hay Team B của trận cha
-      // Index chẵn (0, 2, 4...) -> Team A (slot A)
-      // Index lẻ (1, 3, 5...) -> Team B (slot B)
-      // Kiểm tra:
-      // Vòng 1: Trận 0,1 vào Trận 0 (Vòng 2). 0->A, 1->B. Đúng.
+      // Index chẵn -> Slot A, Lẻ -> Slot B
       if (i % 2 === 0) {
-        currentMatch.nextMatchSlot = "A"; // hỗ trợ logic
-        // Chưa có ID nên chưa set được.
-        // Gán tham chiếu đối tượng trước.
+        currentMatch.nextMatchIdA = parentMatch._id;
+        // Giữ tham chiếu để dễ xử lý logic Bye bên dưới
         currentMatch.nextMatchRef = parentMatch;
+        currentMatch.nextMatchSlot = "A";
       } else {
-        currentMatch.nextMatchSlot = "B";
+        currentMatch.nextMatchIdB = parentMatch._id;
         currentMatch.nextMatchRef = parentMatch;
+        currentMatch.nextMatchSlot = "B";
       }
     }
   }
 
-  // 3. Gán hạt giống cho Vòng 1
-  // Dùng logic ghép cặp đơn giản của generateSERoundPairs: (0,15), (1,14)...
-  // Logic này (0 vs 15) và (1 vs 14) -> Vòng sau gặp nhau (0 vs 1).
-  // Hạt giống 1 và 2 gặp nhau ở Vòng 2 là không tốt cho xếp hạng chuẩn.
-  // Nhưng xếp hạng chuẩn phức tạp. Hiện tại giữ logic ghép cặp hiện có
-  // vì định nghĩa lại thuật toán xếp hạt giống nằm ngoài phạm vi/rủi ro.
-  // Chỉ cần đảm bảo nhánh đấu diễn ra.
-  // Map các cặp từ generateSERoundPairs vào các trận Vòng 1 (0..k)
-
-  const round1Pairs = generateSERoundPairs(padded); // Mảng của [p1, p2]
-  // Phân phối các cặp này vào trận đấu Vòng 1.
-  // Giả sử trận Vòng 1 [0, 1, 2...] tương ứng với cặp [0, 1, 2...].
+  // 3. Gán team cho Vòng 1 và Xử lý Bye
+  const round1Pairs = generateSERoundPairs(padded);
 
   round1Pairs.forEach((pair, idx) => {
     const match = rounds[1][idx];
     if (match) {
-      match.teamA = pair[0];
-      match.teamB = pair[1];
+      match.teamA = pair[0]; // Có thể là ID hoặc null
+      match.teamB = pair[1]; // Có thể là ID hoặc null
+
+      // Xử lý Bye ngay tại đây
+      // Bye xảy ra khi 1 trong 2 team là null
+      const hasTeamA = !!match.teamA;
+      const hasTeamB = !!match.teamB;
+
+      if (hasTeamA && !hasTeamB) {
+        // A thắng
+        match.state = "final"; // Đánh dấu hoàn thành
+        match.scoreA = 2; // Giả định thắng tuyệt đối
+        match.scoreB = 0;
+        // Advance A
+        if (match.nextMatchRef) {
+          if (match.nextMatchSlot === "A")
+            match.nextMatchRef.teamA = match.teamA;
+          else match.nextMatchRef.teamB = match.teamA;
+        }
+      } else if (!hasTeamA && hasTeamB) {
+        // B thắng
+        match.state = "final";
+        match.scoreA = 0;
+        match.scoreB = 2;
+        // Advance B
+        if (match.nextMatchRef) {
+          if (match.nextMatchSlot === "A")
+            match.nextMatchRef.teamA = match.teamB;
+          else match.nextMatchRef.teamB = match.teamB;
+        }
+      }
     }
   });
 
-  // Làm phẳng cấu trúc
+  // 4. Cleanup và Flatten
   const allMatches = [];
   Object.values(rounds).forEach((roundMatches) => {
-    allMatches.push(...roundMatches);
+    roundMatches.forEach((m) => {
+      // Xóa các trường tạm dùng cho logic in-memory
+      delete m.nextMatchRef;
+      delete m.nextMatchSlot;
+      delete m.matchIndex;
+      allMatches.push(m);
+    });
   });
 
   return allMatches;
