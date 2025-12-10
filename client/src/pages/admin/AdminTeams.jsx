@@ -372,7 +372,7 @@ function MembersModal({ isOpen, onClose, team }) {
           {searchResult.length > 0 && (
             <div className="atem-results">
               <p className="atem-results-title">{t("SearchResults")}</p>
-              <div className="space-y-1">
+              <div className="space-y-1 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                 {searchResult.map((u) => (
                   <div key={u._id} className="atem-result-item">
                     <div className="atem-result-user">

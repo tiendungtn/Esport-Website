@@ -249,8 +249,6 @@ export default function AdminPlayers() {
                   className="apm-select"
                 >
                   <option value="player">Player</option>
-                  <option value="organizer">Organizer</option>
-                  <option value="admin">Admin</option>
                 </select>
               </div>
               <div>

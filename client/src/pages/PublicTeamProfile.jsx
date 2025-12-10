@@ -207,7 +207,7 @@ export default function PublicTeamProfile() {
                 </div>
               )}
 
-              <div className="space-y-2">
+              <div className="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                 {searchResults.map((u) => (
                   <div key={u._id} className="ptp-result-item">
                     <div className="flex flex-col">

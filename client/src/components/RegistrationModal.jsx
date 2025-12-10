@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import AlertModal from "./AlertModal";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../lib/api";
 import "../styles/components/registration-modal.css";
@@ -8,11 +9,25 @@ export default function RegistrationModal({ tournamentId, onClose }) {
   const queryClient = useQueryClient();
   const [selectedTeam, setSelectedTeam] = useState("");
   const [error, setError] = useState(null);
+  const [alertState, setAlertState] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    type: "info",
+    onClose: null, // Optional callback after alert closes
+  });
 
   const { data: myTeams, isLoading } = useQuery({
     queryKey: ["my-teams"],
     queryFn: async () => (await api.get("/api/teams/mine")).data,
   });
+
+  const closeAlert = () => {
+    setAlertState((prev) => ({ ...prev, isOpen: false }));
+    if (alertState.onClose) {
+      alertState.onClose();
+    }
+  };
 
   const registerMutation = useMutation({
     mutationFn: async (teamId) => {
@@ -24,11 +39,24 @@ export default function RegistrationModal({ tournamentId, onClose }) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["tournament", tournamentId]);
-      onClose();
-      alert("Đăng ký thành công!");
+      setAlertState({
+        isOpen: true,
+        title: "Thành công",
+        message: "Đăng ký thành công!",
+        type: "success",
+        onClose: () => onClose(), // Close the modal after alert confirms
+      });
     },
     onError: (err) => {
-      setError(err.response?.data?.message || "Đăng ký thất bại");
+      const errorMessage = err.response?.data?.message || "Đăng ký thất bại";
+      // setError(errorMessage); // We can just use the AlertModal for the error now, or both.
+      // Let's use AlertModal for better consistency as requested.
+      setAlertState({
+        isOpen: true,
+        title: "Lỗi đăng ký",
+        message: errorMessage,
+        type: "error",
+      });
     },
   });
 
@@ -40,13 +68,18 @@ export default function RegistrationModal({ tournamentId, onClose }) {
 
   return (
     <div className="rm-overlay">
+      <AlertModal
+        isOpen={alertState.isOpen}
+        onClose={closeAlert}
+        title={alertState.title}
+        message={alertState.message}
+        type={alertState.type}
+      />
       <div className="rm-content">
         <h2 className="rm-title">Đăng ký tham gia</h2>
         <p className="rm-description">
           Chọn đội tuyển của bạn để tham gia giải đấu này.
         </p>
-
-        {error && <div className="rm-error">{error}</div>}
 
         <form onSubmit={handleSubmit} className="rm-form">
           <div>
