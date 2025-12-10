@@ -8,6 +8,37 @@ const teamSchema = z.object({
   logoUrl: z.string().url().optional(),
 });
 
+import mongoose from "mongoose";
+
+// Helper to resolve potentially truncated IDs
+async function resolveTeamId(id, userId) {
+  if (mongoose.isValidObjectId(id)) return id;
+
+  // If ID is malformed (e.g. truncated or has trailing characters), try fuzzy match
+  // Sanitize: remove non-hex characters
+  const cleanId = String(id).replace(/[^a-fA-F0-9]/g, "");
+
+  // Only attempt recovery if we have a reasonable amount of data (e.g. at least 6 chars)
+  if (cleanId.length < 6) return id; // Too short to be safe
+
+  console.warn(
+    `[TeamResolve] Attempting to resolve malformed ID: "${id}" -> prefix "${cleanId}" for user ${userId}`
+  );
+
+  // Find all teams owned by this user
+  const teams = await Team.find({ ownerUser: userId }).select("_id");
+
+  // Look for a prefix match
+  const match = teams.find((t) => t._id.toString().startsWith(cleanId));
+
+  if (match) {
+    console.log(`[TeamResolve] Resolved "${id}" -> "${match._id}"`);
+    return match._id;
+  }
+
+  return id; // Return original if no match found
+}
+
 export async function createTeam(req, res) {
   const parse = teamSchema.safeParse(req.body);
   if (!parse.success)
@@ -40,7 +71,20 @@ export async function listTeams(req, res) {
 }
 
 export async function getTeam(req, res) {
-  const team = await Team.findById(req.params.id)
+  // getTeam is public, so we might not have req.user.id to narrow down search safely.
+  // However, standard get usually relies on valid ID. If generic public access uses malformed ID, it's 404.
+  // But if we want to fix it everywhere...
+  // For now, let's assume the issue is mainly in Admin (Owner) operations.
+
+  let id = req.params.id;
+  // Try simple sanitization for public get
+  if (!mongoose.isValidObjectId(id)) {
+    // If it looks like a truncated ID (hex only), we can't safely guess without owner context unless we search ALL teams, which is risky for collisions.
+    // But stripping trailing dot is always safe.
+    if (id.endsWith(".")) id = id.slice(0, -1);
+  }
+
+  const team = await Team.findById(id)
     .populate("members", "profile email")
     .populate("ownerUser", "profile email");
   if (!team) return res.status(404).json({ message: "Team not found" });
@@ -52,8 +96,10 @@ export async function updateTeam(req, res) {
   if (!parse.success)
     return res.status(400).json({ message: "Invalid payload" });
 
+  const id = await resolveTeamId(req.params.id, req.user.id);
+
   const team = await Team.findOneAndUpdate(
-    { _id: req.params.id, ownerUser: req.user.id },
+    { _id: id, ownerUser: req.user.id },
     parse.data,
     { new: true }
   );
@@ -63,8 +109,9 @@ export async function updateTeam(req, res) {
 }
 
 export async function deleteTeam(req, res) {
+  const id = await resolveTeamId(req.params.id, req.user.id);
   const team = await Team.findOneAndDelete({
-    _id: req.params.id,
+    _id: id,
     ownerUser: req.user.id,
   });
   if (!team)
@@ -76,8 +123,9 @@ export async function addMember(req, res) {
   const { userId } = req.body;
   if (!userId) return res.status(400).json({ message: "User ID required" });
 
+  const id = await resolveTeamId(req.params.id, req.user.id);
   const team = await Team.findOne({
-    _id: req.params.id,
+    _id: id,
     ownerUser: req.user.id,
   });
   if (!team)
@@ -93,8 +141,9 @@ export async function addMember(req, res) {
 
 export async function removeMember(req, res) {
   const { userId } = req.body;
+  const id = await resolveTeamId(req.params.id, req.user.id);
   const team = await Team.findOne({
-    _id: req.params.id,
+    _id: id,
     ownerUser: req.user.id,
   });
   if (!team)

@@ -32,7 +32,9 @@ export default function AdminTeams() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id) => (await api.delete(`/api/teams/${id}`)).data,
+    mutationFn: async (id) => {
+      return (await api.delete(`/api/teams/${id}`)).data;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["teams"] });
     },
@@ -285,13 +287,17 @@ function MembersModal({ isOpen, onClose, team }) {
   // Fetch latest team data to get members
   const { data: teamData } = useQuery({
     queryKey: ["team", team?._id],
-    queryFn: async () => (await api.get(`/api/teams/${team._id}`)).data,
+    queryFn: async () => {
+      return (await api.get(`/api/teams/${team._id}`)).data;
+    },
     enabled: !!team,
   });
 
   const addMemberMutation = useMutation({
-    mutationFn: async (userId) =>
-      (await api.post(`/api/teams/${team._id}/members`, { userId })).data,
+    mutationFn: async (userId) => {
+      return (await api.post(`/api/teams/${team._id}/members`, { userId }))
+        .data;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["team", team._id] });
       queryClient.invalidateQueries({ queryKey: ["teams"] });
@@ -302,9 +308,13 @@ function MembersModal({ isOpen, onClose, team }) {
   });
 
   const removeMemberMutation = useMutation({
-    mutationFn: async (userId) =>
-      (await api.delete(`/api/teams/${team._id}/members`, { data: { userId } }))
-        .data,
+    mutationFn: async (userId) => {
+      return (
+        await api.delete(`/api/teams/${team._id}/members`, {
+          data: { userId },
+        })
+      ).data;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["team", team._id] });
       queryClient.invalidateQueries({ queryKey: ["teams"] });
