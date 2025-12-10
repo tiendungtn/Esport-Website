@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { api } from "../lib/api";
 import { useTranslation } from "react-i18next";
+import "../styles/pages/profile.css";
 
 export default function Profile() {
   const { t } = useTranslation();
@@ -60,110 +61,91 @@ export default function Profile() {
   };
 
   if (loading) {
-    return (
-      <div className="text-center py-10 text-slate-400">
-        {t("LoadingProfile")}
-      </div>
-    );
+    return <div className="profile-loading">{t("LoadingProfile")}</div>;
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6 text-slate-100">
-        {t("ProfileManagement")}
-      </h1>
+    <div className="profile-container">
+      <h1 className="profile-title">{t("ProfileManagement")}</h1>
 
-      <div className="bg-slate-900 rounded-lg p-6 border border-slate-800">
-        <div className="mb-6 flex flex-col items-center gap-4 sm:flex-row">
-          <div className="h-20 w-20 rounded-full bg-slate-800 flex items-center justify-center overflow-hidden border-2 border-slate-700 shrink-0">
+      <div className="profile-card">
+        <div className="profile-header">
+          <div className="profile-avatar-container">
             {profile.avatar ? (
               <img
                 src={profile.avatar}
                 alt="Avatar"
-                className="h-full w-full object-cover"
+                className="profile-avatar-img"
               />
             ) : (
-              <span className="text-3xl text-slate-500 uppercase">
+              <span className="profile-avatar-placeholder">
                 {profile.displayName
                   ? profile.displayName.charAt(0)
                   : profile.email.charAt(0)}
               </span>
             )}
           </div>
-          <div className="text-center sm:text-left">
-            <h2 className="text-xl font-semibold text-slate-100">
-              {profile.displayName || t("User")}
-            </h2>
-            <p className="text-sm text-slate-400">{profile.email}</p>
-            <span className="inline-block mt-1 px-2 py-0.5 rounded text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700 capitalize">
-              {profile.role}
-            </span>
+          <div className="profile-info">
+            <h2 className="profile-name">{profile.displayName || t("User")}</h2>
+            <p className="profile-email">{profile.email}</p>
+            <span className="profile-role-badge">{profile.role}</span>
           </div>
         </div>
 
         {message.text && (
           <div
-            className={`mb-6 p-3 rounded text-sm ${
+            className={`profile-message ${
               message.type === "success"
-                ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                : "bg-red-500/10 text-red-400 border border-red-500/20"
+                ? "profile-message-success"
+                : "profile-message-error"
             }`}
           >
             {message.text}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="profile-form">
           <div>
-            <label className="block text-sm font-medium text-slate-400 mb-1">
-              {t("DisplayName")}
-            </label>
+            <label className="profile-label">{t("DisplayName")}</label>
             <input
               type="text"
               value={profile.displayName}
               onChange={(e) =>
                 setProfile({ ...profile, displayName: e.target.value })
               }
-              className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-slate-100 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+              className="profile-input"
               placeholder={t("EnterDisplayName")}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-400 mb-1">
-              {t("AvatarURL")}
-            </label>
+            <label className="profile-label">{t("AvatarURL")}</label>
             <input
               type="text"
               value={profile.avatar}
               onChange={(e) =>
                 setProfile({ ...profile, avatar: e.target.value })
               }
-              className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-slate-100 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+              className="profile-input"
               placeholder={t("EnterAvatarURL")}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-400 mb-1">
-              {t("PhoneNumber")}
-            </label>
+            <label className="profile-label">{t("PhoneNumber")}</label>
             <input
               type="tel"
               value={profile.phone}
               onChange={(e) =>
                 setProfile({ ...profile, phone: e.target.value })
               }
-              className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-slate-100 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+              className="profile-input"
               placeholder={t("EnterPhoneNumber")}
             />
           </div>
 
-          <div className="pt-4">
-            <button
-              type="submit"
-              className="w-full bg-sky-600 hover:bg-sky-500 text-white font-medium py-2 px-4 rounded transition-colors"
-            >
+          <div className="profile-submit-container">
+            <button type="submit" className="profile-submit-btn">
               {t("SaveChanges")}
             </button>
           </div>

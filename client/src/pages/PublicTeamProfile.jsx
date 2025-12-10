@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import "../styles/pages/public-team-profile.css";
 
 export default function PublicTeamProfile() {
   const { id } = useParams();
@@ -23,63 +24,46 @@ export default function PublicTeamProfile() {
     fetchTeam();
   }, [id]);
 
-  if (loading)
-    return <div className="p-8 text-center text-slate-400">Loading...</div>;
-  if (error) return <div className="p-8 text-center text-red-400">{error}</div>;
-  if (!team)
-    return <div className="p-8 text-center text-slate-400">Team not found</div>;
+  if (loading) return <div className="ptp-loading">Loading...</div>;
+  if (error) return <div className="ptp-error">{error}</div>;
+  if (!team) return <div className="ptp-loading">Team not found</div>;
 
   return (
-    <div className="mx-auto max-w-3xl">
-      <div className="mb-8 flex items-center gap-6 rounded-xl border border-slate-800 bg-slate-900/50 p-6 backdrop-blur-sm">
+    <div className="ptp-container">
+      <div className="ptp-header">
         {team.logoUrl ? (
-          <img
-            src={team.logoUrl}
-            alt={team.name}
-            className="h-24 w-24 rounded-lg object-cover shadow-lg"
-          />
+          <img src={team.logoUrl} alt={team.name} className="ptp-logo" />
         ) : (
-          <div className="flex h-24 w-24 items-center justify-center rounded-lg bg-slate-800 text-3xl font-bold text-slate-600">
+          <div className="ptp-logo-placeholder">
             {(team.name || "?").charAt(0).toUpperCase()}
           </div>
         )}
         <div>
-          <h1 className="text-3xl font-bold text-slate-100">{team.name}</h1>
-          {team.tag && (
-            <span className="mt-2 inline-block rounded bg-slate-800 px-2 py-0.5 text-sm font-medium text-slate-400">
-              {team.tag}
-            </span>
-          )}
-          {team.game && (
-            <div className="mt-2 text-sm text-sky-400 font-medium">
-              {team.game}
-            </div>
-          )}
+          <h1 className="ptp-name">{team.name}</h1>
+          {team.tag && <span className="ptp-tag">{team.tag}</span>}
+          {team.game && <div className="ptp-game">{team.game}</div>}
         </div>
       </div>
 
-      <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6 backdrop-blur-sm">
-        <h2 className="mb-4 text-xl font-semibold text-slate-200">Roster</h2>
-        <div className="grid gap-4 sm:grid-cols-2">
+      <div className="ptp-roster-section">
+        <h2 className="ptp-roster-title">Roster</h2>
+        <div className="ptp-roster-grid">
           {team.members && team.members.length > 0 ? (
             team.members.map((member) => (
-              <div
-                key={member._id}
-                className="flex items-center gap-3 rounded-lg border border-slate-700/50 bg-slate-800/50 p-3"
-              >
-                <div className="h-10 w-10 overflow-hidden rounded-full bg-slate-700">
+              <div key={member._id} className="ptp-member-card">
+                <div className="ptp-member-avatar-container">
                   {/* Placeholder avatar if no profile image */}
-                  <div className="flex h-full w-full items-center justify-center text-slate-400 font-bold">
+                  <div className="ptp-member-avatar-placeholder">
                     {member.profile?.name
                       ? member.profile.name.charAt(0).toUpperCase()
                       : "?"}
                   </div>
                 </div>
                 <div>
-                  <div className="font-medium text-slate-200">
+                  <div className="ptp-member-name">
                     {member.profile?.name || "Unknown"}
                   </div>
-                  <div className="text-xs text-slate-400">{member.email}</div>
+                  <div className="ptp-member-email">{member.email}</div>
                 </div>
               </div>
             ))

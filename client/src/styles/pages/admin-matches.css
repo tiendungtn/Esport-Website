@@ -1,0 +1,187 @@
+.am-container {
+    @apply space-y-6;
+}
+
+.am-header {
+    @apply flex items-center justify-between;
+}
+
+.am-title {
+    @apply text-xl font-semibold text-slate-100;
+}
+
+.am-select {
+    @apply rounded-md border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-sky-500 focus:outline-none;
+}
+
+.am-table-container {
+    @apply rounded-lg border border-slate-800 bg-slate-900/50 overflow-hidden;
+}
+
+.am-table {
+    @apply w-full text-left text-sm text-slate-400;
+}
+
+.am-thead {
+    @apply bg-slate-900 text-slate-200 uppercase;
+}
+
+.am-th {
+    @apply px-6 py-3;
+}
+
+.am-th-center {
+    @apply px-6 py-3 text-center;
+}
+
+.am-th-right {
+    @apply px-6 py-3 text-right;
+}
+
+.am-tbody {
+    @apply divide-y divide-slate-800;
+}
+
+.am-tr {
+    @apply hover:bg-slate-800/50;
+}
+
+.am-td {
+    @apply px-6 py-4;
+}
+
+.am-td-center {
+    @apply px-6 py-4 text-center font-bold text-slate-100;
+}
+
+.am-td-team {
+    @apply px-6 py-4 font-medium text-slate-100;
+}
+
+.am-td-right {
+    @apply px-6 py-4 text-right;
+}
+
+.am-status-badge {
+    @apply inline-flex rounded-full px-2 py-1 text-xs font-semibold;
+}
+
+.am-status-final {
+    @apply bg-green-500/10 text-green-500;
+}
+
+.am-status-live {
+    @apply bg-red-500/10 text-red-500;
+}
+
+.am-status-pending {
+    @apply bg-slate-500/10 text-slate-500;
+}
+
+.am-actions {
+    @apply flex items-center justify-end gap-2;
+}
+
+.am-action-btn {
+    @apply p-2 text-slate-400 hover:text-sky-400;
+}
+
+.am-empty-state {
+    @apply rounded-lg border border-slate-800 bg-slate-900/50 p-8 text-center text-slate-500;
+}
+
+.am-table-empty {
+    @apply px-6 py-8 text-center text-slate-500;
+}
+
+.amm-overlay {
+    @apply fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4;
+}
+
+.amm-content {
+    @apply w-full max-w-md rounded-xl border border-slate-800 bg-slate-950 p-6 shadow-xl max-h-[90vh] overflow-y-auto;
+}
+
+.amm-title {
+    @apply mb-4 text-lg font-semibold text-slate-100;
+}
+
+.amm-scores {
+    @apply mb-6 flex items-center justify-between gap-4;
+}
+
+.amm-score-box {
+    @apply text-center;
+}
+
+.amm-team-name {
+    @apply mb-2 text-sm font-medium text-slate-300;
+}
+
+.amm-score-input {
+    @apply w-20 rounded-md border border-slate-800 bg-slate-900 p-2 text-center text-xl font-bold text-slate-100 focus:border-sky-500 focus:outline-none;
+}
+
+.amm-score-divider {
+    @apply text-slate-500;
+}
+
+.amm-proof-section {
+    @apply mb-6;
+}
+
+.amm-label {
+    @apply mb-2 block text-sm font-medium text-slate-300;
+}
+
+.amm-upload-box {
+    @apply mb-3 flex gap-2;
+}
+
+.amm-upload-label {
+    @apply flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed border-slate-700 bg-slate-900/50 py-2 text-sm text-slate-400 hover:border-sky-500 hover:text-sky-500;
+}
+
+.amm-link-box {
+    @apply mb-3 flex gap-2;
+}
+
+.amm-link-input {
+    @apply flex-1 rounded-md border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-sky-500 focus:outline-none;
+}
+
+.amm-btn-add {
+    @apply rounded-md bg-slate-800 p-2 text-slate-400 hover:bg-slate-700 hover:text-sky-400;
+}
+
+.amm-proof-list {
+    @apply space-y-2;
+}
+
+.amm-proof-item {
+    @apply flex items-center justify-between rounded-md border border-slate-800 bg-slate-900 p-2;
+}
+
+.amm-proof-link {
+    @apply flex items-center gap-2 text-sm text-sky-400 hover:underline truncate max-w-[200px];
+}
+
+.amm-btn-remove {
+    @apply text-slate-500 hover:text-red-500;
+}
+
+.amm-footer {
+    @apply flex flex-col gap-3;
+}
+
+.amm-btn-update {
+    @apply w-full rounded-md bg-sky-500 py-2 text-sm font-medium text-slate-950 hover:bg-sky-400 disabled:opacity-50;
+}
+
+.amm-btn-confirm {
+    @apply flex w-full items-center justify-center gap-2 rounded-md border border-green-500/20 bg-green-500/10 py-2 text-sm font-medium text-green-500 hover:bg-green-500/20;
+}
+
+.amm-btn-close {
+    @apply w-full rounded-md border border-slate-800 py-2 text-sm font-medium text-slate-400 hover:bg-slate-900;
+}

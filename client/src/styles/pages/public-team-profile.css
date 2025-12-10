@@ -1,0 +1,67 @@
+.ptp-container {
+    @apply mx-auto max-w-3xl;
+}
+
+.ptp-loading {
+    @apply p-8 text-center text-slate-400;
+}
+
+.ptp-error {
+    @apply p-8 text-center text-red-400;
+}
+
+.ptp-header {
+    @apply mb-8 flex items-center gap-6 rounded-xl border border-slate-800 bg-slate-900/50 p-6 backdrop-blur-sm;
+}
+
+.ptp-logo {
+    @apply h-24 w-24 rounded-lg object-cover shadow-lg;
+}
+
+.ptp-logo-placeholder {
+    @apply flex h-24 w-24 items-center justify-center rounded-lg bg-slate-800 text-3xl font-bold text-slate-600;
+}
+
+.ptp-name {
+    @apply text-3xl font-bold text-slate-100;
+}
+
+.ptp-tag {
+    @apply mt-2 inline-block rounded bg-slate-800 px-2 py-0.5 text-sm font-medium text-slate-400;
+}
+
+.ptp-game {
+    @apply mt-2 text-sm text-sky-400 font-medium;
+}
+
+.ptp-roster-section {
+    @apply rounded-xl border border-slate-800 bg-slate-900/50 p-6 backdrop-blur-sm;
+}
+
+.ptp-roster-title {
+    @apply mb-4 text-xl font-semibold text-slate-200;
+}
+
+.ptp-roster-grid {
+    @apply grid gap-4 sm:grid-cols-2;
+}
+
+.ptp-member-card {
+    @apply flex items-center gap-3 rounded-lg border border-slate-700/50 bg-slate-800/50 p-3;
+}
+
+.ptp-member-avatar-container {
+    @apply h-10 w-10 overflow-hidden rounded-full bg-slate-700;
+}
+
+.ptp-member-avatar-placeholder {
+    @apply flex h-full w-full items-center justify-center text-slate-400 font-bold;
+}
+
+.ptp-member-name {
+    @apply font-medium text-slate-200;
+}
+
+.ptp-member-email {
+    @apply text-xs text-slate-400;
+}

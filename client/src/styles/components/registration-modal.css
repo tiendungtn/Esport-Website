@@ -1,0 +1,95 @@
+.rm-overlay {
+    @apply fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm;
+}
+
+.rm-content {
+    @apply w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-xl;
+}
+
+.rm-title {
+    @apply text-xl font-semibold text-white;
+}
+
+.rm-description {
+    @apply mt-1 text-sm text-slate-400;
+}
+
+.rm-error {
+    @apply mt-4 rounded-lg bg-red-500/10 p-3 text-sm text-red-400;
+}
+
+.rm-form {
+    @apply mt-6 space-y-4;
+}
+
+.rm-label {
+    @apply mb-2 block text-sm font-medium text-slate-300;
+}
+
+.rm-loading {
+    @apply h-10 w-full animate-pulse rounded-xl bg-slate-800;
+}
+
+.rm-team-list {
+    @apply space-y-2;
+}
+
+.rm-team-label {
+    @apply flex cursor-pointer items-center gap-3 rounded-xl border p-3 transition-all;
+}
+
+.rm-team-label-selected {
+    @apply border-sky-500 bg-sky-500/10;
+}
+
+.rm-team-label-default {
+    @apply border-slate-800 bg-slate-800/50 hover:border-slate-700;
+}
+
+.rm-team-logo-container {
+    @apply h-8 w-8 rounded-lg bg-slate-700 overflow-hidden;
+}
+
+.rm-team-logo {
+    @apply h-full w-full object-cover;
+}
+
+.rm-team-initial {
+    @apply h-full w-full flex items-center justify-center text-xs font-bold;
+}
+
+.rm-team-info {
+    @apply flex-1;
+}
+
+.rm-team-name {
+    @apply font-medium text-white;
+}
+
+.rm-team-meta {
+    @apply text-xs text-slate-400;
+}
+
+.rm-check-icon {
+    @apply text-sky-400;
+}
+
+.rm-empty-state {
+    @apply rounded-xl border border-dashed border-slate-700 p-4 text-center text-sm text-slate-400;
+}
+
+.rm-create-link {
+    @apply text-sky-400 hover:underline;
+}
+
+.rm-footer {
+    @apply mt-6 flex gap-3;
+}
+
+.rm-btn-cancel {
+    @apply flex-1 rounded-xl border border-slate-700 bg-transparent py-2.5 text-sm font-semibold text-slate-300 hover:bg-slate-800;
+}
+
+.rm-btn-submit {
+    @apply flex-1 rounded-xl bg-sky-500 py-2.5 text-sm font-semibold text-white hover:bg-sky-400 disabled:opacity-50 disabled:cursor-not-allowed;
+}

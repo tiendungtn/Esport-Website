@@ -7,6 +7,7 @@ import AdminTournaments from "./admin/AdminTournaments";
 import AdminTeams from "./admin/AdminTeams";
 import AdminPlayers from "./admin/AdminPlayers";
 import AdminMatches from "./admin/AdminMatches";
+import "../styles/pages/admin.css";
 
 export default function Admin() {
   const { t } = useTranslation();
@@ -42,18 +43,18 @@ export default function Admin() {
     tabs.find((t) => t.id === activeTab)?.component || AdminTournaments;
 
   return (
-    <div className="flex flex-col gap-6 md:flex-row md:min-h-[calc(100vh-100px)]">
+    <div className="admin-container">
       {/* Sidebar */}
-      <div className="w-full shrink-0 space-y-1 md:w-64">
-        <div className="flex overflow-x-auto pb-2 md:block md:pb-0">
+      <div className="admin-sidebar">
+        <div className="admin-sidebar-nav">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex shrink-0 items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors whitespace-nowrap ${
+              className={`admin-nav-item ${
                 activeTab === tab.id
-                  ? "bg-sky-500/10 text-sky-500"
-                  : "text-slate-400 hover:bg-slate-900 hover:text-slate-200"
+                  ? "admin-nav-item-active"
+                  : "admin-nav-item-inactive"
               }`}
             >
               <tab.icon size={18} />
@@ -64,7 +65,7 @@ export default function Admin() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 rounded-xl border border-slate-800 bg-slate-950/50 p-4 md:p-6">
+      <div className="admin-content">
         <ActiveComponent />
       </div>
     </div>

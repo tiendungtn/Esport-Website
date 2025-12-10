@@ -4,6 +4,7 @@ import { api } from "../../lib/api";
 import { Plus, Edit, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { translateGameName } from "../../lib/gameTranslations";
+import "../../styles/pages/admin-tournaments.css";
 
 export default function AdminTournaments() {
   const { t } = useTranslation();
@@ -42,65 +43,56 @@ export default function AdminTournaments() {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-slate-100">
-          {t("ManageTournaments")}
-        </h2>
-        <button
-          onClick={handleCreate}
-          className="flex items-center gap-2 rounded-md bg-sky-500 px-4 py-2 text-sm font-medium text-slate-950 hover:bg-sky-400"
-        >
+    <div className="at-container">
+      <div className="at-header">
+        <h2 className="at-title">{t("ManageTournaments")}</h2>
+        <button onClick={handleCreate} className="at-create-btn">
           <Plus size={16} />
           {t("CreateTournamentBtn")}
         </button>
       </div>
 
-      <div className="rounded-lg border border-slate-800 bg-slate-900/50 overflow-hidden">
-        <table className="w-full text-left text-sm text-slate-400">
-          <thead className="bg-slate-900 text-slate-200 uppercase">
+      <div className="at-table-container">
+        <table className="at-table">
+          <thead className="at-thead">
             <tr>
-              <th className="px-6 py-3">{t("TableName")}</th>
-              <th className="px-6 py-3">{t("TableGame")}</th>
-              <th className="px-6 py-3">{t("TableTeams")}</th>
-              <th className="px-6 py-3">{t("TableStatus")}</th>
-              <th className="px-6 py-3 text-right">{t("TableActions")}</th>
+              <th className="at-th">{t("TableName")}</th>
+              <th className="at-th">{t("TableGame")}</th>
+              <th className="at-th">{t("TableTeams")}</th>
+              <th className="at-th">{t("TableStatus")}</th>
+              <th className="at-th-right">{t("TableActions")}</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800">
+          <tbody className="at-tbody">
             {tournaments?.map((tournament) => (
-              <tr key={tournament._id} className="hover:bg-slate-800/50">
-                <td className="px-6 py-4 font-medium text-slate-100">
-                  {tournament.name}
-                </td>
-                <td className="px-6 py-4">
-                  {translateGameName(tournament.game)}
-                </td>
-                <td className="px-6 py-4">{tournament.maxTeams}</td>
-                <td className="px-6 py-4">
+              <tr key={tournament._id} className="at-tr">
+                <td className="at-td-name">{tournament.name}</td>
+                <td className="at-td">{translateGameName(tournament.game)}</td>
+                <td className="at-td">{tournament.maxTeams}</td>
+                <td className="at-td">
                   <span
-                    className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${
+                    className={`at-status-badge ${
                       tournament.status === "open"
-                        ? "bg-green-500/10 text-green-500"
+                        ? "at-status-open"
                         : tournament.status === "ongoing"
-                        ? "bg-blue-500/10 text-blue-500"
-                        : "bg-slate-500/10 text-slate-500"
+                        ? "at-status-ongoing"
+                        : "at-status-finished"
                     }`}
                   >
                     {tournament.status}
                   </span>
                 </td>
-                <td className="px-6 py-4 text-right">
-                  <div className="flex items-center justify-end gap-2">
+                <td className="at-td-right">
+                  <div className="at-actions">
                     <button
                       onClick={() => handleEdit(tournament)}
-                      className="p-2 text-slate-400 hover:text-sky-400"
+                      className="at-action-btn-edit"
                     >
                       <Edit size={16} />
                     </button>
                     <button
                       onClick={() => handleDelete(tournament._id)}
-                      className="p-2 text-slate-400 hover:text-red-400"
+                      className="at-action-btn-delete"
                     >
                       <Trash2 size={16} />
                     </button>
@@ -156,72 +148,60 @@ function TournamentModal({ isOpen, onClose, tournament }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div className="w-full max-w-lg rounded-xl border border-slate-800 bg-slate-950 p-6 shadow-xl">
-        <h3 className="mb-4 text-lg font-semibold text-slate-100">
+    <div className="atm-overlay">
+      <div className="atm-content">
+        <h3 className="atm-title">
           {tournament ? t("EditTournament") : t("CreateNewTournament")}
         </h3>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="atm-form">
           <div>
-            <label className="mb-1 block text-sm text-slate-400">
-              {t("FormName")}
-            </label>
+            <label className="atm-label">{t("FormName")}</label>
             <input
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="w-full rounded-md border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-sky-500 focus:outline-none"
+              className="atm-input"
               required
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm text-slate-400">
-              {t("FormGame")}
-            </label>
+            <label className="atm-label">{t("FormGame")}</label>
             <input
               value={form.game}
               onChange={(e) => setForm({ ...form, game: e.target.value })}
-              className="w-full rounded-md border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-sky-500 focus:outline-none"
+              className="atm-input"
               required
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm text-slate-400">
-              {t("FormMaxTeams")}
-            </label>
+            <label className="atm-label">{t("FormMaxTeams")}</label>
             <input
               type="number"
               value={form.maxTeams}
               onChange={(e) =>
                 setForm({ ...form, maxTeams: Number(e.target.value) })
               }
-              className="w-full rounded-md border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-sky-500 focus:outline-none"
+              className="atm-input"
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm text-slate-400">
-              {t("FormDescription")}
-            </label>
+            <label className="atm-label">{t("FormDescription")}</label>
             <textarea
               value={form.description}
               onChange={(e) =>
                 setForm({ ...form, description: e.target.value })
               }
-              className="w-full rounded-md border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-sky-500 focus:outline-none"
+              className="atm-textarea"
               rows={3}
             />
           </div>
-          <div className="flex justify-end gap-3 pt-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-md px-4 py-2 text-sm font-medium text-slate-400 hover:text-slate-200"
-            >
+          <div className="atm-footer">
+            <button type="button" onClick={onClose} className="atm-btn-cancel">
               {t("Cancel")}
             </button>
             <button
               type="submit"
               disabled={mutation.isPending}
-              className="rounded-md bg-sky-500 px-4 py-2 text-sm font-medium text-slate-950 hover:bg-sky-400 disabled:opacity-50"
+              className="atm-btn-save"
             >
               {mutation.isPending ? t("Saving") : t("Save")}
             </button>

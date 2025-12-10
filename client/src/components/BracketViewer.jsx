@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import "../styles/components/bracket-viewer.css";
 
 /** Simple Single-Elimination Bracket Viewer */
 export default function BracketViewer({ matches = [] }) {
@@ -19,19 +20,14 @@ export default function BracketViewer({ matches = [] }) {
   const roundNumbers = Array.from(roundsMap.keys()).sort((a, b) => a - b);
 
   return (
-    <div className="overflow-x-auto">
-      <div className="flex gap-6 py-4">
+    <div className="bv-container">
+      <div className="bv-rounds-container">
         {roundNumbers.map((rNum, idx) => (
-          <div key={rNum} className="min-w-[260px]">
-            <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
-              Round {idx + 1}
-            </div>
-            <div className="space-y-3">
+          <div key={rNum} className="bv-round-column">
+            <div className="bv-round-header">Round {idx + 1}</div>
+            <div className="bv-match-list">
               {roundsMap.get(rNum).map((m) => (
-                <div
-                  key={m._id}
-                  className="rounded-lg border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm"
-                >
+                <div key={m._id} className="bv-match-card">
                   <MatchRow
                     name={m.teamA?.name}
                     score={m.scoreA}
@@ -44,9 +40,7 @@ export default function BracketViewer({ matches = [] }) {
                     isWinner={m.scoreB > m.scoreA}
                     teamId={m.teamB?._id}
                   />
-                  <div className="mt-1 text-[11px] uppercase tracking-wide text-slate-500">
-                    {m.state}
-                  </div>
+                  <div className="bv-match-state">{m.state}</div>
                 </div>
               ))}
             </div>
@@ -59,26 +53,21 @@ export default function BracketViewer({ matches = [] }) {
 
 function MatchRow({ name, score, isWinner, teamId }) {
   return (
-    <div className="flex items-center justify-between gap-2">
+    <div className="bv-row">
       <div
-        className={`flex-1 truncate ${
+        className={`bv-team-name ${
           isWinner ? "font-semibold text-slate-50" : "text-slate-300"
         }`}
       >
         {teamId ? (
-          <Link
-            to={`/teams/${teamId}`}
-            className="hover:text-sky-400 hover:underline"
-          >
+          <Link to={`/teams/${teamId}`} className="bv-team-link">
             {name || "TBD"}
           </Link>
         ) : (
           name || "TBD"
         )}
       </div>
-      <div className="flex h-6 min-w-[28px] items-center justify-center rounded bg-slate-800 px-2 text-center text-xs text-slate-100">
-        {score ?? 0}
-      </div>
+      <div className="bv-score-box">{score ?? 0}</div>
     </div>
   );
 }

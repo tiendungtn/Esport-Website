@@ -1,0 +1,123 @@
+.at-container {
+    @apply space-y-6;
+}
+
+.at-header {
+    @apply flex items-center justify-between;
+}
+
+.at-title {
+    @apply text-xl font-semibold text-slate-100;
+}
+
+.at-create-btn {
+    @apply flex items-center gap-2 rounded-md bg-sky-500 px-4 py-2 text-sm font-medium text-slate-950 hover:bg-sky-400;
+}
+
+.at-table-container {
+    @apply rounded-lg border border-slate-800 bg-slate-900/50 overflow-hidden;
+}
+
+.at-table {
+    @apply w-full text-left text-sm text-slate-400;
+}
+
+.at-thead {
+    @apply bg-slate-900 text-slate-200 uppercase;
+}
+
+.at-th {
+    @apply px-6 py-3;
+}
+
+.at-th-right {
+    @apply px-6 py-3 text-right;
+}
+
+.at-tbody {
+    @apply divide-y divide-slate-800;
+}
+
+.at-tr {
+    @apply hover:bg-slate-800/50;
+}
+
+.at-td-name {
+    @apply px-6 py-4 font-medium text-slate-100;
+}
+
+.at-td {
+    @apply px-6 py-4;
+}
+
+.at-td-right {
+    @apply px-6 py-4 text-right;
+}
+
+.at-status-badge {
+    @apply inline-flex rounded-full px-2 py-1 text-xs font-semibold;
+}
+
+.at-status-open {
+    @apply bg-green-500/10 text-green-500;
+}
+
+.at-status-ongoing {
+    @apply bg-blue-500/10 text-blue-500;
+}
+
+.at-status-finished {
+    @apply bg-slate-500/10 text-slate-500;
+}
+
+.at-actions {
+    @apply flex items-center justify-end gap-2;
+}
+
+.at-action-btn-edit {
+    @apply p-2 text-slate-400 hover:text-sky-400;
+}
+
+.at-action-btn-delete {
+    @apply p-2 text-slate-400 hover:text-red-400;
+}
+
+.atm-overlay {
+    @apply fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4;
+}
+
+.atm-content {
+    @apply w-full max-w-lg rounded-xl border border-slate-800 bg-slate-950 p-6 shadow-xl;
+}
+
+.atm-title {
+    @apply mb-4 text-lg font-semibold text-slate-100;
+}
+
+.atm-form {
+    @apply space-y-4;
+}
+
+.atm-label {
+    @apply mb-1 block text-sm text-slate-400;
+}
+
+.atm-input {
+    @apply w-full rounded-md border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-sky-500 focus:outline-none;
+}
+
+.atm-textarea {
+    @apply w-full rounded-md border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-sky-500 focus:outline-none;
+}
+
+.atm-footer {
+    @apply flex justify-end gap-3 pt-2;
+}
+
+.atm-btn-cancel {
+    @apply rounded-md px-4 py-2 text-sm font-medium text-slate-400 hover:text-slate-200;
+}
+
+.atm-btn-save {
+    @apply rounded-md bg-sky-500 px-4 py-2 text-sm font-medium text-slate-950 hover:bg-sky-400 disabled:opacity-50;
+}

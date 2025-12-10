@@ -1,0 +1,79 @@
+.shell-container {
+    @apply min-h-screen bg-slate-950 text-slate-100;
+}
+
+.shell-header {
+    @apply sticky top-0 z-30 border-b border-slate-800 bg-slate-950/80 backdrop-blur;
+}
+
+.shell-header-content {
+    @apply mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3;
+}
+
+.shell-nav-wrapper {
+    @apply flex items-center gap-3;
+}
+
+.shell-mobile-toggle {
+    @apply text-slate-300 md:hidden;
+}
+
+.shell-logo-link {
+    @apply flex items-center gap-2 text-sm font-semibold text-slate-50;
+}
+
+.shell-logo-img {
+    @apply h-7 w-7 rounded-md;
+}
+
+.shell-desktop-nav {
+    @apply hidden items-center gap-4 text-xs text-slate-300 md:flex;
+}
+
+.shell-nav-link {
+    @apply hover:text-sky-300;
+}
+
+.shell-user-actions {
+    @apply flex items-center gap-3;
+}
+
+.shell-desktop-actions {
+    @apply hidden md:flex items-center gap-3;
+}
+
+.shell-profile-link {
+    @apply text-xs font-medium text-slate-300 hover:text-sky-300;
+}
+
+.shell-signout-btn {
+    @apply rounded-full border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-100 hover:border-red-500 hover:text-red-300;
+}
+
+.shell-signin-btn {
+    @apply rounded-full border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-100 hover:border-sky-500 hover:text-sky-300;
+}
+
+.shell-mobile-menu {
+    @apply border-t border-slate-800 bg-slate-950 px-4 py-4 md:hidden;
+}
+
+.shell-mobile-nav {
+    @apply flex flex-col gap-4 text-sm text-slate-300;
+}
+
+.shell-mobile-hr {
+    @apply border-slate-800;
+}
+
+.shell-mobile-signout {
+    @apply text-left text-red-400 hover:text-red-300;
+}
+
+.shell-mobile-signin {
+    @apply text-left text-sky-400 hover:text-sky-300;
+}
+
+.shell-main {
+    @apply mx-auto max-w-6xl px-4 py-6 md:py-8;
+}

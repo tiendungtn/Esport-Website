@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import "../styles/components/language-switcher.css";
 
 const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
@@ -9,24 +10,20 @@ const LanguageSwitcher = () => {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="ls-container">
       <button
         onClick={() => changeLanguage("vi")}
-        className={`px-2 py-1 rounded ${
-          i18n.language === "vi"
-            ? "bg-sky-500 text-white"
-            : "text-slate-400 hover:text-white"
+        className={`ls-button ${
+          i18n.language === "vi" ? "ls-button-active" : "ls-button-inactive"
         }`}
       >
         VI
       </button>
-      <span className="text-slate-600">|</span>
+      <span className="ls-separator">|</span>
       <button
         onClick={() => changeLanguage("en")}
-        className={`px-2 py-1 rounded ${
-          i18n.language === "en"
-            ? "bg-sky-500 text-white"
-            : "text-slate-400 hover:text-white"
+        className={`ls-button ${
+          i18n.language === "en" ? "ls-button-active" : "ls-button-inactive"
         }`}
       >
         EN

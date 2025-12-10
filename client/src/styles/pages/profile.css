@@ -1,0 +1,79 @@
+.profile-container {
+    @apply max-w-2xl mx-auto;
+}
+
+.profile-loading {
+    @apply text-center py-10 text-slate-400;
+}
+
+.profile-title {
+    @apply text-2xl font-bold mb-6 text-slate-100;
+}
+
+.profile-card {
+    @apply bg-slate-900 rounded-lg p-6 border border-slate-800;
+}
+
+.profile-header {
+    @apply mb-6 flex flex-col items-center gap-4 sm:flex-row;
+}
+
+.profile-avatar-container {
+    @apply h-20 w-20 rounded-full bg-slate-800 flex items-center justify-center overflow-hidden border-2 border-slate-700 shrink-0;
+}
+
+.profile-avatar-img {
+    @apply h-full w-full object-cover;
+}
+
+.profile-avatar-placeholder {
+    @apply text-3xl text-slate-500 uppercase;
+}
+
+.profile-info {
+    @apply text-center sm:text-left;
+}
+
+.profile-name {
+    @apply text-xl font-semibold text-slate-100;
+}
+
+.profile-email {
+    @apply text-sm text-slate-400;
+}
+
+.profile-role-badge {
+    @apply inline-block mt-1 px-2 py-0.5 rounded text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700 capitalize;
+}
+
+.profile-message {
+    @apply mb-6 p-3 rounded text-sm;
+}
+
+.profile-message-success {
+    @apply bg-emerald-500/10 text-emerald-400 border border-emerald-500/20;
+}
+
+.profile-message-error {
+    @apply bg-red-500/10 text-red-400 border border-red-500/20;
+}
+
+.profile-form {
+    @apply space-y-4;
+}
+
+.profile-label {
+    @apply block text-sm font-medium text-slate-400 mb-1;
+}
+
+.profile-input {
+    @apply w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-slate-100 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500;
+}
+
+.profile-submit-container {
+    @apply pt-4;
+}
+
+.profile-submit-btn {
+    @apply w-full bg-sky-600 hover:bg-sky-500 text-white font-medium py-2 px-4 rounded transition-colors;
+}

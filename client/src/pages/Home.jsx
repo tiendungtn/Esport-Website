@@ -7,6 +7,7 @@ import {
   translateGameName,
   translateTournamentName,
 } from "../lib/gameTranslations";
+import "../styles/pages/home.css";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -17,77 +18,59 @@ export default function Home() {
   });
 
   return (
-    <div className="space-y-8">
-      <section className="rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-950 p-6 shadow-xl md:p-8">
-        <p className="text-xs font-semibold uppercase tracking-[0.15em] text-sky-400">
-          {t("HUMG_Esports")}
-        </p>
-        <h1 className="mt-3 text-3xl font-semibold text-slate-50 md:text-4xl">
-          {t("HeroTitle")}
-        </h1>
-        <p className="mt-3 max-w-2xl text-sm text-slate-300 md:text-base">
-          {t("HeroSubtitle")}
-        </p>
-        <div className="mt-5 flex flex-wrap gap-3">
+    <div className="home-container">
+      <section className="home-hero-section">
+        <p className="home-hero-badge">{t("HUMG_Esports")}</p>
+        <h1 className="home-hero-title">{t("HeroTitle")}</h1>
+        <p className="home-hero-subtitle">{t("HeroSubtitle")}</p>
+        <div className="home-hero-actions">
           {isAdmin && (
-            <Link
-              to="/admin"
-              className="inline-flex items-center rounded-full bg-sky-500 px-5 py-2.5 text-sm font-medium text-slate-950 hover:bg-sky-400"
-            >
+            <Link to="/admin" className="home-create-btn">
               {t("CreateTournamentBtn")}
             </Link>
           )}
-          <a
-            href="#tournaments"
-            className="inline-flex items-center rounded-full border border-slate-700 px-5 py-2.5 text-sm font-medium text-slate-100 hover:border-slate-500"
-          >
+          <a href="#tournaments" className="home-view-btn">
             {t("ViewOpenTournaments")}
           </a>
         </div>
       </section>
 
-      <section id="tournaments" className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-slate-100">
-            {t("FeaturedTournaments")}
-          </h2>
+      <section id="tournaments" className="home-tournaments-section">
+        <div className="home-section-header">
+          <h2 className="home-section-title">{t("FeaturedTournaments")}</h2>
         </div>
 
-        {isLoading && (
-          <p className="text-sm text-slate-400">{t("LoadingTournaments")}</p>
-        )}
-        {error && (
-          <p className="text-sm text-red-400">{t("ErrorLoadingTournaments")}</p>
-        )}
+        {isLoading && <p className="home-loading">{t("LoadingTournaments")}</p>}
+        {error && <p className="home-error">{t("ErrorLoadingTournaments")}</p>}
 
         {!isLoading && !error && data?.length > 0 && (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="home-grid">
             {data.map((tournament) => {
               const theme = getGameTheme(tournament.game);
               return (
                 <Link
                   key={tournament._id}
                   to={`/t/${tournament.slug || tournament._id}`}
-                  className={`group relative overflow-hidden rounded-xl border border-white/10 shadow-lg transition-all hover:scale-[1.02] hover:shadow-xl bg-gradient-to-br min-h-[200px] ${theme.from} ${theme.to}`}
+                  className={`group tournament-card ${theme.from} ${theme.to}`}
                 >
                   {/* Background Image/Banner */}
-                  <div className="absolute inset-0 opacity-40 mix-blend-overlay">
+                  <div className="tournament-card-bg">
                     <img
                       src={getGameImage(tournament.game)}
                       alt={tournament.game}
-                      className="h-full w-full object-cover grayscale transition-all group-hover:grayscale-0"
+                      className="tournament-card-img"
                     />
                   </div>
 
                   {/* Content */}
-                  <div className="relative flex flex-col justify-between p-6 h-full">
-                    <div className="space-y-3">
-                      <div className="flex items-start justify-between gap-2">
-                        <h3 className="line-clamp-2 text-xl font-bold text-white drop-shadow-md leading-tight">
+                  <div className="tournament-card-content">
+                    <div className="tournament-card-header">
+                      <div className="tournament-card-title-row">
+                        <h3 className="tournament-card-title">
                           {translateTournamentName(tournament.name)}
                         </h3>
                         <span
-                          className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white/90 shadow-sm backdrop-blur-md ${badgeClassForStatus(
+                          className={`tournament-status-badge ${badgeClassForStatus(
                             tournament.status
                           )}`}
                         >
@@ -96,11 +79,11 @@ export default function Home() {
                       </div>
                     </div>
 
-                    <div className="mt-4 space-y-1">
-                      <p className="text-xs font-bold text-white/90 uppercase tracking-wide">
+                    <div className="tournament-card-footer">
+                      <p className="tournament-game-name">
                         {translateGameName(tournament.game)}
                       </p>
-                      <p className="text-xs font-medium text-white/70">
+                      <p className="tournament-max-teams">
                         {t("MaxTeams", { count: tournament.maxTeams })}
                       </p>
                     </div>
@@ -112,7 +95,7 @@ export default function Home() {
         )}
 
         {!isLoading && !error && data?.length === 0 && (
-          <p className="text-sm text-slate-400">{t("NoTournaments")}</p>
+          <p className="home-loading">{t("NoTournaments")}</p>
         )}
       </section>
     </div>

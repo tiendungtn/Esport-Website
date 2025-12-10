@@ -1,0 +1,79 @@
+.login-container {
+    @apply flex min-h-screen items-center justify-center bg-slate-950;
+}
+
+.field-label {
+    @apply block text-sm;
+}
+
+.field-text {
+    @apply mb-1 text-[13px] font-medium text-slate-200;
+}
+
+.field-input {
+    @apply w-full rounded-md border border-slate-700 bg-white/5 px-3 py-2 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-sky-500 focus:ring-1 focus:ring-sky-500;
+}
+
+.lm-header {
+    @apply flex items-center justify-between border-b border-slate-800 px-5 py-3;
+}
+
+.lm-title {
+    @apply text-sm font-semibold text-slate-100;
+}
+
+.lm-close-btn {
+    @apply rounded-full p-1 text-slate-400 hover:bg-slate-800 hover:text-slate-100;
+}
+
+.lm-body {
+    @apply px-5 pb-5 pt-4;
+}
+
+.lm-tabs {
+    @apply mb-4 inline-flex rounded-full border border-slate-700 bg-slate-900 p-1 text-xs;
+}
+
+.lm-tab-active {
+    @apply bg-sky-500 text-slate-950;
+}
+
+.lm-tab-inactive {
+    @apply text-slate-300;
+}
+
+.lm-tab-btn {
+    @apply rounded-full px-3 py-1;
+}
+
+.lm-form {
+    @apply space-y-4;
+}
+
+.lm-forgot-container {
+    @apply flex justify-end text-xs;
+}
+
+.lm-forgot-link {
+    @apply text-sky-400 hover:text-sky-300;
+}
+
+.lm-error {
+    @apply text-xs text-red-400;
+}
+
+.lm-info {
+    @apply text-xs text-emerald-400;
+}
+
+.lm-submit-btn {
+    @apply mt-2 w-full rounded-md bg-sky-500 py-2 text-sm font-medium text-slate-950 hover:bg-sky-400 disabled:opacity-60;
+}
+
+.lm-back-container {
+    @apply mt-4 text-xs text-slate-400;
+}
+
+.lm-back-link {
+    @apply text-sky-400 underline hover:text-sky-300;
+}

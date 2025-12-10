@@ -1,0 +1,223 @@
+.ate-container {
+    @apply space-y-6;
+}
+
+.ate-header {
+    @apply flex items-center justify-between;
+}
+
+.ate-title {
+    @apply text-xl font-semibold text-slate-100;
+}
+
+.ate-controls {
+    @apply flex items-center gap-4;
+}
+
+.ate-filter-container {
+    @apply relative;
+}
+
+.ate-filter-icon {
+    @apply absolute left-3 top-1/2 -translate-y-1/2 text-slate-400;
+}
+
+.ate-filter-select {
+    @apply rounded-md border border-slate-800 bg-slate-900 py-2 pl-9 pr-4 text-sm text-slate-100 focus:border-sky-500 focus:outline-none;
+}
+
+.ate-create-btn {
+    @apply flex items-center gap-2 rounded-md bg-sky-500 px-4 py-2 text-sm font-medium text-slate-950 hover:bg-sky-400;
+}
+
+.ate-table-container {
+    @apply rounded-lg border border-slate-800 bg-slate-900/50 overflow-hidden;
+}
+
+.ate-table {
+    @apply w-full text-left text-sm text-slate-400;
+}
+
+.ate-thead {
+    @apply bg-slate-900 text-slate-200 uppercase;
+}
+
+.ate-th {
+    @apply px-6 py-3;
+}
+
+.ate-th-right {
+    @apply px-6 py-3 text-right;
+}
+
+.ate-tbody {
+    @apply divide-y divide-slate-800;
+}
+
+.ate-tr {
+    @apply hover:bg-slate-800/50;
+}
+
+.ate-td-name {
+    @apply px-6 py-4 font-medium text-slate-100;
+}
+
+.ate-td-game {
+    @apply px-6 py-4 text-slate-300;
+}
+
+.ate-td {
+    @apply px-6 py-4;
+}
+
+.ate-td-right {
+    @apply px-6 py-4 text-right;
+}
+
+.ate-actions {
+    @apply flex items-center justify-end gap-2;
+}
+
+.ate-action-btn {
+    @apply p-2 text-slate-400 hover:text-sky-400;
+}
+
+.ate-action-btn-danger {
+    @apply p-2 text-slate-400 hover:text-red-400;
+}
+
+.atem-overlay {
+    @apply fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4;
+}
+
+.atem-content {
+    @apply w-full max-w-lg rounded-xl border border-slate-800 bg-slate-950 p-6 shadow-xl;
+}
+
+.atem-content-lg {
+    @apply w-full max-w-2xl rounded-xl border border-slate-800 bg-slate-950 p-6 shadow-xl;
+}
+
+.atem-title {
+    @apply mb-4 text-lg font-semibold text-slate-100;
+}
+
+.atem-form {
+    @apply space-y-4;
+}
+
+.atem-label {
+    @apply mb-1 block text-sm text-slate-400;
+}
+
+.atem-input {
+    @apply w-full rounded-md border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-sky-500 focus:outline-none;
+}
+
+.atem-footer {
+    @apply flex justify-end gap-3 pt-2;
+}
+
+.atem-btn-cancel {
+    @apply rounded-md px-4 py-2 text-sm font-medium text-slate-400 hover:text-slate-200;
+}
+
+.atem-btn-save {
+    @apply rounded-md bg-sky-500 px-4 py-2 text-sm font-medium text-slate-950 hover:bg-sky-400 disabled:opacity-50;
+}
+
+.atem-search-container {
+    @apply mb-6 space-y-4;
+}
+
+.atem-search-box {
+    @apply flex gap-2;
+}
+
+.atem-search-input {
+    @apply flex-1 rounded-md border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-sky-500 focus:outline-none;
+}
+
+.atem-search-btn {
+    @apply rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-slate-700;
+}
+
+.atem-results {
+    @apply rounded-md border border-slate-800 bg-slate-900 p-2;
+}
+
+.atem-results-title {
+    @apply mb-2 text-xs text-slate-400;
+}
+
+.atem-result-item {
+    @apply flex items-center justify-between rounded p-2 hover:bg-slate-800;
+}
+
+.atem-result-user {
+    @apply flex items-center gap-2;
+}
+
+.atem-avatar {
+    @apply h-6 w-6 rounded-full bg-slate-700;
+}
+
+.atem-user-name {
+    @apply text-sm text-slate-200;
+}
+
+.atem-user-email {
+    @apply text-xs text-slate-500;
+}
+
+.atem-btn-add {
+    @apply text-xs font-medium text-sky-500 hover:text-sky-400;
+}
+
+.atem-members-list-title {
+    @apply text-sm font-medium text-slate-400;
+}
+
+.atem-members-list {
+    @apply divide-y divide-slate-800 rounded-md border border-slate-800 bg-slate-900/50;
+}
+
+.atem-member-item {
+    @apply flex items-center justify-between p-3;
+}
+
+.atem-member-info {
+    @apply flex items-center gap-3;
+}
+
+.atem-member-avatar {
+    @apply h-8 w-8 rounded-full bg-slate-700;
+}
+
+.atem-member-name {
+    @apply text-sm font-medium text-slate-200;
+}
+
+.atem-member-email {
+    @apply text-xs text-slate-500;
+}
+
+.atem-btn-remove {
+    @apply text-xs text-red-500 hover:text-red-400;
+}
+
+.atem-captain-badge {
+    @apply text-xs text-sky-500;
+}
+
+.atem-no-members {
+    @apply p-4 text-center text-sm text-slate-500;
+}
+
+.atem-members-footer {
+    @apply mt-6 flex justify-end;
+}
+
+.atem-btn-close {
+    @apply rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-slate-700;
+}

@@ -1,0 +1,19 @@
+.ls-container {
+    @apply flex items-center gap-2;
+}
+
+.ls-button {
+    @apply px-2 py-1 rounded;
+}
+
+.ls-button-active {
+    @apply bg-sky-500 text-white;
+}
+
+.ls-button-inactive {
+    @apply text-slate-400 hover:text-white;
+}
+
+.ls-separator {
+    @apply text-slate-600;
+}

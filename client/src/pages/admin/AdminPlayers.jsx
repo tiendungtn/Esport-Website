@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../../lib/api";
 import { Search, Plus, Pencil, Trash2, X, AlertTriangle } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import "../../styles/pages/admin-players.css";
 
 export default function AdminPlayers() {
   const { t } = useTranslation();
@@ -106,84 +107,77 @@ export default function AdminPlayers() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-slate-100">
-          {t("ManagePlayers")}
-        </h2>
-        <div className="flex gap-4">
-          <div className="relative w-64">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+    <div className="ap-container">
+      <div className="ap-header">
+        <h2 className="ap-title">{t("ManagePlayers")}</h2>
+        <div className="ap-controls">
+          <div className="ap-search-wrapper">
+            <Search className="ap-search-icon" />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t("SearchPlayerPlaceholder")}
-              className="w-full rounded-md border border-slate-800 bg-slate-900 py-2 pl-9 pr-4 text-sm text-slate-100 focus:border-sky-500 focus:outline-none"
+              className="ap-search-input"
             />
           </div>
-          <button
-            onClick={openCreateModal}
-            className="flex items-center gap-2 rounded-md bg-sky-500 px-4 py-2 text-sm font-medium text-white hover:bg-sky-600 transition-colors"
-          >
+          <button onClick={openCreateModal} className="ap-create-btn">
             <Plus className="h-4 w-4" />
             {t("AddPlayer") || "Thêm người chơi"}
           </button>
         </div>
       </div>
 
-      <div className="rounded-lg border border-slate-800 bg-slate-900/50 overflow-hidden">
-        <table className="w-full text-left text-sm text-slate-400">
-          <thead className="bg-slate-900 text-slate-200 uppercase">
+      <div className="ap-table-container">
+        <table className="ap-table">
+          <thead className="ap-thead">
             <tr>
-              <th className="px-6 py-3">{t("DisplayName")}</th>
-              <th className="px-6 py-3">{t("Email")}</th>
-              <th className="px-6 py-3">{t("Role")}</th>
-              <th className="px-6 py-3">{t("JoinDate")}</th>
-              <th className="px-6 py-3 text-right">
-                {t("Actions") || "Thao tác"}
-              </th>
+              <th className="ap-th">{t("DisplayName")}</th>
+              <th className="ap-th">{t("Email")}</th>
+              <th className="ap-th">{t("Role")}</th>
+              <th className="ap-th">{t("JoinDate")}</th>
+              <th className="ap-th-right">{t("Actions") || "Thao tác"}</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800">
+          <tbody className="ap-tbody">
             {players?.map((p) => (
-              <tr key={p._id} className="hover:bg-slate-800/50">
-                <td className="px-6 py-4 font-medium text-slate-100">
-                  <div className="flex items-center gap-3">
-                    <div className="h-8 w-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-300">
+              <tr key={p._id} className="ap-tr">
+                <td className="ap-td-user">
+                  <div className="ap-user-info">
+                    <div className="ap-user-avatar">
                       {p.profile?.displayName?.[0] || "?"}
                     </div>
                     {p.profile?.displayName || "N/A"}
                   </div>
                 </td>
-                <td className="px-6 py-4">{p.email}</td>
-                <td className="px-6 py-4">
+                <td className="ap-td">{p.email}</td>
+                <td className="ap-td">
                   <span
-                    className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${
+                    className={`ap-role-badge ${
                       p.role === "admin"
-                        ? "bg-purple-500/10 text-purple-400"
+                        ? "ap-role-admin"
                         : p.role === "organizer"
-                        ? "bg-orange-500/10 text-orange-400"
-                        : "bg-slate-800 text-slate-300"
+                        ? "ap-role-organizer"
+                        : "ap-role-player"
                     }`}
                   >
                     {p.role}
                   </span>
                 </td>
-                <td className="px-6 py-4">
+                <td className="ap-td">
                   {new Date(p.createdAt).toLocaleDateString("vi-VN")}
                 </td>
-                <td className="px-6 py-4 text-right">
-                  <div className="flex items-center justify-end gap-2">
+                <td className="ap-td-right">
+                  <div className="ap-actions">
                     <button
                       onClick={() => openEditModal(p)}
-                      className="p-2 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-sky-400 transition-colors"
+                      className="ap-action-btn"
                       title="Edit"
                     >
                       <Pencil className="h-4 w-4" />
                     </button>
                     <button
                       onClick={() => openDeleteModal(p)}
-                      className="p-2 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-red-400 transition-colors"
+                      className="ap-action-btn-danger"
                       title="Delete"
                     >
                       <Trash2 className="h-4 w-4" />
@@ -194,10 +188,7 @@ export default function AdminPlayers() {
             ))}
             {players?.length === 0 && (
               <tr>
-                <td
-                  colSpan="5"
-                  className="px-6 py-8 text-center text-slate-500"
-                >
+                <td colSpan="5" className="ap-no-data">
                   {t("NoPlayersFound") || "Không tìm thấy người chơi nào"}
                 </td>
               </tr>
@@ -208,25 +199,22 @@ export default function AdminPlayers() {
 
       {/* Create/Edit Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-xl">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-white">
+        <div className="apm-overlay">
+          <div className="apm-content">
+            <div className="apm-header">
+              <h2 className="apm-title">
                 {selectedUser
                   ? t("EditPlayer") || "Sửa người chơi"
                   : t("AddPlayer") || "Thêm người chơi"}
               </h2>
-              <button
-                onClick={closeModal}
-                className="text-slate-400 hover:text-white"
-              >
+              <button onClick={closeModal} className="apm-close-btn">
                 <X className="h-5 w-5" />
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="apm-form">
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1">
+                <label className="apm-label">
                   {t("DisplayName") || "Tên hiển thị"}
                 </label>
                 <input
@@ -236,13 +224,11 @@ export default function AdminPlayers() {
                   onChange={(e) =>
                     setFormData({ ...formData, displayName: e.target.value })
                   }
-                  className="w-full rounded-lg border border-slate-700 bg-slate-800 p-2.5 text-white focus:border-sky-500 focus:outline-none"
+                  className="apm-input"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1">
-                  Email
-                </label>
+                <label className="apm-label">Email</label>
                 <input
                   type="email"
                   required
@@ -250,19 +236,17 @@ export default function AdminPlayers() {
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  className="w-full rounded-lg border border-slate-700 bg-slate-800 p-2.5 text-white focus:border-sky-500 focus:outline-none"
+                  className="apm-input"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1">
-                  {t("Role") || "Vai trò"}
-                </label>
+                <label className="apm-label">{t("Role") || "Vai trò"}</label>
                 <select
                   value={formData.role}
                   onChange={(e) =>
                     setFormData({ ...formData, role: e.target.value })
                   }
-                  className="w-full rounded-lg border border-slate-700 bg-slate-800 p-2.5 text-white focus:border-sky-500 focus:outline-none"
+                  className="apm-select"
                 >
                   <option value="player">Player</option>
                   <option value="organizer">Organizer</option>
@@ -270,10 +254,10 @@ export default function AdminPlayers() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1">
+                <label className="apm-label">
                   {t("Password") || "Mật khẩu"}{" "}
                   {selectedUser && (
-                    <span className="text-xs text-slate-500 font-normal">
+                    <span className="apm-hint">
                       ({t("Optional") || "Để trống nếu không đổi"})
                     </span>
                   )}
@@ -285,16 +269,16 @@ export default function AdminPlayers() {
                   onChange={(e) =>
                     setFormData({ ...formData, password: e.target.value })
                   }
-                  className="w-full rounded-lg border border-slate-700 bg-slate-800 p-2.5 text-white focus:border-sky-500 focus:outline-none"
+                  className="apm-input"
                   placeholder={selectedUser ? "••••••••" : ""}
                 />
               </div>
 
-              <div className="flex gap-3 mt-6">
+              <div className="apm-footer">
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="flex-1 rounded-xl border border-slate-700 bg-transparent py-2.5 text-sm font-semibold text-slate-300 hover:bg-slate-800"
+                  className="apm-btn-cancel"
                 >
                   {t("Cancel") || "Hủy"}
                 </button>
@@ -303,7 +287,7 @@ export default function AdminPlayers() {
                   disabled={
                     createMutation.isPending || updateMutation.isPending
                   }
-                  className="flex-1 rounded-xl bg-sky-500 py-2.5 text-sm font-semibold text-white hover:bg-sky-600 disabled:opacity-50"
+                  className="apm-btn-save"
                 >
                   {createMutation.isPending || updateMutation.isPending
                     ? "Saving..."
@@ -317,29 +301,26 @@ export default function AdminPlayers() {
 
       {/* Delete Confirmation Modal */}
       {isDeleteOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-sm rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-xl">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-500/10 mb-4">
+        <div className="apm-overlay">
+          <div className="apm-delete-content">
+            <div className="apm-delete-icon-wrapper">
               <AlertTriangle className="h-6 w-6 text-red-500" />
             </div>
-            <h3 className="text-center text-lg font-semibold text-white mb-2">
+            <h3 className="apm-delete-title">
               {t("ConfirmDelete") || "Xác nhận xóa"}?
             </h3>
-            <p className="text-center text-sm text-slate-400 mb-6">
+            <p className="apm-delete-desc">
               {t("DeleteUserWarning") ||
                 "Bạn có chắc chắn muốn xóa người dùng này? Hành động này không thể hoàn tác."}
             </p>
             <div className="flex gap-3">
-              <button
-                onClick={closeDeleteModal}
-                className="flex-1 rounded-xl border border-slate-700 bg-transparent py-2.5 text-sm font-semibold text-slate-300 hover:bg-slate-800"
-              >
+              <button onClick={closeDeleteModal} className="apm-btn-cancel">
                 {t("Cancel") || "Hủy"}
               </button>
               <button
                 onClick={() => deleteMutation.mutate(selectedUser._id)}
                 disabled={deleteMutation.isPending}
-                className="flex-1 rounded-xl bg-red-500 py-2.5 text-sm font-semibold text-white hover:bg-red-600 disabled:opacity-50"
+                className="apm-btn-delete"
               >
                 {deleteMutation.isPending
                   ? "Deleting..."

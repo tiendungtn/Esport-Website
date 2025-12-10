@@ -1,6 +1,7 @@
 import React from "react";
 import { X, AlertCircle, CheckCircle, Info } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import "../styles/components/alert-modal.css";
 
 export default function AlertModal({
   isOpen,
@@ -36,32 +37,22 @@ export default function AlertModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div
-        className={`w-full max-w-sm rounded-lg border p-6 shadow-xl bg-slate-950 ${getColorClass()}`}
-      >
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
+    <div className="alert-modal-overlay">
+      <div className={`alert-modal-content ${getColorClass()}`}>
+        <div className="alert-modal-header">
+          <div className="alert-modal-title-container">
             {getIcon()}
-            <h3 className="text-lg font-semibold text-slate-100">
-              {title || t("Error")}
-            </h3>
+            <h3 className="alert-modal-title">{title || t("Error")}</h3>
           </div>
-          <button
-            onClick={onClose}
-            className="text-slate-400 hover:text-slate-200"
-          >
+          <button onClick={onClose} className="alert-modal-close-btn">
             <X size={20} />
           </button>
         </div>
 
-        <p className="mt-4 text-sm text-slate-300">{message}</p>
+        <p className="alert-modal-message">{message}</p>
 
-        <div className="mt-6 flex justify-end">
-          <button
-            onClick={onClose}
-            className="rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-slate-700"
-          >
+        <div className="alert-modal-footer">
+          <button onClick={onClose} className="alert-modal-button">
             {t("Close")}
           </button>
         </div>

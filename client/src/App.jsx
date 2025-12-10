@@ -20,6 +20,7 @@ import LoginModal from "./pages/LoginModal.jsx";
 import Profile from "./pages/Profile.jsx";
 import PublicTeamProfile from "./pages/PublicTeamProfile.jsx";
 import humgLogo from "./img/icon-humg.png";
+import "./styles/components/shell-layout.css";
 
 import { Menu, X } from "lucide-react";
 
@@ -42,51 +43,45 @@ function ShellLayout() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
-      <header className="sticky top-0 z-30 border-b border-slate-800 bg-slate-950/80 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-          <div className="flex items-center gap-3">
+    <div className="shell-container">
+      <header className="shell-header">
+        <div className="shell-header-content">
+          <div className="shell-nav-wrapper">
             {/* Mobile Menu Toggle */}
             <button
-              className="text-slate-300 md:hidden"
+              className="shell-mobile-toggle"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
 
-            <Link
-              to="/"
-              className="flex items-center gap-2 text-sm font-semibold text-slate-50"
-            >
-              <img src={humgLogo} alt="HUMG" className="h-7 w-7 rounded-md" />
+            <Link to="/" className="shell-logo-link">
+              <img src={humgLogo} alt="HUMG" className="shell-logo-img" />
               <span>HUMG eSports</span>
             </Link>
-            <nav className="hidden items-center gap-4 text-xs text-slate-300 md:flex">
-              <Link to="/" className="hover:text-sky-300">
+            <nav className="shell-desktop-nav">
+              <Link to="/" className="shell-nav-link">
                 {t("Tournaments")}
               </Link>
               {isAdmin && (
-                <Link to="/admin" className="hover:text-sky-300">
+                <Link to="/admin" className="shell-nav-link">
                   {t("Organizer")}
                 </Link>
               )}
             </nav>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="hidden md:flex items-center gap-3">
+          <div className="shell-user-actions">
+            <div className="shell-desktop-actions">
               {isAuthenticated ? (
                 <>
-                  <Link
-                    to="/profile"
-                    className="text-xs font-medium text-slate-300 hover:text-sky-300"
-                  >
+                  <Link to="/profile" className="shell-profile-link">
                     {user?.displayName || t("Profile")}
                   </Link>
                   <button
                     type="button"
                     onClick={logout}
-                    className="rounded-full border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-100 hover:border-red-500 hover:text-red-300"
+                    className="shell-signout-btn"
                   >
                     {t("SignOut")}
                   </button>
@@ -95,7 +90,7 @@ function ShellLayout() {
                 <button
                   type="button"
                   onClick={openLoginModal}
-                  className="rounded-full border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-100 hover:border-sky-500 hover:text-sky-300"
+                  className="shell-signin-btn"
                 >
                   {t("SignIn")}
                 </button>
@@ -107,26 +102,26 @@ function ShellLayout() {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="border-t border-slate-800 bg-slate-950 px-4 py-4 md:hidden">
-            <nav className="flex flex-col gap-4 text-sm text-slate-300">
-              <Link to="/" className="hover:text-sky-300">
+          <div className="shell-mobile-menu">
+            <nav className="shell-mobile-nav">
+              <Link to="/" className="shell-nav-link">
                 {t("Tournaments")}
               </Link>
               {isAdmin && (
-                <Link to="/admin" className="hover:text-sky-300">
+                <Link to="/admin" className="shell-nav-link">
                   {t("Organizer")}
                 </Link>
               )}
-              <hr className="border-slate-800" />
+              <hr className="shell-mobile-hr" />
               {isAuthenticated ? (
                 <>
-                  <Link to="/profile" className="hover:text-sky-300">
+                  <Link to="/profile" className="shell-nav-link">
                     {user?.displayName || t("Profile")}
                   </Link>
                   <button
                     type="button"
                     onClick={logout}
-                    className="text-left text-red-400 hover:text-red-300"
+                    className="shell-mobile-signout"
                   >
                     {t("SignOut")}
                   </button>
@@ -135,7 +130,7 @@ function ShellLayout() {
                 <button
                   type="button"
                   onClick={openLoginModal}
-                  className="text-left text-sky-400 hover:text-sky-300"
+                  className="shell-mobile-signin"
                 >
                   {t("SignIn")}
                 </button>
@@ -145,7 +140,7 @@ function ShellLayout() {
         )}
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 py-6 md:py-8">
+      <main className="shell-main">
         <Outlet />
       </main>
     </div>

@@ -6,6 +6,7 @@ import { api } from "../lib/api";
 import { socket } from "../lib/socket";
 import BracketViewer from "../components/BracketViewer.jsx";
 import RegistrationModal from "../components/RegistrationModal.jsx";
+import "../styles/pages/tournament.css";
 
 export default function Tournament() {
   const { t } = useTranslation();
@@ -59,24 +60,20 @@ export default function Tournament() {
   }
 
   return (
-    <div className="space-y-6">
-      <section className="rounded-xl border border-slate-800 bg-slate-900/60 p-4 md:p-6">
-        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+    <div className="tournament-container">
+      <section className="tournament-header-section">
+        <div className="tournament-header-content">
           <div>
-            <p className="text-xs uppercase tracking-[0.18em] text-sky-400">
-              {tournament.game}
-            </p>
-            <h1 className="mt-2 text-2xl font-semibold text-slate-50 md:text-3xl">
-              {tournament.name}
-            </h1>
-            <p className="mt-2 max-w-2xl text-sm text-slate-300">
+            <p className="tournament-game-label">{tournament.game}</p>
+            <h1 className="tournament-title">{tournament.name}</h1>
+            <p className="tournament-description">
               {tournament.description || t("TournamentDescription")}
             </p>
           </div>
           {tournament.status === "open" && (
             <button
               onClick={() => setShowRegisterModal(true)}
-              className="w-full rounded-xl bg-sky-500 px-6 py-3 font-semibold text-white shadow-lg shadow-sky-500/20 transition-all hover:bg-sky-400 hover:shadow-sky-500/40 md:w-auto"
+              className="tournament-register-btn"
             >
               {t("RegisterToJoin")}
             </button>
@@ -91,10 +88,8 @@ export default function Tournament() {
         />
       )}
 
-      <section className="rounded-xl border border-slate-800 bg-slate-900/40 p-4 md:p-6">
-        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-400">
-          {t("BracketSE")}
-        </h2>
+      <section className="tournament-bracket-section">
+        <h2 className="tournament-bracket-title">{t("BracketSE")}</h2>
         {loadingMatches && (
           <p className="text-sm text-slate-400">{t("LoadingMatches")}</p>
         )}

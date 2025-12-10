@@ -1,0 +1,183 @@
+.ap-container {
+    @apply space-y-6;
+}
+
+.ap-header {
+    @apply flex items-center justify-between;
+}
+
+.ap-title {
+    @apply text-xl font-semibold text-slate-100;
+}
+
+.ap-controls {
+    @apply flex gap-4;
+}
+
+.ap-search-wrapper {
+    @apply relative w-64;
+}
+
+.ap-search-icon {
+    @apply absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500;
+}
+
+.ap-search-input {
+    @apply w-full rounded-md border border-slate-800 bg-slate-900 py-2 pl-9 pr-4 text-sm text-slate-100 focus:border-sky-500 focus:outline-none;
+}
+
+.ap-create-btn {
+    @apply flex items-center gap-2 rounded-md bg-sky-500 px-4 py-2 text-sm font-medium text-white hover:bg-sky-600 transition-colors;
+}
+
+.ap-table-container {
+    @apply rounded-lg border border-slate-800 bg-slate-900/50 overflow-hidden;
+}
+
+.ap-table {
+    @apply w-full text-left text-sm text-slate-400;
+}
+
+.ap-thead {
+    @apply bg-slate-900 text-slate-200 uppercase;
+}
+
+.ap-th {
+    @apply px-6 py-3;
+}
+
+.ap-th-right {
+    @apply px-6 py-3 text-right;
+}
+
+.ap-tbody {
+    @apply divide-y divide-slate-800;
+}
+
+.ap-tr {
+    @apply hover:bg-slate-800/50;
+}
+
+.ap-td-user {
+    @apply px-6 py-4 font-medium text-slate-100;
+}
+
+.ap-user-info {
+    @apply flex items-center gap-3;
+}
+
+.ap-user-avatar {
+    @apply h-8 w-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-300;
+}
+
+.ap-td {
+    @apply px-6 py-4;
+}
+
+.ap-td-right {
+    @apply px-6 py-4 text-right;
+}
+
+.ap-role-badge {
+    @apply inline-flex rounded-full px-2 py-1 text-xs font-semibold;
+}
+
+.ap-role-admin {
+    @apply bg-purple-500/10 text-purple-400;
+}
+
+.ap-role-organizer {
+    @apply bg-orange-500/10 text-orange-400;
+}
+
+.ap-role-player {
+    @apply bg-slate-800 text-slate-300;
+}
+
+.ap-actions {
+    @apply flex items-center justify-end gap-2;
+}
+
+.ap-action-btn {
+    @apply p-2 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-sky-400 transition-colors;
+}
+
+.ap-action-btn-danger {
+    @apply p-2 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-red-400 transition-colors;
+}
+
+.ap-no-data {
+    @apply px-6 py-8 text-center text-slate-500;
+}
+
+.apm-overlay {
+    @apply fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm;
+}
+
+.apm-content {
+    @apply w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-xl;
+}
+
+.apm-header {
+    @apply flex items-center justify-between mb-6;
+}
+
+.apm-title {
+    @apply text-xl font-semibold text-white;
+}
+
+.apm-close-btn {
+    @apply text-slate-400 hover:text-white;
+}
+
+.apm-form {
+    @apply space-y-4;
+}
+
+.apm-label {
+    @apply block text-sm font-medium text-slate-300 mb-1;
+}
+
+.apm-input {
+    @apply w-full rounded-lg border border-slate-700 bg-slate-800 p-2.5 text-white focus:border-sky-500 focus:outline-none;
+}
+
+.apm-select {
+    @apply w-full rounded-lg border border-slate-700 bg-slate-800 p-2.5 text-white focus:border-sky-500 focus:outline-none;
+}
+
+.apm-hint {
+    @apply text-xs text-slate-500 font-normal;
+}
+
+.apm-footer {
+    @apply flex gap-3 mt-6;
+}
+
+.apm-btn-cancel {
+    @apply flex-1 rounded-xl border border-slate-700 bg-transparent py-2.5 text-sm font-semibold text-slate-300 hover:bg-slate-800;
+}
+
+.apm-btn-save {
+    @apply flex-1 rounded-xl bg-sky-500 py-2.5 text-sm font-semibold text-white hover:bg-sky-600 disabled:opacity-50;
+}
+
+.apm-delete-content {
+    @apply w-full max-w-sm rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-xl;
+}
+
+.apm-delete-icon-wrapper {
+    @apply mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-500/10 mb-4;
+}
+
+.apm-delete-title {
+    @apply text-center text-lg font-semibold text-white mb-2;
+}
+
+.apm-delete-desc {
+    @apply text-center text-sm text-slate-400 mb-6;
+}
+
+.apm-btn-delete {
+    @apply flex-1 rounded-xl bg-red-500 py-2.5 text-sm font-semibold text-white hover:bg-red-600 disabled:opacity-50;
+}

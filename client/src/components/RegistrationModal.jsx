@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../lib/api";
+import "../styles/components/registration-modal.css";
 
 export default function RegistrationModal({ tournamentId, onClose }) {
   const queryClient = useQueryClient();
@@ -37,35 +38,29 @@ export default function RegistrationModal({ tournamentId, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-xl">
-        <h2 className="text-xl font-semibold text-white">Đăng ký tham gia</h2>
-        <p className="mt-1 text-sm text-slate-400">
+    <div className="rm-overlay">
+      <div className="rm-content">
+        <h2 className="rm-title">Đăng ký tham gia</h2>
+        <p className="rm-description">
           Chọn đội tuyển của bạn để tham gia giải đấu này.
         </p>
 
-        {error && (
-          <div className="mt-4 rounded-lg bg-red-500/10 p-3 text-sm text-red-400">
-            {error}
-          </div>
-        )}
+        {error && <div className="rm-error">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+        <form onSubmit={handleSubmit} className="rm-form">
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-300">
-              Chọn đội tuyển
-            </label>
+            <label className="rm-label">Chọn đội tuyển</label>
             {isLoading ? (
-              <div className="h-10 w-full animate-pulse rounded-xl bg-slate-800" />
+              <div className="rm-loading" />
             ) : myTeams?.length > 0 ? (
-              <div className="space-y-2">
+              <div className="rm-team-list">
                 {myTeams.map((team) => (
                   <label
                     key={team._id}
-                    className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3 transition-all ${
+                    className={`rm-team-label ${
                       selectedTeam === team._id
-                        ? "border-sky-500 bg-sky-500/10"
-                        : "border-slate-800 bg-slate-800/50 hover:border-slate-700"
+                        ? "rm-team-label-selected"
+                        : "rm-team-label-default"
                     }`}
                   >
                     <input
@@ -76,27 +71,25 @@ export default function RegistrationModal({ tournamentId, onClose }) {
                       onChange={(e) => setSelectedTeam(e.target.value)}
                       className="hidden"
                     />
-                    <div className="h-8 w-8 rounded-lg bg-slate-700 overflow-hidden">
+                    <div className="rm-team-logo-container">
                       {team.logoUrl ? (
                         <img
                           src={team.logoUrl}
                           alt={team.name}
-                          className="h-full w-full object-cover"
+                          className="rm-team-logo"
                         />
                       ) : (
-                        <div className="h-full w-full flex items-center justify-center text-xs font-bold">
-                          {team.name[0]}
-                        </div>
+                        <div className="rm-team-initial">{team.name[0]}</div>
                       )}
                     </div>
-                    <div className="flex-1">
-                      <div className="font-medium text-white">{team.name}</div>
-                      <div className="text-xs text-slate-400">
+                    <div className="rm-team-info">
+                      <div className="rm-team-name">{team.name}</div>
+                      <div className="rm-team-meta">
                         {team.members?.length || 1} thành viên
                       </div>
                     </div>
                     {selectedTeam === team._id && (
-                      <div className="text-sky-400">
+                      <div className="rm-check-icon">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
@@ -115,30 +108,23 @@ export default function RegistrationModal({ tournamentId, onClose }) {
                 ))}
               </div>
             ) : (
-              <div className="rounded-xl border border-dashed border-slate-700 p-4 text-center text-sm text-slate-400">
+              <div className="rm-empty-state">
                 Bạn chưa có đội tuyển nào.{" "}
-                <a
-                  href="/teams/create"
-                  className="text-sky-400 hover:underline"
-                >
+                <a href="/teams/create" className="rm-create-link">
                   Tạo đội ngay
                 </a>
               </div>
             )}
           </div>
 
-          <div className="mt-6 flex gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 rounded-xl border border-slate-700 bg-transparent py-2.5 text-sm font-semibold text-slate-300 hover:bg-slate-800"
-            >
+          <div className="rm-footer">
+            <button type="button" onClick={onClose} className="rm-btn-cancel">
               Hủy
             </button>
             <button
               type="submit"
               disabled={!selectedTeam || registerMutation.isPending}
-              className="flex-1 rounded-xl bg-sky-500 py-2.5 text-sm font-semibold text-white hover:bg-sky-400 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="rm-btn-submit"
             >
               {registerMutation.isPending ? "Đang xử lý..." : "Đăng ký ngay"}
             </button>

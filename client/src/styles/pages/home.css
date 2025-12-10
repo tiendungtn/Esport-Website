@@ -1,0 +1,99 @@
+.home-container {
+    @apply space-y-8;
+}
+
+.home-hero-section {
+    @apply rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-950 p-6 shadow-xl md:p-8;
+}
+
+.home-hero-badge {
+    @apply text-xs font-semibold uppercase tracking-[0.15em] text-sky-400;
+}
+
+.home-hero-title {
+    @apply mt-3 text-3xl font-semibold text-slate-50 md:text-4xl;
+}
+
+.home-hero-subtitle {
+    @apply mt-3 max-w-2xl text-sm text-slate-300 md:text-base;
+}
+
+.home-hero-actions {
+    @apply mt-5 flex flex-wrap gap-3;
+}
+
+.home-create-btn {
+    @apply inline-flex items-center rounded-full bg-sky-500 px-5 py-2.5 text-sm font-medium text-slate-950 hover:bg-sky-400;
+}
+
+.home-view-btn {
+    @apply inline-flex items-center rounded-full border border-slate-700 px-5 py-2.5 text-sm font-medium text-slate-100 hover:border-slate-500;
+}
+
+.home-tournaments-section {
+    @apply space-y-6;
+}
+
+.home-section-header {
+    @apply flex items-center justify-between;
+}
+
+.home-section-title {
+    @apply text-lg font-semibold text-slate-100;
+}
+
+.home-loading {
+    @apply text-sm text-slate-400;
+}
+
+.home-error {
+    @apply text-sm text-red-400;
+}
+
+.home-grid {
+    @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+.tournament-card {
+    @apply relative overflow-hidden rounded-xl border border-white/10 shadow-lg transition-all hover:scale-[1.02] hover:shadow-xl bg-gradient-to-br min-h-[200px];
+}
+
+.tournament-card-bg {
+    @apply absolute inset-0 opacity-40 mix-blend-overlay;
+}
+
+.tournament-card-img {
+    @apply h-full w-full object-cover grayscale transition-all group-hover:grayscale-0;
+}
+
+.tournament-card-content {
+    @apply relative flex flex-col justify-between p-6 h-full;
+}
+
+.tournament-card-header {
+    @apply space-y-3;
+}
+
+.tournament-card-title-row {
+    @apply flex items-start justify-between gap-2;
+}
+
+.tournament-card-title {
+    @apply line-clamp-2 text-xl font-bold text-white drop-shadow-md leading-tight;
+}
+
+.tournament-status-badge {
+    @apply shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white/90 shadow-sm backdrop-blur-md;
+}
+
+.tournament-card-footer {
+    @apply mt-4 space-y-1;
+}
+
+.tournament-game-name {
+    @apply text-xs font-bold text-white/90 uppercase tracking-wide;
+}
+
+.tournament-max-teams {
+    @apply text-xs font-medium text-white/70;
+}
