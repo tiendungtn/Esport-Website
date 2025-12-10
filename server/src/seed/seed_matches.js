@@ -36,20 +36,20 @@ try {
       continue;
     }
 
-    // Use new full bracket generation
+    // Sử dụng thuật toán tạo bracket đầy đủ mới
     const { generateFullSEBracket } = await import("../utils/bracket.js");
     const seeds = seedingByRegistration(regs);
     const matchesData = generateFullSEBracket(seeds, tour._id);
 
-    // Assign IDs first so we can link them
+    // Gán ID trước để liên kết
     const mongoose = await import("mongoose");
     matchesData.forEach((m) => {
-      // Use existing _id if present (unlikely for plain objects) or generate new
-      // seed script creates plain objects
+      // Dùng _id có sẵn nếu có hoặc tạo mới
+      // script seed tạo object thuần
       m._id = new mongoose.default.Types.ObjectId();
     });
 
-    // Link IDs
+    // Liên kết ID
     matchesData.forEach((m) => {
       if (m.nextMatchRef) {
         if (m.nextMatchSlot === "A") {

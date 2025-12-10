@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const teamSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true /*unique: true*/ },
+    name: { type: String, required: true /* unique: true */ },
     tag: String,
     game: String,
     logoUrl: String,

@@ -3,7 +3,7 @@ import Match from "../models/Match.js";
 import { io } from "../index.js";
 
 export async function listMatches(req, res) {
-  const { id } = req.params; // tournament id
+  const { id } = req.params; // ID giải đấu
   const matches = await Match.find({ tournamentId: id })
     .sort({ round: 1, createdAt: 1 })
     .populate("teamA", "name")
@@ -20,7 +20,7 @@ const reportSchema = z.object({
 });
 
 export async function reportMatch(req, res) {
-  const { id } = req.params; // match id
+  const { id } = req.params; // ID trận đấu
   const parse = reportSchema.safeParse(req.body);
   if (!parse.success) {
     return res.status(400).json({ message: "Invalid payload" });
@@ -65,7 +65,7 @@ export async function reportMatch(req, res) {
     scoreB: m.scoreB,
   });
 
-  // Also emit to the tournament room so the bracket updates
+  // Gửi sự kiện update cho room giải đấu để cập nhật bracket
   console.log(
     `Emitting score:update for match ${id} to tournament:${m.tournamentId}`
   );
@@ -89,21 +89,19 @@ export async function updateMatch(req, res) {
   if (!existing) return res.status(404).json({ message: "Match not found" });
 
   if (req.body.state !== "final" && existing.state === "final") {
-    // Prevent updating a final match unless we are specifically dealing with an admin override?
-    // User requirement: "không được cập nhật tỉ số sau khi kết thúc trận"
+    // Không cho phép cập nhật trận đấu đã kết thúc
     return res.status(400).json({
       message: "Cannot update a finalized match.",
       code: "MATCH_FINALIZED",
     });
   }
 
-  // Validate Score Limits
-  // Validate Score Limits
-  // Strict Enforcement: Round 1 = BO3, Round > 1 = BO5
+  // Kiểm tra giới hạn tỉ số
+  // Bắt buộc: Vòng 1 là BO3, các vòng sau là BO5
   const requiredBestOf = existing.round === 1 ? 3 : 5;
   const bestOf = requiredBestOf;
 
-  // Auto-heal if DB is wrong
+  // Tự sửa nếu DB sai
   if (existing.bestOf !== requiredBestOf) {
     await Match.findByIdAndUpdate(id, { $set: { bestOf: requiredBestOf } });
   }
@@ -133,7 +131,7 @@ export async function updateMatch(req, res) {
     scoreB: m.scoreB,
   });
 
-  // Also emit to the tournament room so the bracket updates
+  // Gửi sự kiện update cho room giải đấu để cập nhật bracket
   console.log(
     `Emitting score:update for match ${id} to tournament:${m.tournamentId}`
   );
@@ -147,20 +145,19 @@ export async function updateMatch(req, res) {
 }
 
 export async function confirmMatch(req, res) {
-  const { id } = req.params; // match id
+  const { id } = req.params; // ID trận đấu
 
-  // 1. Get current match to check scores and next match links
+  // 1. Lấy trận đấu hiện tại để kiểm tra tỉ số và các trận tiếp theo
   const m = await Match.findById(id);
   if (!m) return res.status(404).json({ message: "Match not found" });
 
   if (m.state === "final") {
-    return res.json(m); // Already final
+    return res.json(m); // Đã kết thúc
   }
 
-  // 2. Determine winner
-  // 2. Validate Best Of Rules
-  // Requirement: First round (1) is BO3. Others are BO5.
-  // We enforce this logic and auto-corret DB if needed.
+  // 2. Xác định người thắng
+  // Kiểm tra luật Best Of: Vòng 1 là BO3, còn lại BO5
+  // Tự động sửa lại DB nếu cần
   const requiredBestOf = m.round === 1 ? 3 : 5;
   if (m.bestOf !== requiredBestOf) {
     m.bestOf = requiredBestOf;
@@ -168,7 +165,7 @@ export async function confirmMatch(req, res) {
   }
 
   const winsNeeded = Math.ceil(m.bestOf / 2);
-  // BO3 (3/2=1.5->2 wins). BO5 (5/2 -> 3 wins).
+  // BO3 cần 2 thắng (3/2=1.5->2). BO5 cần 3 thắng (5/2 -> 3).
 
   if (m.scoreA < winsNeeded && m.scoreB < winsNeeded) {
     return res.status(400).json({
@@ -189,7 +186,7 @@ export async function confirmMatch(req, res) {
     return res.status(400).json({ message: "No winner determined." });
   }
 
-  // 3. Update current match state
+  // 3. Cập nhật trạng thái trận đấu
   m.state = "final";
   await m.save();
 
@@ -198,7 +195,7 @@ export async function confirmMatch(req, res) {
     state: m.state,
   });
 
-  // 4. Advance winner if exists
+  // 4. Đưa người thắng vào vòng trong (nếu có)
   if (winnerId) {
     let nextMatchId = null;
     let slot = null;
@@ -222,25 +219,15 @@ export async function confirmMatch(req, res) {
         console.log(
           `Advanced winner ${winnerId} to match ${nextMatchId} slot ${slot}`
         );
-        // Emit update for the next match so UI shows the team
+        // Gửi update cho trận tiếp theo để UI hiển thị team
         io.to(`tournament:${m.tournamentId}`).emit("match:update", {
           match: nextMatch,
         });
-        // Also specifically emit score:update if we want to refresh teams?
-        // Usually simpler to just refetch or emit a full match update event.
-        // The client likely listens to score:update, match:state.
-        // Let's check client listeners later. For now, sending a generic socket event
-        // might be useful, or piggyback on score:update with null scores?
-        // Actually, if we just updated the team, we should emit that.
-        // There isn't a "match:update" event standard yet in previous code,
-        // but let's add it or use "score:update" which transmits A/B scores?
-        // Better: "bracket:update" or just let the user refresh.
-        // But let's try to be helpful.
+
         io.to(`tournament:${m.tournamentId}`).emit("score:update", {
           matchId: nextMatchId,
-          teamA: nextMatch.teamA, // Only sending IDs might be confusing if client expects scores
+          teamA: nextMatch.teamA,
           teamB: nextMatch.teamB,
-          // Client probably re-fetches or we need to look at client code.
         });
       }
     }

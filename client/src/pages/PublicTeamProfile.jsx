@@ -52,7 +52,7 @@ export default function PublicTeamProfile() {
             team.members.map((member) => (
               <div key={member._id} className="ptp-member-card">
                 <div className="ptp-member-avatar-container">
-                  {/* Placeholder avatar if no profile image */}
+                  {/* Placeholder nếu không có ảnh profile */}
                   <div className="ptp-member-avatar-placeholder">
                     {member.profile?.name
                       ? member.profile.name.charAt(0).toUpperCase()

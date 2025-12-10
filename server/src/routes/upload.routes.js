@@ -9,7 +9,7 @@ const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Ensure uploads directory exists
+// Đảm bảo thư mục uploads tồn tại
 const uploadDir = path.join(__dirname, "../../uploads");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
@@ -32,8 +32,8 @@ router.post("/", upload.single("file"), (req, res) => {
     return res.status(400).json({ message: "No file uploaded" });
   }
 
-  // Return the URL to access the file
-  // Assuming the server serves 'uploads' directory at '/uploads'
+  // Trả về URL để truy cập file
+  // Server serve thư mục 'uploads' tại '/uploads'
   const fileUrl = `${req.protocol}://${req.get("host")}/uploads/${
     req.file.filename
   }`;

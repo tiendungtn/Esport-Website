@@ -263,7 +263,7 @@ function MembersModal({ isOpen, onClose, team }) {
   const [email, setEmail] = useState("");
   const [searchResult, setSearchResult] = useState([]);
 
-  // Fetch latest team data to get members
+  // Lấy dữ liệu team mới nhất để xem thành viên
   const { data: teamData } = useQuery({
     queryKey: ["team", team?._id],
     queryFn: async () => {

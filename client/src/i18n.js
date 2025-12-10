@@ -11,13 +11,13 @@ const resources = {
       SignIn: "Sign in",
       SignOut: "Sign out",
 
-      // Admin Tabs
+      // Các Tab Admin
       TournamentsTab: "Tournaments",
       TeamsTab: "Teams",
       PlayersTab: "Players",
       MatchesTab: "Matches",
 
-      // Home Page
+      // Trang chủ
       HUMG_Esports: "HUMG eSports",
       HeroTitle:
         "Manage & Organize eSports Tournaments for Clubs, Classes, and Schools.",
@@ -32,13 +32,13 @@ const resources = {
         "No tournaments yet. Be the first to create one in the Admin page.",
       MaxTeams: "Max {{count}} teams",
 
-      // Tournament Status
+      // Trạng thái giải đấu
       StatusOpen: "Register",
       StatusOngoing: "Ongoing",
       StatusFinished: "Finished",
       StatusDraft: "Draft",
 
-      // Admin Tournaments
+      // Quản lý giải đấu (Admin)
       ManageTournaments: "Manage Tournaments",
       TableName: "Tournament Name",
       TableGame: "Game",
@@ -56,7 +56,7 @@ const resources = {
       Save: "Save Changes",
       Saving: "Saving...",
 
-      // Admin Teams
+      // Quản lý đội tuyển (Admin)
       ManageTeams: "Manage Teams",
       AllGames: "All Games",
       CreateTeam: "Create Team",
@@ -81,7 +81,7 @@ const resources = {
       Close: "Close",
       AddMemberError: "Error adding member",
 
-      // Admin Players
+      // Quản lý tuyển thủ (Admin)
       ManagePlayers: "Manage Players",
       SearchPlayerPlaceholder: "Search players...",
       DisplayName: "Display Name",
@@ -89,7 +89,7 @@ const resources = {
       Role: "Role",
       JoinDate: "Join Date",
 
-      // Admin Matches
+      // Quản lý trận đấu (Admin)
       ManageMatches: "Manage Matches",
       SelectTournament: "Select tournament...",
       Round: "Round",
@@ -113,7 +113,7 @@ const resources = {
       Error_CONFIRM_WINS_NEEDED:
         "Match cannot be finished. Requires {{needed}} wins (Best of {{bestOf}}).",
 
-      // Tournament Page
+      // Trang giải đấu
       LoadingTournament: "Loading tournament...",
       TournamentNotFound: "Tournament not found.",
       TournamentDescription:
@@ -123,7 +123,7 @@ const resources = {
       LoadingMatches: "Loading matches...",
       ErrorLoadingMatches: "Failed to load matches.",
 
-      // Profile Page
+      // Trang hồ sơ
       ProfileManagement: "Profile Management",
       LoadingProfile: "Loading profile...",
       User: "User",
@@ -136,7 +136,7 @@ const resources = {
       EnterAvatarURL: "https://example.com/avatar.jpg",
       EnterPhoneNumber: "Enter your phone number",
 
-      // Login / Register
+      // Đăng nhập / Đăng ký
       SignInTitle: "Sign in",
       CreateAccount: "Create account",
       ForgotPasswordTitle: "Forgot password",

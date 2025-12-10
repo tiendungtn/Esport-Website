@@ -6,10 +6,10 @@ import Team from "../models/Team.js";
 import Tournament from "../models/Tournament.js";
 import Registration from "../models/Registration.js";
 
-// Connect to DB
+// Kết nối DB
 await connectDB(process.env.MONGO_URI);
 
-// Read new seed files
+// Đọc file seed mới
 const teamsData = JSON.parse(
   fs.readFileSync("./src/seed/additional_teams.seed.json", "utf-8")
 );
@@ -23,19 +23,19 @@ const registrationsData = JSON.parse(
 console.log("🧩 Seeding additional data...");
 
 for (const t of tournamentsData) {
-  // Create Tournament
+  // Tạo giải đấu
   const tour = await Tournament.create({
     ...t,
     organizerUser: new mongoose.Types.ObjectId(), // Random organizer ID
   });
   console.log(`🏆 Created Tournament: ${tour.name}`);
 
-  // Find teams for this game
+  // Tìm team cho game này
   const gameTeams = teamsData.find((g) => g.game === t.game);
 
   if (gameTeams) {
     for (const team of gameTeams.teams) {
-      // Create Team
+      // Tạo Team
       const teamDoc = await Team.create({
         ...team,
         game: t.game,
@@ -44,8 +44,8 @@ for (const t of tournamentsData) {
       });
       console.log(`  - Created Team: ${teamDoc.name} (${t.game})`);
 
-      // Find registration for this team in this tournament
-      // Note: registrationsData uses tournamentIndex which corresponds to the index in additional_tournaments.seed.json
+      // Tìm đăng ký cho team này trong giải này
+      // Lưu ý: registrationsData dùng tournamentIndex tương ứng với index trong additional_tournaments.seed.json
       const currentTournamentIndex = tournamentsData.indexOf(t);
       const reg = registrationsData.find(
         (r) =>

@@ -10,25 +10,25 @@ const teamSchema = z.object({
 
 import mongoose from "mongoose";
 
-// Helper to resolve potentially truncated IDs
+// Hàm hỗ trợ xử lý ID bị cắt bớt
 async function resolveTeamId(id, userId) {
   if (mongoose.isValidObjectId(id)) return id;
 
-  // If ID is malformed (e.g. truncated or has trailing characters), try fuzzy match
-  // Sanitize: remove non-hex characters
+  // Nếu ID bị lỗi (cắt bớt hoặc ký tự lạ), thử khớp mờ
+  // Làm sạch: bỏ ký tự không phải hex
   const cleanId = String(id).replace(/[^a-fA-F0-9]/g, "");
 
-  // Only attempt recovery if we have a reasonable amount of data (e.g. at least 6 chars)
-  if (cleanId.length < 6) return id; // Too short to be safe
+  // Chỉ thử khôi phục nếu đủ độ dài
+  if (cleanId.length < 6) return id; // Quá ngắn để an toàn
 
   console.warn(
     `[TeamResolve] Attempting to resolve malformed ID: "${id}" -> prefix "${cleanId}" for user ${userId}`
   );
 
-  // Find all teams owned by this user
+  // Tìm tất cả team của user này
   const teams = await Team.find({ ownerUser: userId }).select("_id");
 
-  // Look for a prefix match
+  // Tìm team có ID bắt đầu bằng chuỗi này
   const match = teams.find((t) => t._id.toString().startsWith(cleanId));
 
   if (match) {
@@ -36,7 +36,7 @@ async function resolveTeamId(id, userId) {
     return match._id;
   }
 
-  return id; // Return original if no match found
+  return id; // Trả về ID gốc nếu không tìm thấy
 }
 
 export async function createTeam(req, res) {
@@ -71,16 +71,15 @@ export async function listTeams(req, res) {
 }
 
 export async function getTeam(req, res) {
-  // getTeam is public, so we might not have req.user.id to narrow down search safely.
-  // However, standard get usually relies on valid ID. If generic public access uses malformed ID, it's 404.
-  // But if we want to fix it everywhere...
-  // For now, let's assume the issue is mainly in Admin (Owner) operations.
+  // getTeam là public, có thể không có req.user.id
+  // Tuy nhiên, public get thường dựa vào ID hợp lệ. Nếu public access sai ID -> 404.
+  // Giả sử vấn đề chủ yếu ở Admin (Owner).
 
   let id = req.params.id;
-  // Try simple sanitization for public get
+  // Thử làm sạch đơn giản cho public get
   if (!mongoose.isValidObjectId(id)) {
-    // If it looks like a truncated ID (hex only), we can't safely guess without owner context unless we search ALL teams, which is risky for collisions.
-    // But stripping trailing dot is always safe.
+    // Nếu ID bị cắt (chỉ hex), không thể đoán an toàn nếu không có ngữ cảnh owner.
+    // Nhưng bỏ dấu chấm cuối cùng thì an toàn.
     if (id.endsWith(".")) id = id.slice(0, -1);
   }
 

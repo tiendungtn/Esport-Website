@@ -128,7 +128,7 @@ export default function AdminMatches() {
 
 import AlertModal from "../../components/AlertModal";
 
-// ... (existing imports)
+// Các import khác
 
 function MatchModal({ isOpen, onClose, match }) {
   const { t } = useTranslation();
@@ -152,14 +152,11 @@ function MatchModal({ isOpen, onClose, match }) {
     let message = data?.message || defaultMsg;
 
     if (data?.code) {
-      // Try to translate using the error code and params
-      // Keys: Error_SCORE_LIMIT_EXCEEDED, Error_MATCH_FINALIZED, etc.
+      // Dịch lỗi theo mã (VD: Error_SCORE_LIMIT_EXCEEDED)
       const key = `Error_${data.code}`;
       const translated = t(key, data.params);
-      // If translation exists and is different from key, use it.
-      // i18next usually returns key if missing, or we can check i18n.exists()
-      // But standard t() usage returns key if missing (or we configured fallback).
-      // Let's assume if translated !== key, it's good.
+
+      // Dùng bản dịch nếu có (khác key gốc)
       if (translated && translated !== key) {
         message = translated;
       }

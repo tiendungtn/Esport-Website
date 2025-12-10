@@ -46,13 +46,13 @@ export default function LoginModal({ open = false, onClose }) {
       setLoading(true);
       if (mode === "login") {
         const res = await api.post("/api/auth/login", { email, password });
-        // Use context login instead of direct localStorage
+        // Sử dụng context login thay vì localStorage trực tiếp
         login(res.data.accessToken, res.data.user);
 
         setInfo(t("LoginSuccess"));
         setTimeout(() => {
           onClose?.();
-          // No need to reload, context will update state
+          // Không cần reload, context sẽ cập nhật state
         }, 400);
       } else if (mode === "register") {
         const res = await api.post("/api/auth/register", {

@@ -17,8 +17,8 @@ export function AuthProvider({ children }) {
           setUser(JSON.parse(storedUser));
           setIsAuthenticated(true);
         } else if (token) {
-          // Fallback if token exists but user data is missing (should verify with backend in real app)
-          // For now, we'll just set authenticated but no user details
+          // Fallback nếu có token nhưng mất user data (nên verify với backend)
+          // Tạm thời set authenticated nhưng không có chi tiết user
           setIsAuthenticated(true);
         }
       } catch (error) {
@@ -45,7 +45,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("user");
     setUser(null);
     setIsAuthenticated(false);
-    window.location.href = "/"; // Force redirect to home
+    window.location.href = "/"; // Buộc chuyển hướng về trang chủ
   };
 
   const value = {

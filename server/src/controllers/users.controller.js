@@ -12,7 +12,7 @@ const userSchema = z.object({
 export async function listUsers(req, res) {
   const { search } = req.query;
   const q = {
-    role: { $ne: "admin" }, // Exclude admins
+    role: { $ne: "admin" }, // Loại bỏ admin
     ...(search
       ? {
           $or: [
@@ -49,7 +49,7 @@ export async function updateProfile(req, res) {
 
   await user.save();
 
-  // Return the updated user without password hash
+  // Trả về user đã update (không kèm password hash)
   const updatedUser = await User.findById(req.user.id).select("-passwordHash");
   res.json(updatedUser);
 }

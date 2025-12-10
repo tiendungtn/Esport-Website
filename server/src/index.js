@@ -22,7 +22,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// --- middlewares ---
+// --- các middleware ---
 app.use(helmet());
 app.use(
   cors({
@@ -45,15 +45,15 @@ app.get("/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
-// --- routes ---
+// --- các route ---
 app.use("/api/auth", authRoutes);
 app.use("/api/tournaments", tournamentRoutes);
 app.use("/api/teams", teamRoutes);
-app.use("/api/matches", matchRoutes); // matchRoutes định nghĩa /tournaments/:id/matches & /matches/:id/*
+app.use("/api/matches", matchRoutes); // matchRoutes định nghĩa cho /tournaments/:id/matches & /matches/:id/*
 app.use("/api/users", usersRoutes);
 app.use("/api/upload", uploadRoutes);
 
-// --- error handler ---
+// --- xử lý lỗi ---
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).json({ message: "Internal server error" });

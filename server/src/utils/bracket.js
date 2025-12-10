@@ -1,4 +1,4 @@
-/** Utilities to generate brackets */
+/** Tiện ích tạo nhánh đấu */
 
 export function padToPowerOfTwo(list) {
   const size = 1 << Math.ceil(Math.log2(Math.max(list.length, 1)));
@@ -6,7 +6,7 @@ export function padToPowerOfTwo(list) {
 }
 
 export function seedingByRegistration(regs) {
-  // regs: [{teamId, seed?}] -> returns array of teamIds sorted by seed asc or original order
+  // regs: [{teamId, seed?}] -> trả về mảng teamId sắp xếp theo hạt giống hoặc thứ tự gốc
   return [...regs]
     .sort((a, b) => (a.seed ?? Infinity) - (b.seed ?? Infinity))
     .map((r) => r.teamId);
@@ -21,18 +21,18 @@ export function generateSERoundPairs(teamIds) {
 }
 
 /**
- * Generates a full Single Elimination bracket structure.
- * @param {string[]} teamIds - Array of team IDs (will be padded).
- * @param {string} tournamentId - The tournament ID.
- * @returns {object[]} Array of match objects (not yet saved).
+ * Tạo cấu trúc nhánh đấu loại trực tiếp (Single Elimination) đầy đủ.
+ * @param {string[]} teamIds - Mảng ID đội (sẽ được làm đầy).
+ * @param {string} tournamentId - ID giải đấu.
+ * @returns {object[]} Mảng đối tượng trận đấu (chưa lưu).
  */
 export function generateFullSEBracket(teamIds, tournamentId) {
   const padded = padToPowerOfTwo(teamIds);
   const n = padded.length; // Power of 2
   const totalRounds = Math.log2(n);
 
-  // 1. Generate rounds structure
-  // rounds[r] will be an array of match objects for round r (1-indexed)
+  // 1. Tạo cấu trúc các vòng đấu
+  // rounds[r] là mảng các trận đấu của vòng r (index từ 1)
   const rounds = {};
   for (let r = 1; r <= totalRounds; r++) {
     rounds[r] = [];
@@ -43,17 +43,17 @@ export function generateFullSEBracket(teamIds, tournamentId) {
         round: r,
         bestOf: r === 1 ? 3 : 5,
         matchIndex: i, // internal index to help linking
-        // We can pre-generate IDs here if we want, or let the caller/mongoose do it
-        // For linking, simpler to have objects reference each other in memory
-        // but we need IDs for the DB references.
-        // Let's assume we'll generate IDs before saving, or use temporary references.
-        // Actually, best to generate dummy IDs or expected index logic.
+        // Có thể tạo trước ID ở đây hoặc để caller/mongoose làm
+        // Để liên kết, dùng tham chiếu đối tượng trong bộ nhớ đơn giản hơn
+        // nhưng cần ID để tham chiếu DB.
+        // Giả sử sẽ tạo ID trước khi lưu hoặc dùng tham chiếu tạm.
+        // Tốt nhất là tạo ID giả hoặc logic index dự kiến.
       });
     }
   }
 
-  // 2. Link rounds
-  // Round r matches feed into Round r+1
+  // 2. Liên kết các vòng
+  // Trận ở vòng r dẫn đến vòng r+1
   for (let r = 1; r < totalRounds; r++) {
     const currentRound = rounds[r];
     const nextRound = rounds[r + 1];
@@ -64,15 +64,15 @@ export function generateFullSEBracket(teamIds, tournamentId) {
       const parentIndex = Math.floor(i / 2);
       const parentMatch = nextRound[parentIndex];
 
-      // Determine if this match feeds into Team A or Team B slot of parent
-      // Even index (0, 2, 4...) -> Team A (slot A)
-      // Odd index (1, 3, 5...) -> Team B (slot B)
-      // BUT verification:
-      // Round 1: Matches 0,1 feed Match 0 (R2). 0->A, 1->B. Correct.
+      // Xác định trận này dẫn vào slot Team A hay Team B của trận cha
+      // Index chẵn (0, 2, 4...) -> Team A (slot A)
+      // Index lẻ (1, 3, 5...) -> Team B (slot B)
+      // Kiểm tra:
+      // Vòng 1: Trận 0,1 vào Trận 0 (Vòng 2). 0->A, 1->B. Đúng.
       if (i % 2 === 0) {
-        currentMatch.nextMatchSlot = "A"; // logic helper
-        // We can't set ID yet if we don't have it.
-        // We will assign object references first.
+        currentMatch.nextMatchSlot = "A"; // hỗ trợ logic
+        // Chưa có ID nên chưa set được.
+        // Gán tham chiếu đối tượng trước.
         currentMatch.nextMatchRef = parentMatch;
       } else {
         currentMatch.nextMatchSlot = "B";
@@ -81,32 +81,18 @@ export function generateFullSEBracket(teamIds, tournamentId) {
     }
   }
 
-  // 3. Assign seeds to Round 1
-  // We use standard seeding: Match 0: 1 vs N, Match 1: 2 vs N-1 ??
-  // No, generateSERoundPairs does: 0 vs N-1, 1 vs N-2 ... (Indices)
-  // Let's reuse generateSERoundPairs logic for the pairing
-  // The 'pairs' function returns [ [id1, id2], [id3, id4] ... ]
-  // These correspond to Round 1 matches in order.
+  // 3. Gán hạt giống cho Vòng 1
+  // Dùng logic ghép cặp đơn giản của generateSERoundPairs: (0,15), (1,14)...
+  // Logic này (0 vs 15) và (1 vs 14) -> Vòng sau gặp nhau (0 vs 1).
+  // Hạt giống 1 và 2 gặp nhau ở Vòng 2 là không tốt cho xếp hạng chuẩn.
+  // Nhưng xếp hạng chuẩn phức tạp. Hiện tại giữ logic ghép cặp hiện có
+  // vì định nghĩa lại thuật toán xếp hạt giống nằm ngoài phạm vi/rủi ro.
+  // Chỉ cần đảm bảo nhánh đấu diễn ra.
+  // Map các cặp từ generateSERoundPairs vào các trận Vòng 1 (0..k)
 
-  // WAIT: generateSERoundPairs logic:
-  // pairs[i] = [ padded[i], padded[n-1-i] ]
-  // This is generic pairing. Is it "standard" bracket ordering?
-  // Standard: 1 vs 16, 8 vs 9, 5 vs 12, 4 vs 13... (for 16 teams)
-  // This simple "fold" logic: (0,15), (1,14)... puts 1 vs 16 and 2 vs 15.
-  // But usually 1 and 2 should meet in Final.
-  // With simple fold (0,15) and (1,14) -> Next round they meet?
-  // (0,15) -> Winner 0. (1,14) -> Winner 1.
-  // Next gen: Match 0 (from 0,15 and 1,14) -> 0 vs 1.
-  // So 1 and 2 meet in Round 2! That's bad for seeding.
-  // Standard seeding is complex. For now, let's STICK to the existing pairing logic
-  // because redefining seeding algorithm is out of scope / risky.
-  // We just want to make sure the bracket progresses.
-  // We will map the pairs returned by generateSERoundPairs to Round 1 matches 0..k
-
-  const round1Pairs = generateSERoundPairs(padded); // Array of [p1, p2]
-  // We need to distribute these pairs into Round 1 matches such that seeds are distributed?
-  // Given existing code just pushes to array, let's Assume Round 1 matches [0, 1, 2...]
-  // correspond to pairs [0, 1, 2...].
+  const round1Pairs = generateSERoundPairs(padded); // Mảng của [p1, p2]
+  // Phân phối các cặp này vào trận đấu Vòng 1.
+  // Giả sử trận Vòng 1 [0, 1, 2...] tương ứng với cặp [0, 1, 2...].
 
   round1Pairs.forEach((pair, idx) => {
     const match = rounds[1][idx];
@@ -116,7 +102,7 @@ export function generateFullSEBracket(teamIds, tournamentId) {
     }
   });
 
-  // Flatten structure
+  // Làm phẳng cấu trúc
   const allMatches = [];
   Object.values(rounds).forEach((roundMatches) => {
     allMatches.push(...roundMatches);

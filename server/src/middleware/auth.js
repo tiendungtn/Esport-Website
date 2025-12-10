@@ -7,7 +7,7 @@ export function auth(requiredRoles = []) {
     if (!token) return res.status(401).json({ message: "Missing token" });
     try {
       const payload = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = payload; // { id, role }
+      req.user = payload; // Lưu thông tin user (id, role)
       if (requiredRoles.length && !requiredRoles.includes(payload.role)) {
         return res.status(403).json({ message: "Forbidden" });
       }

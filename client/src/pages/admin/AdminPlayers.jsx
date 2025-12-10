@@ -13,7 +13,7 @@ export default function AdminPlayers() {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  // Form State
+  // State của form
   const [formData, setFormData] = useState({
     email: "",
     displayName: "",
@@ -73,7 +73,7 @@ export default function AdminPlayers() {
       email: user.email,
       displayName: user.profile?.displayName || "",
       role: user.role,
-      password: "", // Password empty on edit unless changing
+      password: "", // Password để trống khi edit trừ khi muốn đổi
     });
     setIsModalOpen(true);
   };
@@ -96,12 +96,12 @@ export default function AdminPlayers() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (selectedUser) {
-      // Update
+      // Cập nhật
       const updateData = { ...formData };
       if (!updateData.password) delete updateData.password;
       updateMutation.mutate({ id: selectedUser._id, data: updateData });
     } else {
-      // Create
+      // Tạo mới
       createMutation.mutate(formData);
     }
   };
@@ -197,7 +197,7 @@ export default function AdminPlayers() {
         </table>
       </div>
 
-      {/* Create/Edit Modal */}
+      {/* Modal Tạo/Sửa */}
       {isModalOpen && (
         <div className="apm-overlay">
           <div className="apm-content">
@@ -299,7 +299,7 @@ export default function AdminPlayers() {
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
+      {/* Modal Xác nhận xóa */}
       {isDeleteOpen && (
         <div className="apm-overlay">
           <div className="apm-delete-content">

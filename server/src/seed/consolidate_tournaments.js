@@ -23,10 +23,10 @@ const normalizeGame = (game) => {
 
 console.log("🔄 Consolidating tournaments...");
 
-// 1. Get all tournaments
+// 1. Lấy tất cả giải đấu
 const tournaments = await Tournament.find({});
 
-// 2. Group by normalized game
+// 2. Nhóm theo game đã chuẩn hóa
 const groups = {};
 for (const t of tournaments) {
   const game = normalizeGame(t.game);
@@ -34,16 +34,16 @@ for (const t of tournaments) {
   groups[game].push(t);
 }
 
-// 3. Process each group
+// 3. Xử lý từng nhóm
 for (const [game, tours] of Object.entries(groups)) {
   if (tours.length <= 1) continue;
 
   console.log(`\nProcessing ${game} (${tours.length} tournaments)...`);
 
-  // Find the target "Championship" tournament
+  // Tìm giải đấu "Championship" đích
   let target = tours.find((t) => t.name.includes("Championship"));
 
-  // If no "Championship" found, or multiple, just pick the one with "Championship" or the first one
+  // Nếu không thấy "Championship" hoặc có nhiều, chọn cái có tên "Championship" hoặc cái đầu tiên
   if (!target) {
     console.log(
       `  ⚠️ No 'Championship' found for ${game}, skipping auto-merge.`
@@ -58,14 +58,14 @@ for (const [game, tours] of Object.entries(groups)) {
 
     console.log(`  ➡ Merging from: ${t.name} (${t._id})`);
 
-    // Move registrations
+    // Di chuyển đăng ký
     const result = await Registration.updateMany(
       { tournamentId: t._id },
       { tournamentId: target._id }
     );
     console.log(`     Moved ${result.modifiedCount} registrations.`);
 
-    // Delete the old tournament
+    // Xóa giải đấu cũ
     await Tournament.findByIdAndDelete(t._id);
     console.log(`     Deleted tournament: ${t.name}`);
   }

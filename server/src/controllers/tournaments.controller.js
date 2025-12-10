@@ -100,7 +100,7 @@ export async function registerTeam(req, res) {
     const reg = await Registration.create({
       tournamentId: id,
       teamId: parse.data.teamId,
-      status: "approved", // cho đơn giản: auto-approve
+      status: "approved", // Tự động duyệt
     });
     res.status(201).json(reg);
   } catch (err) {
@@ -142,15 +142,14 @@ export async function generateBracket(req, res) {
     return res.status(400).json({ message: "Not enough teams" });
   }
 
-  // Use new full bracket generation
+  // Sử dụng thuật toán tạo bracket đầy đủ mới
   const { generateFullSEBracket } = await import("../utils/bracket.js");
   const matchesData = generateFullSEBracket(seeds, id);
 
-  // Assign IDs first so we can link them
-  // We need to map object references to IDs
-  // existing matchesData objects have 'nextMatchRef' pointing to another object in the same array
+  // Gán ID trước để liên kết
+  // Chúng ta cần map các tham chiếu object tới ID
 
-  // 1. Give everyone an ID
+  // 1. Tạo ID cho tất cả trận đấu
   const mongoose = await import("mongoose");
   matchesData.forEach((m) => {
     m._id = new mongoose.default.Types.ObjectId();
@@ -164,19 +163,17 @@ export async function generateBracket(req, res) {
       } else {
         m.nextMatchIdB = m.nextMatchRef._id;
       }
-      // Cleanup temp props
+      // Xóa các thuộc tính tạm
       delete m.nextMatchRef;
       delete m.nextMatchSlot;
     }
-    // Cleanup temp props
+    // Xóa các thuộc tính tạm
     delete m.matchIndex;
   });
 
-  // 3. Save
-  // Note: teamA/teamB might be null for non-first-rounds, which is allowed by schema?
-  // Checking schema: teamA: { type: ObjectId, ref: 'Team' } - not required. OK.
+  // 3. Lưu vào DB
+  // Lưu ý: teamA/teamB có thể null cho các vòng sau (được phép theo schema)
 
-  // Clean up any remaining temp props if necessary
   const created = await Match.insertMany(matchesData);
 
   res.status(201).json({ matches: created });

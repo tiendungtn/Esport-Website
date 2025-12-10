@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "../styles/components/bracket-viewer.css";
 
-/** Simple Single-Elimination Bracket Viewer */
+/** Hiển thị Bracket Single-Elimination đơn giản */
 export default function BracketViewer({ matches = [] }) {
   if (!matches.length)
     return (

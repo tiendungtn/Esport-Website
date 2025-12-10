@@ -35,23 +35,23 @@ export const COMMON_TERMS_VI_TO_EN = {
   "Giải Mời": "Invitational",
 };
 
-// Game names are STORED in database in Vietnamese
-// This function translates from Vietnamese (database) to current language
+// Tên game được lưu trong DB là Tiếng Việt
+// Hàm dịch từ Tiếng Việt (DB) sang ngôn ngữ hiện tại
 export const translateGameName = (gameNameFromDB) => {
   if (!gameNameFromDB) return gameNameFromDB;
 
   const currentLang = i18n.language;
 
-  // If current language is English, translate Vietnamese -> English
+  // Nếu là Tiếng Anh, dịch Việt -> Anh
   if (currentLang === "en") {
     return GAME_NAMES_VI_TO_EN[gameNameFromDB] || gameNameFromDB;
   }
 
-  // If Vietnamese, return as-is (already in Vietnamese)
+  // Nếu là Tiếng Việt, trả về nguyên gốc
   return gameNameFromDB;
 };
 
-// Translate tournament name by replacing game names and common terms
+// Dịch tên giải đấu bằng cách thay thế tên game và từ thông dụng
 export const translateTournamentName = (tournamentName) => {
   if (!tournamentName) return tournamentName;
 
@@ -59,24 +59,24 @@ export const translateTournamentName = (tournamentName) => {
   let translatedName = tournamentName;
 
   if (currentLang === "en") {
-    // 1. Replace Vietnamese game names with English
+    // 1. Thay thế tên game Vi -> Anh
     Object.entries(GAME_NAMES_VI_TO_EN).forEach(([vi, en]) => {
       if (vi !== en) {
         translatedName = translatedName.replace(new RegExp(vi, "gi"), en);
       }
     });
-    // 2. Replace Vietnamese common terms with English
+    // 2. Thay thế từ thông dụng Vi -> Anh
     Object.entries(COMMON_TERMS_VI_TO_EN).forEach(([vi, en]) => {
       translatedName = translatedName.replace(new RegExp(vi, "gi"), en);
     });
   } else {
-    // 1. Replace English game names with Vietnamese
+    // 1. Thay thế tên game Anh -> Vi
     Object.entries(GAME_NAMES_EN_TO_VI).forEach(([en, vi]) => {
       if (en !== vi) {
         translatedName = translatedName.replace(new RegExp(en, "gi"), vi);
       }
     });
-    // 2. Replace English common terms with Vietnamese
+    // 2. Thay thế từ thông dụng Anh -> Vi
     Object.entries(COMMON_TERMS_EN_TO_VI).forEach(([en, vi]) => {
       translatedName = translatedName.replace(new RegExp(en, "gi"), vi);
     });
@@ -85,7 +85,7 @@ export const translateTournamentName = (tournamentName) => {
   return translatedName;
 };
 
-// Get all game names in current language for dropdowns/selects
+// Lấy tên tất cả game theo ngôn ngữ hiện tại cho dropdown
 export const getGameNames = () => {
   const currentLang = i18n.language;
 
@@ -110,13 +110,13 @@ export const getGameNames = () => {
   }
 };
 
-// Convert from display name (could be EN or VI) back to Vietnamese for saving to DB
+// Chuyển từ tên hiển thị (Anh hoặc Việt) về Tiếng Việt để lưu DB
 export const gameNameToDB = (displayName) => {
-  // If it's an English name, map to Vietnamese
+  // Nếu là tên Anh, map về Việt
   if (GAME_NAMES_EN_TO_VI[displayName]) {
     return GAME_NAMES_EN_TO_VI[displayName];
   }
 
-  // Otherwise it's already Vietnamese (or invalid/custom)
+  // Ngược lại thì đã là Việt (hoặc custom)
   return displayName;
 };
