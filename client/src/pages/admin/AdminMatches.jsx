@@ -214,9 +214,13 @@ function MatchModal({ isOpen, onClose, match }) {
             </p>
             <input
               type="number"
+              min="0"
               value={form.scoreA}
               onChange={(e) =>
-                setForm({ ...form, scoreA: Number(e.target.value) })
+                setForm({
+                  ...form,
+                  scoreA: Math.max(0, Number(e.target.value)),
+                })
               }
               className="w-20 rounded-md border border-slate-800 bg-slate-900 p-2 text-center text-xl font-bold text-slate-100 focus:border-sky-500 focus:outline-none"
             />
@@ -228,9 +232,13 @@ function MatchModal({ isOpen, onClose, match }) {
             </p>
             <input
               type="number"
+              min="0"
               value={form.scoreB}
               onChange={(e) =>
-                setForm({ ...form, scoreB: Number(e.target.value) })
+                setForm({
+                  ...form,
+                  scoreB: Math.max(0, Number(e.target.value)),
+                })
               }
               className="w-20 rounded-md border border-slate-800 bg-slate-900 p-2 text-center text-xl font-bold text-slate-100 focus:border-sky-500 focus:outline-none"
             />

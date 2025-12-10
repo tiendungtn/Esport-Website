@@ -138,19 +138,42 @@ export async function generateBracket(req, res) {
     return res.status(400).json({ message: "Not enough teams" });
   }
 
-  const pairs = generateSERoundPairs(seeds);
-  const created = [];
+  // Use new full bracket generation
+  const { generateFullSEBracket } = await import("../utils/bracket.js");
+  const matchesData = generateFullSEBracket(seeds, id);
 
-  for (const [a, b] of pairs) {
-    const m = await Match.create({
-      tournamentId: id,
-      teamA: a,
-      teamB: b,
-      round: 1,
-      state: "scheduled",
-    });
-    created.push(m);
-  }
+  // Assign IDs first so we can link them
+  // We need to map object references to IDs
+  // existing matchesData objects have 'nextMatchRef' pointing to another object in the same array
+
+  // 1. Give everyone an ID
+  const mongoose = await import("mongoose");
+  matchesData.forEach((m) => {
+    m._id = new mongoose.default.Types.ObjectId();
+  });
+
+  // 2. Link IDs
+  matchesData.forEach((m) => {
+    if (m.nextMatchRef) {
+      if (m.nextMatchSlot === "A") {
+        m.nextMatchIdA = m.nextMatchRef._id;
+      } else {
+        m.nextMatchIdB = m.nextMatchRef._id;
+      }
+      // Cleanup temp props
+      delete m.nextMatchRef;
+      delete m.nextMatchSlot;
+    }
+    // Cleanup temp props
+    delete m.matchIndex;
+  });
+
+  // 3. Save
+  // Note: teamA/teamB might be null for non-first-rounds, which is allowed by schema?
+  // Checking schema: teamA: { type: ObjectId, ref: 'Team' } - not required. OK.
+
+  // Clean up any remaining temp props if necessary
+  const created = await Match.insertMany(matchesData);
 
   res.status(201).json({ matches: created });
 }

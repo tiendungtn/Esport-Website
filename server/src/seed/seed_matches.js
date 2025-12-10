@@ -36,34 +36,37 @@ try {
       continue;
     }
 
-    // Xử lý logic chia cặp (giống hệt controller)
+    // Use new full bracket generation
+    const { generateFullSEBracket } = await import("../utils/bracket.js");
     const seeds = seedingByRegistration(regs);
-    const pairs = generateSERoundPairs(seeds);
+    const matchesData = generateFullSEBracket(seeds, tour._id);
 
-    console.log(
-      `   ✅ Số đội: ${regs.length} -> Sinh ra ${pairs.length} cặp đấu vòng 1.`
-    );
+    // Assign IDs first so we can link them
+    const mongoose = await import("mongoose");
+    matchesData.forEach((m) => {
+      // Use existing _id if present (unlikely for plain objects) or generate new
+      // seed script creates plain objects
+      m._id = new mongoose.default.Types.ObjectId();
+    });
 
-    const matchesToInsert = [];
+    // Link IDs
+    matchesData.forEach((m) => {
+      if (m.nextMatchRef) {
+        if (m.nextMatchSlot === "A") {
+          m.nextMatchIdA = m.nextMatchRef._id;
+        } else {
+          m.nextMatchIdB = m.nextMatchRef._id;
+        }
+        delete m.nextMatchRef;
+        delete m.nextMatchSlot;
+      }
+      delete m.matchIndex;
+    });
 
-    // Tạo các trận đấu vòng 1
-    for (const [teamAId, teamBId] of pairs) {
-      matchesToInsert.push({
-        tournamentId: tour._id,
-        round: 1, // Vòng 1
-        teamA: teamAId, // Có thể null nếu là đội Bye (nhưng logic padding đã handle)
-        teamB: teamBId,
-        scoreA: 0,
-        scoreB: 0,
-        state: "scheduled", // Trạng thái chưa đá
-        bestOf: 1,
-      });
-    }
-
-    if (matchesToInsert.length > 0) {
-      await Match.insertMany(matchesToInsert);
+    if (matchesData.length > 0) {
+      await Match.insertMany(matchesData);
       console.log(
-        `   🎉 Đã tạo thành công ${matchesToInsert.length} trận đấu vào DB.`
+        `   🎉 Đã tạo thành công ${matchesData.length} trận đấu vào DB.`
       );
 
       // Cập nhật trạng thái giải đấu sang "ongoing" để hiện thị đúng trên UI

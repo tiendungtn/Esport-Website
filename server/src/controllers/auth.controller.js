@@ -34,7 +34,7 @@ export async function register(req, res) {
   const accessToken = jwt.sign(
     { id: user._id, role: user.role },
     process.env.JWT_SECRET,
-    { expiresIn: "1h" }
+    { expiresIn: "7d" }
   );
 
   res.status(201).json({
@@ -74,7 +74,7 @@ export async function login(req, res) {
   const accessToken = jwt.sign(
     { id: user._id, role: user.role },
     process.env.JWT_SECRET,
-    { expiresIn: "1h" }
+    { expiresIn: "7d" }
   );
 
   res.json({
