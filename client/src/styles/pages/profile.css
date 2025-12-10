@@ -77,3 +77,44 @@
 .profile-submit-btn {
     @apply w-full bg-sky-600 hover:bg-sky-500 text-white font-medium py-2 px-4 rounded transition-colors;
 }
+
+/* My Teams Section */
+.profile-section-title {
+    @apply text-xl font-bold mt-8 mb-4 text-slate-100 flex items-center justify-between;
+}
+
+.profile-teams-grid {
+    @apply grid gap-4 grid-cols-1 sm:grid-cols-2;
+}
+
+.profile-team-card {
+    @apply flex items-center gap-3 p-3 rounded-lg border border-slate-700 bg-slate-800/50 hover:bg-slate-800 hover:border-sky-500/50 transition-all cursor-pointer;
+}
+
+.profile-team-logo {
+    @apply h-10 w-10 rounded object-cover bg-slate-900 border border-slate-700;
+}
+
+.profile-team-placeholder {
+    @apply h-10 w-10 rounded flex items-center justify-center bg-slate-900 border border-slate-700 text-slate-500 font-bold;
+}
+
+.profile-team-info {
+    @apply flex-1 min-w-0;
+}
+
+.profile-team-name {
+    @apply font-medium text-slate-200 truncate;
+}
+
+.profile-team-role {
+    @apply text-xs text-slate-500;
+}
+
+.profile-create-team-btn {
+    @apply text-sm font-medium text-sky-400 hover:text-sky-300 flex items-center gap-1;
+}
+
+.profile-empty-teams {
+    @apply text-center py-8 border border-dashed border-slate-700 rounded-lg text-slate-400 bg-slate-900/30;
+}

@@ -19,6 +19,7 @@ import ForgotPassword from "./pages/ForgotPassword.jsx";
 import LoginModal from "./pages/LoginModal.jsx";
 import Profile from "./pages/Profile.jsx";
 import PublicTeamProfile from "./pages/PublicTeamProfile.jsx";
+import CreateTeam from "./pages/CreateTeam.jsx";
 import humgLogo from "./img/icon-humg.png";
 import "./styles/components/shell-layout.css";
 
@@ -185,6 +186,7 @@ function AppContent() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/teams/:id" element={<PublicTeamProfile />} />
+          <Route path="/teams/create" element={<CreateTeam />} />
         </Route>
       </Routes>
 

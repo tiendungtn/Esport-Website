@@ -1,67 +1,161 @@
+/* Container & Layout */
 .ptp-container {
-    @apply mx-auto max-w-3xl;
+    @apply mx-auto max-w-5xl px-6 py-12;
 }
 
 .ptp-loading {
-    @apply p-8 text-center text-slate-400;
+    @apply flex min-h-[50vh] items-center justify-center text-lg font-medium text-slate-400;
 }
 
 .ptp-error {
-    @apply p-8 text-center text-red-400;
+    @apply mx-auto mt-12 max-w-lg rounded-xl border border-red-500/20 bg-red-500/10 p-6 text-center text-red-400;
 }
 
+/* Header Section */
 .ptp-header {
-    @apply mb-8 flex items-center gap-6 rounded-xl border border-slate-800 bg-slate-900/50 p-6 backdrop-blur-sm;
+    @apply relative mb-12 flex flex-col items-center gap-8 overflow-hidden rounded-3xl border border-slate-700/50 bg-slate-900/60 p-10 text-center backdrop-blur-xl md:flex-row md:text-left;
+    box-shadow: 0 0 40px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* Background Glow Effect */
+.ptp-header::before {
+    content: "";
+    @apply absolute -top-1/2 left-0 h-full w-full bg-gradient-to-r from-sky-500/10 to-cyan-500/10 blur-3xl;
+    pointer-events: none;
 }
 
 .ptp-logo {
-    @apply h-24 w-24 rounded-lg object-cover shadow-lg;
+    @apply relative z-10 h-32 w-32 rounded-2xl object-cover shadow-2xl ring-4 ring-slate-800/50;
 }
 
 .ptp-logo-placeholder {
-    @apply flex h-24 w-24 items-center justify-center rounded-lg bg-slate-800 text-3xl font-bold text-slate-600;
+    @apply relative z-10 flex h-32 w-32 items-center justify-center rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 text-5xl font-bold text-slate-600 shadow-2xl ring-4 ring-slate-800/50;
+}
+
+.ptp-info {
+    @apply relative z-10 flex-1;
 }
 
 .ptp-name {
-    @apply text-3xl font-bold text-slate-100;
+    @apply mb-3 text-4xl font-extrabold text-white;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.ptp-meta {
+    @apply flex flex-wrap items-center justify-center gap-3 md:justify-start;
 }
 
 .ptp-tag {
-    @apply mt-2 inline-block rounded bg-slate-800 px-2 py-0.5 text-sm font-medium text-slate-400;
+    @apply rounded-lg bg-slate-800 px-3 py-1 font-mono text-sm font-bold text-slate-400 border border-slate-700;
 }
 
 .ptp-game {
-    @apply mt-2 text-sm text-sky-400 font-medium;
+    @apply rounded-lg bg-sky-500/10 px-3 py-1 text-sm font-bold text-sky-400 border border-sky-500/20;
 }
 
-.ptp-roster-section {
-    @apply rounded-xl border border-slate-800 bg-slate-900/50 p-6 backdrop-blur-sm;
+/* Content Section */
+.ptp-content {
+    @apply rounded-3xl border border-slate-800/50 bg-slate-900/40 p-8 backdrop-blur-md;
 }
 
-.ptp-roster-title {
-    @apply mb-4 text-xl font-semibold text-slate-200;
+.ptp-section-header {
+    @apply mb-8 flex items-center justify-between border-b border-slate-800/50 pb-6;
 }
 
+.ptp-section-title {
+    @apply text-2xl font-bold text-white;
+}
+
+.ptp-add-btn {
+    @apply flex items-center gap-2 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 px-5 py-2.5 text-sm font-bold text-white shadow-lg transition-all hover:scale-105 hover:from-sky-400 hover:to-cyan-400 hover:shadow-cyan-500/20 active:scale-95;
+}
+
+/* Roster Grid */
 .ptp-roster-grid {
-    @apply grid gap-4 sm:grid-cols-2;
+    @apply grid gap-6 sm:grid-cols-2 lg:grid-cols-3;
 }
 
 .ptp-member-card {
-    @apply flex items-center gap-3 rounded-lg border border-slate-700/50 bg-slate-800/50 p-3;
+    @apply relative flex items-center gap-4 rounded-xl border border-slate-700/30 bg-slate-800/20 p-4 transition-all hover:border-sky-500/30 hover:bg-slate-800/40;
 }
 
 .ptp-member-avatar-container {
-    @apply h-10 w-10 overflow-hidden rounded-full bg-slate-700;
+    @apply h-12 w-12 flex-shrink-0 overflow-hidden rounded-full ring-2 ring-slate-700/50 transition-all group-hover:ring-sky-500/50;
 }
 
 .ptp-member-avatar-placeholder {
-    @apply flex h-full w-full items-center justify-center text-slate-400 font-bold;
+    @apply flex h-full w-full items-center justify-center bg-slate-700 font-bold text-slate-400;
+}
+
+.ptp-member-info {
+    @apply min-w-0 flex-1;
 }
 
 .ptp-member-name {
-    @apply font-medium text-slate-200;
+    @apply truncate font-bold text-slate-200 group-hover:text-white;
 }
 
 .ptp-member-email {
-    @apply text-xs text-slate-400;
+    @apply truncate text-xs text-slate-500 group-hover:text-slate-400;
+}
+
+.ptp-captain-badge {
+    @apply ml-2 inline-flex items-center rounded-md bg-yellow-500/10 px-1.5 py-0.5 text-[10px] font-bold uppercase text-yellow-500 ring-1 ring-inset ring-yellow-500/20;
+}
+
+.ptp-remove-btn {
+    @apply absolute right-3 top-3 rounded-lg p-2 text-slate-500 opacity-0 transition-all hover:bg-red-500/10 hover:text-red-400 group-hover:opacity-100;
+}
+
+.ptp-empty-roster {
+    @apply col-span-full py-16 text-center text-slate-500;
+}
+
+/* Modal Styles */
+.ptp-modal-overlay {
+    @apply fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4;
+}
+
+.ptp-modal {
+    @apply w-full max-w-md overflow-hidden rounded-2xl border border-slate-700 bg-slate-900 shadow-2xl;
+}
+
+.ptp-modal-header {
+    @apply flex items-center justify-between border-b border-slate-800 bg-slate-800/50 p-6;
+}
+
+.ptp-modal-title {
+    @apply text-lg font-bold text-white;
+}
+
+.ptp-modal-close {
+    @apply rounded-lg p-1 text-slate-400 hover:bg-slate-700 hover:text-white;
+}
+
+.ptp-modal-body {
+    @apply p-6;
+}
+
+.ptp-search-form {
+    @apply relative mb-6;
+}
+
+.ptp-search-input {
+    @apply w-full rounded-xl border border-slate-700 bg-slate-950/50 py-3 pl-11 pr-4 text-slate-200 placeholder-slate-500 transition-all focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500;
+}
+
+.ptp-search-icon {
+    @apply absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500;
+}
+
+.ptp-search-btn {
+    @apply absolute right-2 top-1/2 -translate-y-1/2 rounded-lg bg-slate-800 p-1.5 text-slate-400 hover:bg-slate-700 hover:text-white;
+}
+
+.ptp-result-item {
+    @apply mb-2 flex items-center justify-between rounded-xl border border-slate-800 bg-slate-800/30 p-4 transition-all hover:border-sky-500/30 hover:bg-slate-800/50;
+}
+
+.ptp-result-add-btn {
+    @apply rounded-lg bg-sky-500/20 px-4 py-2 text-xs font-bold text-sky-400 transition-all hover:bg-sky-500 hover:text-white;
 }

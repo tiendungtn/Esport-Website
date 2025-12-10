@@ -232,12 +232,49 @@ function TeamModal({ isOpen, onClose, team }) {
             />
           </div>
           <div>
-            <label className="atem-label">{t("LogoURL")}</label>
-            <input
-              value={form.logoUrl}
-              onChange={(e) => setForm({ ...form, logoUrl: e.target.value })}
-              className="atem-input"
-            />
+            <label className="atem-label">{t("Logo")}</label>
+            <div className="flex items-center gap-4">
+              <div className="relative w-16 h-16 bg-gray-700/50 rounded-lg overflow-hidden border border-gray-600 flex items-center justify-center shrink-0">
+                {form.logoUrl ? (
+                  <img
+                    src={form.logoUrl}
+                    alt="Logo Preview"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-gray-500 text-xs text-center px-1">
+                    No Logo
+                  </span>
+                )}
+              </div>
+              <div className="flex-1">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+
+                    const formData = new FormData();
+                    formData.append("file", file);
+
+                    try {
+                      // setLoading(true);
+                      const res = await api.post("/api/upload", formData, {
+                        headers: { "Content-Type": "multipart/form-data" },
+                      });
+                      setForm({ ...form, logoUrl: res.data.url });
+                    } catch (err) {
+                      console.error("Upload failed", err);
+                      alert("Failed to upload image");
+                    } finally {
+                      // setLoading(false);
+                    }
+                  }}
+                  className="atem-input file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100 dark:file:bg-gray-700 dark:file:text-gray-200"
+                />
+              </div>
+            </div>
           </div>
           <div className="atem-footer">
             <button type="button" onClick={onClose} className="atem-btn-cancel">

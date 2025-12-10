@@ -3,9 +3,9 @@ import Team from "../models/Team.js";
 
 const teamSchema = z.object({
   name: z.string().min(2),
-  tag: z.string().optional(),
+  tag: z.string().optional().or(z.literal("")),
   game: z.string().optional(),
-  logoUrl: z.string().url().optional(),
+  logoUrl: z.string().url().optional().or(z.literal("")),
 });
 
 import mongoose from "mongoose";
@@ -43,6 +43,20 @@ export async function createTeam(req, res) {
   const parse = teamSchema.safeParse(req.body);
   if (!parse.success)
     return res.status(400).json({ message: "Invalid payload" });
+
+  // Check unique name per game
+  if (parse.data.name && parse.data.game) {
+    const existing = await Team.findOne({
+      name: new RegExp(`^${parse.data.name}$`, "i"),
+      game: parse.data.game,
+    });
+    if (existing) {
+      return res
+        .status(400)
+        .json({ message: "Team name already taken for this game" });
+    }
+  }
+
   const team = await Team.create({
     ...parse.data,
     ownerUser: req.user.id,
@@ -52,7 +66,10 @@ export async function createTeam(req, res) {
 }
 
 export async function listMyTeams(req, res) {
-  const teams = await Team.find({ ownerUser: req.user.id })
+  // Find teams where user is owner OR member
+  const teams = await Team.find({
+    $or: [{ ownerUser: req.user.id }, { members: req.user.id }],
+  })
     .sort({ createdAt: -1 })
     .populate("members", "profile email");
   res.json(teams);
@@ -97,11 +114,12 @@ export async function updateTeam(req, res) {
 
   const id = await resolveTeamId(req.params.id, req.user.id);
 
-  const team = await Team.findOneAndUpdate(
-    { _id: id, ownerUser: req.user.id },
-    parse.data,
-    { new: true }
-  );
+  const query = { _id: id };
+  if (req.user.role !== "admin") {
+    query.ownerUser = req.user.id;
+  }
+
+  const team = await Team.findOneAndUpdate(query, parse.data, { new: true });
   if (!team)
     return res.status(404).json({ message: "Team not found or unauthorized" });
   res.json(team);
@@ -109,10 +127,11 @@ export async function updateTeam(req, res) {
 
 export async function deleteTeam(req, res) {
   const id = await resolveTeamId(req.params.id, req.user.id);
-  const team = await Team.findOneAndDelete({
-    _id: id,
-    ownerUser: req.user.id,
-  });
+  const query = { _id: id };
+  if (req.user.role !== "admin") {
+    query.ownerUser = req.user.id;
+  }
+  const team = await Team.findOneAndDelete(query);
   if (!team)
     return res.status(404).json({ message: "Team not found or unauthorized" });
   res.json({ message: "Team deleted" });
@@ -123,15 +142,22 @@ export async function addMember(req, res) {
   if (!userId) return res.status(400).json({ message: "User ID required" });
 
   const id = await resolveTeamId(req.params.id, req.user.id);
-  const team = await Team.findOne({
-    _id: id,
-    ownerUser: req.user.id,
-  });
+  const query = { _id: id };
+  if (req.user.role !== "admin") {
+    query.ownerUser = req.user.id;
+  }
+
+  const team = await Team.findOne(query);
   if (!team)
     return res.status(404).json({ message: "Team not found or unauthorized" });
 
   if (team.members.includes(userId))
     return res.status(400).json({ message: "User already in team" });
+
+  // Limit max members
+  if (team.members.length >= 10) {
+    return res.status(400).json({ message: "Team limit reached (max 10)" });
+  }
 
   team.members.push(userId);
   await team.save();
@@ -141,12 +167,18 @@ export async function addMember(req, res) {
 export async function removeMember(req, res) {
   const { userId } = req.body;
   const id = await resolveTeamId(req.params.id, req.user.id);
-  const team = await Team.findOne({
-    _id: id,
-    ownerUser: req.user.id,
-  });
+  const query = { _id: id };
+  if (req.user.role !== "admin") {
+    query.ownerUser = req.user.id;
+  }
+  const team = await Team.findOne(query);
   if (!team)
     return res.status(404).json({ message: "Team not found or unauthorized" });
+
+  // Prevent removing owner
+  if (userId === team.ownerUser.toString()) {
+    return res.status(400).json({ message: "Cannot remove team owner" });
+  }
 
   team.members = team.members.filter((m) => m.toString() !== userId);
   await team.save();

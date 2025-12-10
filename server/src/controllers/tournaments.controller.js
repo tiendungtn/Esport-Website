@@ -1,5 +1,6 @@
 import { z } from "zod";
 import Tournament from "../models/Tournament.js";
+import Team from "../models/Team.js";
 import Registration from "../models/Registration.js";
 import Match from "../models/Match.js";
 import {
@@ -89,6 +90,18 @@ const registerSchema = z.object({
   teamId: z.string().min(1),
 });
 
+const MIN_MEMBERS_MAPPING = {
+  "League of Legends": 5,
+  "Liên Minh Huyền Thoại": 5,
+  "Wild Rift": 5,
+  "Tốc Chiến": 5,
+  "Arena of Valor": 5,
+  "Liên Quân": 5,
+  Valorant: 5,
+  CS2: 5,
+  "FC Online": 1,
+};
+
 export async function registerTeam(req, res) {
   const { id } = req.params; // tournamentId
   const parse = registerSchema.safeParse(req.body);
@@ -97,6 +110,30 @@ export async function registerTeam(req, res) {
   }
 
   try {
+    const tournament = await Tournament.findById(id);
+    if (!tournament)
+      return res.status(404).json({ message: "Tournament not found" });
+
+    const team = await Team.findById(parse.data.teamId);
+    if (!team) return res.status(404).json({ message: "Team not found" });
+
+    // Validate Game Matching
+    if (team.game && team.game !== tournament.game) {
+      return res.status(400).json({
+        message: `Team game (${team.game}) does not match tournament game (${tournament.game})`,
+      });
+    }
+
+    // Validate Min Members
+    const minRequired = MIN_MEMBERS_MAPPING[tournament.game] || 1;
+    if (team.members.length < minRequired) {
+      return res.status(400).json({
+        message: `Team must have at least ${minRequired} members to register for ${tournament.game}`,
+      });
+    }
+
+    // Check if user is authorized (Owner or Captain validation could go here, but omitted for brevity/scope)
+
     const reg = await Registration.create({
       tournamentId: id,
       teamId: parse.data.teamId,

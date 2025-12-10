@@ -23,7 +23,11 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // --- các middleware ---
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  })
+);
 app.use(
   cors({
     origin: process.env.CLIENT_URL?.split(",") || "http://localhost:5173",

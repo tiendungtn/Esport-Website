@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../lib/api";
 import "../styles/components/registration-modal.css";
@@ -110,9 +111,9 @@ export default function RegistrationModal({ tournamentId, onClose }) {
             ) : (
               <div className="rm-empty-state">
                 Bạn chưa có đội tuyển nào.{" "}
-                <a href="/teams/create" className="rm-create-link">
+                <Link to="/teams/create" className="rm-create-link">
                   Tạo đội ngay
-                </a>
+                </Link>
               </div>
             )}
           </div>

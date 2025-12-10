@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const teamSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true /* unique: true */ },
+    name: { type: String, required: true },
     tag: String,
     game: String,
     logoUrl: String,
@@ -14,5 +14,5 @@ const teamSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-teamSchema.index({ name: 1 }, { unique: true });
+teamSchema.index({ name: 1, game: 1 }, { unique: true });
 export default mongoose.model("Team", teamSchema);

@@ -1,0 +1,41 @@
+.ct-container {
+    @apply mx-auto max-w-2xl px-6 py-12;
+}
+
+.ct-title {
+    @apply mb-8 text-3xl font-bold bg-gradient-to-r from-sky-400 to-cyan-400 bg-clip-text text-transparent text-center;
+}
+
+.ct-form-card {
+    @apply rounded-2xl border border-slate-700/50 bg-slate-900/50 p-8 backdrop-blur-md shadow-xl;
+}
+
+.ct-error {
+    @apply mb-6 rounded-lg border border-red-500/20 bg-red-500/10 p-4 text-center text-red-400 text-sm font-medium;
+}
+
+.ct-label {
+    @apply mb-2 block text-sm font-semibold text-slate-300;
+}
+
+.ct-input-group {
+    @apply mb-6;
+}
+
+.ct-input {
+    @apply w-full rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-3 text-slate-100 placeholder-slate-500 transition-all;
+    @apply focus:border-sky-500 focus:bg-slate-800 focus:outline-none focus:ring-1 focus:ring-sky-500;
+}
+
+.ct-footer {
+    @apply mt-8 flex items-center justify-end gap-4 border-t border-slate-700/50 pt-6;
+}
+
+.ct-btn-cancel {
+    @apply rounded-lg px-6 py-2.5 text-sm font-semibold text-slate-400 transition-colors hover:bg-slate-800 hover:text-white;
+}
+
+.ct-btn-submit {
+    @apply rounded-lg bg-gradient-to-r from-sky-500 to-cyan-500 px-8 py-2.5 text-sm font-bold text-white shadow-lg transition-all;
+    @apply hover:from-sky-400 hover:to-cyan-400 hover:shadow-cyan-500/20 disabled:opacity-50 disabled:cursor-not-allowed;
+}
