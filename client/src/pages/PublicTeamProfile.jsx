@@ -40,7 +40,7 @@ export default function PublicTeamProfile() {
           />
         ) : (
           <div className="flex h-24 w-24 items-center justify-center rounded-lg bg-slate-800 text-3xl font-bold text-slate-600">
-            {team.name.charAt(0).toUpperCase()}
+            {(team.name || "?").charAt(0).toUpperCase()}
           </div>
         )}
         <div>

@@ -41,6 +41,7 @@ export function generateFullSEBracket(teamIds, tournamentId) {
       rounds[r].push({
         tournamentId,
         round: r,
+        bestOf: r === 1 ? 3 : 5,
         matchIndex: i, // internal index to help linking
         // We can pre-generate IDs here if we want, or let the caller/mongoose do it
         // For linking, simpler to have objects reference each other in memory

@@ -136,6 +136,10 @@ export default function AdminMatches() {
   );
 }
 
+import AlertModal from "../../components/AlertModal";
+
+// ... (existing imports)
+
 function MatchModal({ isOpen, onClose, match }) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
@@ -146,6 +150,38 @@ function MatchModal({ isOpen, onClose, match }) {
   const [proofUrls, setProofUrls] = useState(match?.proofUrls || []);
   const [newLink, setNewLink] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+  const [alertState, setAlertState] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    type: "error",
+  });
+
+  const handleError = (error, defaultMsg) => {
+    const data = error.response?.data;
+    let message = data?.message || defaultMsg;
+
+    if (data?.code) {
+      // Try to translate using the error code and params
+      // Keys: Error_SCORE_LIMIT_EXCEEDED, Error_MATCH_FINALIZED, etc.
+      const key = `Error_${data.code}`;
+      const translated = t(key, data.params);
+      // If translation exists and is different from key, use it.
+      // i18next usually returns key if missing, or we can check i18n.exists()
+      // But standard t() usage returns key if missing (or we configured fallback).
+      // Let's assume if translated !== key, it's good.
+      if (translated && translated !== key) {
+        message = translated;
+      }
+    }
+
+    setAlertState({
+      isOpen: true,
+      title: t("Error"),
+      message: message,
+      type: "error",
+    });
+  };
 
   const updateMutation = useMutation({
     mutationFn: async (data) =>
@@ -154,6 +190,7 @@ function MatchModal({ isOpen, onClose, match }) {
       queryClient.invalidateQueries({ queryKey: ["matches"] });
       onClose();
     },
+    onError: (error) => handleError(error, "Failed to update match"),
   });
 
   const confirmMutation = useMutation({
@@ -163,6 +200,7 @@ function MatchModal({ isOpen, onClose, match }) {
       queryClient.invalidateQueries({ queryKey: ["matches"] });
       onClose();
     },
+    onError: (error) => handleError(error, "Failed to confirm match"),
   });
 
   const handleFileUpload = async (e) => {
@@ -339,6 +377,14 @@ function MatchModal({ isOpen, onClose, match }) {
             {t("Close")}
           </button>
         </div>
+
+        <AlertModal
+          isOpen={alertState.isOpen}
+          onClose={() => setAlertState({ ...alertState, isOpen: false })}
+          title={alertState.title}
+          message={alertState.message}
+          type={alertState.type}
+        />
       </div>
     </div>
   );

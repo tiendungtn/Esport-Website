@@ -107,6 +107,11 @@ const resources = {
       UpdateScoreBtn: "Update Score",
       ConfirmResult: "Confirm Result (End Match)",
       UploadFailed: "Upload failed",
+      Error_SCORE_LIMIT_EXCEEDED:
+        "Score cannot exceed {{max}} for a Best of {{bestOf}} match.",
+      Error_MATCH_FINALIZED: "Cannot update a finalized match.",
+      Error_CONFIRM_WINS_NEEDED:
+        "Match cannot be finished. Requires {{needed}} wins (Best of {{bestOf}}).",
 
       // Tournament Page
       LoadingTournament: "Loading tournament...",
@@ -257,6 +262,11 @@ const resources = {
       UpdateScoreBtn: "Cập nhật tỉ số",
       ConfirmResult: "Xác nhận kết quả (Kết thúc trận)",
       UploadFailed: "Upload thất bại",
+      Error_SCORE_LIMIT_EXCEEDED:
+        "Tỉ số không được quá {{max}} trong trận BO{{bestOf}}.",
+      Error_MATCH_FINALIZED: "Không thể cập nhật trận đấu đã kết thúc.",
+      Error_CONFIRM_WINS_NEEDED:
+        "Chưa đủ điều kiện kết thúc. Cần thắng {{needed}} ván (BO{{bestOf}}).",
 
       // Tournament Page
       LoadingTournament: "Đang tải giải đấu...",

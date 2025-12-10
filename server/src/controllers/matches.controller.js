@@ -26,6 +26,33 @@ export async function reportMatch(req, res) {
     return res.status(400).json({ message: "Invalid payload" });
   }
 
+  const existing = await Match.findById(id);
+  if (!existing) return res.status(404).json({ message: "Match not found" });
+
+  // Validate Score Limits
+  // Validate Score Limits
+  // Strict Enforcement: Round 1 = BO3, Round > 1 = BO5
+  const requiredBestOf = existing.round === 1 ? 3 : 5;
+  const bestOf = requiredBestOf;
+
+  // Auto-heal if DB is wrong
+  if (existing.bestOf !== requiredBestOf) {
+    await Match.findByIdAndUpdate(id, { $set: { bestOf: requiredBestOf } });
+  }
+
+  const maxScore = Math.ceil(bestOf / 2);
+
+  if (
+    (parse.data.scoreA !== undefined && parse.data.scoreA > maxScore) ||
+    (parse.data.scoreB !== undefined && parse.data.scoreB > maxScore)
+  ) {
+    return res.status(400).json({
+      message: `Score cannot exceed ${maxScore} for a Best of ${bestOf} match.`,
+      code: "SCORE_LIMIT_EXCEEDED",
+      params: { max: maxScore, bestOf },
+    });
+  }
+
   const m = await Match.findByIdAndUpdate(
     id,
     { $set: { ...parse.data, state: "reported" } },
@@ -58,13 +85,47 @@ export async function updateMatch(req, res) {
     return res.status(400).json({ message: "Invalid payload" });
   }
 
+  const existing = await Match.findById(id);
+  if (!existing) return res.status(404).json({ message: "Match not found" });
+
+  if (req.body.state !== "final" && existing.state === "final") {
+    // Prevent updating a final match unless we are specifically dealing with an admin override?
+    // User requirement: "không được cập nhật tỉ số sau khi kết thúc trận"
+    return res.status(400).json({
+      message: "Cannot update a finalized match.",
+      code: "MATCH_FINALIZED",
+    });
+  }
+
+  // Validate Score Limits
+  // Validate Score Limits
+  // Strict Enforcement: Round 1 = BO3, Round > 1 = BO5
+  const requiredBestOf = existing.round === 1 ? 3 : 5;
+  const bestOf = requiredBestOf;
+
+  // Auto-heal if DB is wrong
+  if (existing.bestOf !== requiredBestOf) {
+    await Match.findByIdAndUpdate(id, { $set: { bestOf: requiredBestOf } });
+  }
+
+  const maxScore = Math.ceil(bestOf / 2);
+
+  if (
+    (parse.data.scoreA !== undefined && parse.data.scoreA > maxScore) ||
+    (parse.data.scoreB !== undefined && parse.data.scoreB > maxScore)
+  ) {
+    return res.status(400).json({
+      message: `Score cannot exceed ${maxScore} for a Best of ${bestOf} match.`,
+      code: "SCORE_LIMIT_EXCEEDED",
+      params: { max: maxScore, bestOf },
+    });
+  }
+
   const m = await Match.findByIdAndUpdate(
     id,
     { $set: parse.data },
     { new: true }
   );
-
-  if (!m) return res.status(404).json({ message: "Match not found" });
 
   io.to(`match:${id}`).emit("score:update", {
     matchId: id,
@@ -97,15 +158,36 @@ export async function confirmMatch(req, res) {
   }
 
   // 2. Determine winner
+  // 2. Validate Best Of Rules
+  // Requirement: First round (1) is BO3. Others are BO5.
+  // We enforce this logic and auto-corret DB if needed.
+  const requiredBestOf = m.round === 1 ? 3 : 5;
+  if (m.bestOf !== requiredBestOf) {
+    m.bestOf = requiredBestOf;
+    await m.save();
+  }
+
+  const winsNeeded = Math.ceil(m.bestOf / 2);
+  // BO3 (3/2=1.5->2 wins). BO5 (5/2 -> 3 wins).
+
+  if (m.scoreA < winsNeeded && m.scoreB < winsNeeded) {
+    return res.status(400).json({
+      message: `Match cannot be finished. Requires ${winsNeeded} wins (Best of ${m.bestOf}). Current: ${m.scoreA}-${m.scoreB}`,
+      code: "CONFIRM_WINS_NEEDED",
+      params: { needed: winsNeeded, bestOf: m.bestOf },
+    });
+  }
+
   let winnerId = null;
   if (m.scoreA > m.scoreB) {
     winnerId = m.teamA;
   } else if (m.scoreB > m.scoreA) {
     winnerId = m.teamB;
   }
-  // If draw, we can't confirm? Or handled elsewhere?
-  // Assuming BO1 or valid scores. If draw, maybe don't advance?
-  // For now, if no winner, we just don't advance anyone.
+
+  if (!winnerId) {
+    return res.status(400).json({ message: "No winner determined." });
+  }
 
   // 3. Update current match state
   m.state = "final";
