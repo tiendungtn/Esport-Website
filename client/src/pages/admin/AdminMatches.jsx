@@ -23,8 +23,11 @@ export default function AdminMatches() {
 
   const { data: matches, isLoading } = useQuery({
     queryKey: ["matches", selectedTournament],
-    queryFn: async () =>
-      (await api.get(`/api/tournaments/${selectedTournament}/matches`)).data,
+    queryFn: async () => {
+      if (!selectedTournament) return [];
+      return (await api.get(`/api/tournaments/${selectedTournament}/matches`))
+        .data;
+    },
     enabled: !!selectedTournament,
   });
 

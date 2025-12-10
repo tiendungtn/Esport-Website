@@ -56,11 +56,12 @@ export async function updateTournament(req, res) {
     return res.status(400).json({ message: "Invalid payload" });
   }
 
-  const t = await Tournament.findOneAndUpdate(
-    { _id: id, organizerUser: req.user.id },
-    parse.data,
-    { new: true }
-  );
+  const query = { _id: id };
+  if (req.user.role !== "admin") {
+    query.organizerUser = req.user.id;
+  }
+
+  const t = await Tournament.findOneAndUpdate(query, parse.data, { new: true });
   if (!t)
     return res
       .status(404)
@@ -70,10 +71,13 @@ export async function updateTournament(req, res) {
 
 export async function deleteTournament(req, res) {
   const { id } = req.params;
-  const t = await Tournament.findOneAndDelete({
-    _id: id,
-    organizerUser: req.user.id,
-  });
+
+  const query = { _id: id };
+  if (req.user.role !== "admin") {
+    query.organizerUser = req.user.id;
+  }
+
+  const t = await Tournament.findOneAndDelete(query);
   if (!t)
     return res
       .status(404)
