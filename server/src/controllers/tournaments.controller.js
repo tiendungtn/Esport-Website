@@ -102,6 +102,18 @@ const MIN_MEMBERS_MAPPING = {
   "FC Online": 1,
 };
 
+const NORMALIZE_GAME_NAME = {
+  "Liên Minh Huyền Thoại": "League of Legends",
+  "League of Legends": "League of Legends",
+  "Đấu Trường Chân Lý": "TFT",
+  TFT: "TFT",
+  "Liên Quân Mobile": "Arena of Valor",
+  "Arena of Valor": "Arena of Valor",
+  Valorant: "Valorant",
+  CS2: "CS2",
+  "FC Online": "FC Online",
+};
+
 export async function registerTeam(req, res) {
   const { id } = req.params; // tournamentId
   const parse = registerSchema.safeParse(req.body);
@@ -118,7 +130,10 @@ export async function registerTeam(req, res) {
     if (!team) return res.status(404).json({ message: "Team not found" });
 
     // Validate Game Matching
-    if (team.game && team.game !== tournament.game) {
+    const teamGame = NORMALIZE_GAME_NAME[team.game] || team.game;
+    const tourGame = NORMALIZE_GAME_NAME[tournament.game] || tournament.game;
+
+    if (team.game && teamGame !== tourGame) {
       return res.status(400).json({
         message: `Team game (${team.game}) does not match tournament game (${tournament.game})`,
       });
