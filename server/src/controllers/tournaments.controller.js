@@ -147,7 +147,12 @@ export async function registerTeam(req, res) {
       });
     }
 
-    // Check if user is authorized (Owner or Captain validation could go here, but omitted for brevity/scope)
+    // Check if user is authorized (Owner only)
+    if (team.ownerUser.toString() !== req.user.id) {
+      return res.status(403).json({
+        message: "Only the team captain can register for tournaments",
+      });
+    }
 
     const reg = await Registration.create({
       tournamentId: id,

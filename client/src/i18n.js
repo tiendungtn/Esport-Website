@@ -161,6 +161,8 @@ const resources = {
       RegisterNow: "Register Now",
       MemberCount: "{{count}} member",
       MemberCount_other: "{{count}} members",
+      OnlyCaptainCanRegister:
+        "Only the team captain can register for tournaments.",
 
       // Admin Teams (Misc)
       NoLogo: "No Logo",
@@ -411,7 +413,10 @@ const resources = {
       Processing: "Đang xử lý...",
       RegisterNow: "Đăng ký ngay",
       MemberCount: "{{count}} thành viên",
+      MemberCount: "{{count}} thành viên",
       MemberCount_other: "{{count}} thành viên",
+      OnlyCaptainCanRegister:
+        "Chỉ có đội trưởng mới được phép đăng ký tham gia giải đấu.",
 
       // Admin Teams (Misc)
       NoLogo: "Không có Logo",

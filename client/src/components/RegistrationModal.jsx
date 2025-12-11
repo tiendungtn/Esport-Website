@@ -50,8 +50,13 @@ export default function RegistrationModal({ tournamentId, onClose }) {
       });
     },
     onError: (err) => {
-      const errorMessage =
-        err.response?.data?.message || t("RegistrationFailed");
+      let errorMessage = err.response?.data?.message || t("RegistrationFailed");
+
+      if (
+        errorMessage === "Only the team captain can register for tournaments"
+      ) {
+        errorMessage = t("OnlyCaptainCanRegister");
+      }
       // setError(errorMessage); // We can just use the AlertModal for the error now, or both.
       // Let's use AlertModal for better consistency as requested.
       setAlertState({
