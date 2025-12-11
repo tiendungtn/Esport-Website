@@ -21,6 +21,8 @@ export default function AdminTeams() {
   const [isMembersModalOpen, setIsMembersModalOpen] = useState(false);
   const [selectedTeamForMembers, setSelectedTeamForMembers] = useState(null);
   const [selectedGame, setSelectedGame] = useState("");
+  const [teamToDelete, setTeamToDelete] = useState(null);
+  const [deleteSuccessMessage, setDeleteSuccessMessage] = useState("");
 
   const { data: teams, isLoading } = useQuery({
     queryKey: ["teams", selectedGame],
@@ -37,12 +39,15 @@ export default function AdminTeams() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["teams"] });
+      setDeleteSuccessMessage(t("TeamDeletedSuccess"));
     },
   });
 
-  const handleDelete = async (id) => {
-    if (confirm(t("DeleteTeamConfirm"))) {
-      deleteMutation.mutate(id);
+  const handleDelete = (id) => {
+    // Find team object
+    const team = teams.find((t) => t._id === id);
+    if (team) {
+      setTeamToDelete(team);
     }
   };
 
@@ -158,6 +163,78 @@ export default function AdminTeams() {
           onClose={() => setIsMembersModalOpen(false)}
           team={selectedTeamForMembers}
         />
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {teamToDelete && (
+        <div className="atem-overlay">
+          <div className="atem-content">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="atem-title text-xl text-red-500">
+                {t("ConfirmDeleteTeam")}
+              </h3>
+              <button
+                onClick={() => setTeamToDelete(null)}
+                className="text-slate-400 hover:text-white"
+              >
+                <Trash2 size={20} className="hidden" />X
+              </button>
+            </div>
+            <p className="text-slate-300 mb-6">
+              {t("AreYouSureDeleteTeam", {
+                name: teamToDelete.name,
+              })}
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setTeamToDelete(null)}
+                className="px-4 py-2 rounded bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors"
+                style={{ height: "40px", lineHeight: "1" }} // Inline fix matches button style
+              >
+                {t("Cancel")}
+              </button>
+              <button
+                onClick={() => {
+                  deleteMutation.mutate(teamToDelete._id);
+                  setTeamToDelete(null);
+                }}
+                className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-500 transition-colors"
+                style={{ height: "40px", lineHeight: "1" }}
+              >
+                {t("Delete")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Modal */}
+      {deleteSuccessMessage && (
+        <div className="atem-overlay">
+          <div className="atem-content">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="atem-title text-xl text-green-500">
+                {t("RegistrationSuccessTitle")}
+              </h3>
+              <button
+                onClick={() => setDeleteSuccessMessage("")}
+                className="text-slate-400 hover:text-white"
+              >
+                X
+              </button>
+            </div>
+            <p className="text-slate-300 mb-6">{deleteSuccessMessage}</p>
+            <div className="flex justify-end">
+              <button
+                onClick={() => setDeleteSuccessMessage("")}
+                className="px-4 py-2 rounded bg-violet-600 text-white hover:bg-violet-500 transition-colors"
+                style={{ height: "40px", lineHeight: "1" }}
+              >
+                {t("Close")}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

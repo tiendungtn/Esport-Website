@@ -15,11 +15,11 @@
 }
 
 .at-table-container {
-    @apply rounded-lg border border-slate-800 bg-slate-900/50 overflow-hidden;
+    @apply rounded-lg border border-slate-800 bg-slate-900/50 overflow-x-auto;
 }
 
 .at-table {
-    @apply w-full text-left text-sm text-slate-400;
+    @apply w-full text-left text-sm text-slate-400 min-w-[800px];
 }
 
 .at-thead {
