@@ -19,6 +19,8 @@ export default function PublicTeamProfile() {
   const [searchEmail, setSearchEmail] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [searchError, setSearchError] = useState("");
+  const [memberToRemove, setMemberToRemove] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const {
     data: team,
@@ -54,6 +56,7 @@ export default function PublicTeamProfile() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["team", id]);
+      setSuccessMessage(t("MemberRemovedSuccess"));
     },
     onError: (err) => {
       alert(err.response?.data?.message || t("FailedToRemoveMember"));
@@ -149,12 +152,8 @@ export default function PublicTeamProfile() {
                 {isOwner && team.ownerUser?._id !== member._id && (
                   <button
                     className="ptp-remove-btn"
-                    onClick={() => {
-                      if (confirm(t("ConfirmRemoveMember"))) {
-                        removeMemberMutation.mutate(member._id);
-                      }
-                    }}
-                    title="Remove member"
+                    onClick={() => setMemberToRemove(member)}
+                    title={t("RemoveMember")}
                   >
                     <Trash2 size={16} />
                   </button>
@@ -222,6 +221,83 @@ export default function PublicTeamProfile() {
                     {t("PressEnterToSearch")}
                   </p>
                 )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Remove Member Confirmation Modal */}
+      {memberToRemove && (
+        <div className="ptp-modal-overlay">
+          <div className="ptp-modal">
+            <div className="ptp-modal-header">
+              <h3 className="ptp-modal-title">{t("ConfirmRemoveMember")}</h3>
+              <button
+                onClick={() => setMemberToRemove(null)}
+                className="ptp-modal-close"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <div className="ptp-modal-body">
+              <p className="text-slate-300 mb-6">
+                {t("AreYouSureRemoveMember", {
+                  name:
+                    memberToRemove.profile?.displayName || memberToRemove.email,
+                }) ||
+                  `${t("AreYouSureRemoveMember")} ${
+                    memberToRemove.profile?.displayName || memberToRemove.email
+                  }?`}
+              </p>
+              <div className="flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setMemberToRemove(null)}
+                  className="px-4 py-2 rounded bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors"
+                >
+                  {t("Cancel")}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    removeMemberMutation.mutate(memberToRemove._id);
+                    setMemberToRemove(null);
+                  }}
+                  className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-500 transition-colors"
+                >
+                  {t("Remove")}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Modal */}
+      {successMessage && (
+        <div className="ptp-modal-overlay">
+          <div className="ptp-modal">
+            <div className="ptp-modal-header">
+              <h3 className="ptp-modal-title">
+                {t("RegistrationSuccessTitle")}
+              </h3>
+              <button
+                onClick={() => setSuccessMessage("")}
+                className="ptp-modal-close"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <div className="ptp-modal-body">
+              <p className="text-slate-300 mb-6">{successMessage}</p>
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setSuccessMessage("")}
+                  className="px-4 py-2 rounded bg-violet-600 text-white hover:bg-violet-500 transition-colors"
+                >
+                  {t("Close")}
+                </button>
               </div>
             </div>
           </div>
