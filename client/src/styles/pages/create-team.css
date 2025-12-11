@@ -27,6 +27,40 @@
     @apply focus:border-sky-500 focus:bg-slate-800 focus:outline-none focus:ring-1 focus:ring-sky-500;
 }
 
+/* New classes extracted for CreateTeam.jsx */
+.ct-grid {
+    @apply grid grid-cols-1 gap-6 sm:grid-cols-2;
+}
+
+.ct-logo-section {
+    @apply flex items-center gap-4;
+}
+
+.ct-logo-preview {
+    @apply relative w-16 h-16 bg-gray-700/50 rounded-lg overflow-hidden border border-gray-600 flex items-center justify-center shrink-0;
+}
+
+.ct-logo-img {
+    @apply w-full h-full object-cover;
+}
+
+.ct-logo-placeholder {
+    @apply text-gray-500 text-xs text-center px-1;
+}
+
+.ct-file-input-wrapper {
+    @apply flex-1;
+}
+
+/* File input styling is tricky with @apply but we can try basic classes */
+.ct-file-input {
+    @apply w-full rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-3 text-slate-100 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100 dark:file:bg-gray-700 dark:file:text-gray-200;
+}
+
+.ct-help-text {
+    @apply text-xs text-gray-400 mt-1;
+}
+
 .ct-footer {
     @apply mt-8 flex items-center justify-end gap-4 border-t border-slate-700/50 pt-6;
 }

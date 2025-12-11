@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Check, X, AlertCircle, RefreshCw } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { api } from "../../lib/api";
-import "../../styles/pages/admin.css";
+import "../../styles/pages/admin-registrations.css";
 
 // Helper component for status badges
 const StatusBadge = ({ status }) => {
   const { t } = useTranslation();
   const styles = {
-    pending: "bg-yellow-100 text-yellow-800 border-yellow-200",
-    approved: "bg-green-100 text-green-800 border-green-200",
-    rejected: "bg-red-100 text-red-800 border-red-200",
+    pending: "atem-badge-pending",
+    approved: "atem-badge-approved",
+    rejected: "atem-badge-rejected",
   };
 
   const labels = {
@@ -20,11 +20,7 @@ const StatusBadge = ({ status }) => {
   };
 
   return (
-    <span
-      className={`px-2 py-1 rounded-full text-xs font-medium border ${
-        styles[status] || styles.pending
-      }`}
-    >
+    <span className={`atem-badge ${styles[status] || styles.pending}`}>
       {labels[status] || status}
     </span>
   );
@@ -89,25 +85,22 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
   return (
     <div className="atem-overlay">
       <div className="atem-content-lg">
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="atem-title mb-0">{t("RegistrationListTitle")}</h3>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-200"
-          >
+        <div className="atem-header-row">
+          <h3 className="atem-title">{t("RegistrationListTitle")}</h3>
+          <button onClick={onClose} className="atem-close-btn">
             <X size={24} />
           </button>
         </div>
 
-        <div className="admin-filters mb-4 flex gap-2">
+        <div className="atem-filters">
           {["all", "pending", "approved", "rejected"].map((f) => (
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-3 py-1 rounded text-sm ${
+              className={`atem-filter-btn ${
                 filter === f
-                  ? "bg-indigo-600 text-white"
-                  : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                  ? "atem-filter-btn-active"
+                  : "atem-filter-btn-inactive"
               }`}
             >
               {f === "all" && t("StatusAll")}
@@ -119,90 +112,82 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
         </div>
 
         {error && (
-          <div className="bg-red-900/20 border border-red-500/50 text-red-200 p-4 rounded-lg mb-4 flex items-center gap-2">
+          <div className="atem-error">
             <AlertCircle size={20} />
             {error}
           </div>
         )}
 
         {loading ? (
-          <div className="text-center py-8 text-gray-400">
-            {t("LoadRegistrations")}
-          </div>
+          <div className="atem-loading">{t("LoadRegistrations")}</div>
         ) : (
-          <div className="overflow-hidden rounded-lg border border-gray-700">
-            <div className="max-h-[60vh] overflow-y-auto custom-scrollbar">
-              <table className="w-full text-left border-collapse relative">
-                <thead className="sticky top-0 bg-gray-900 z-10 shadow-sm border-b border-gray-700 text-gray-400 text-sm">
+          <div className="atem-table-container">
+            <div className="atem-table-scroll custom-scrollbar">
+              <table className="atem-table">
+                <thead className="atem-thead">
                   <tr>
-                    <th className="p-3">{t("TeamName")}</th>
-                    <th className="p-3">{t("Members")}</th>
-                    <th className="p-3">{t("Date")}</th>
-                    <th className="p-3">{t("TableStatus")}</th>
-                    <th className="p-3">{t("TableActions")}</th>
+                    <th className="atem-th">{t("TeamName")}</th>
+                    <th className="atem-th">{t("Members")}</th>
+                    <th className="atem-th">{t("Date")}</th>
+                    <th className="atem-th">{t("TableStatus")}</th>
+                    <th className="atem-th">{t("TableActions")}</th>
                   </tr>
                 </thead>
-                <tbody className="text-sm">
+                <tbody className="atem-tbody">
                   {filteredRegistrations.length === 0 ? (
                     <tr>
-                      <td
-                        colSpan="5"
-                        className="text-center py-8 text-gray-500"
-                      >
+                      <td colSpan="5" className="atem-empty-row">
                         {t("NoRegistrationsFilter")}
                       </td>
                     </tr>
                   ) : (
                     filteredRegistrations.map((reg) => (
-                      <tr
-                        key={reg._id}
-                        className="border-b border-gray-800 hover:bg-gray-800/30"
-                      >
-                        <td className="p-3">
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded bg-gray-700 flex items-center justify-center overflow-hidden shrink-0">
+                      <tr key={reg._id} className="atem-row">
+                        <td className="atem-td">
+                          <div className="atem-team-info">
+                            <div className="atem-team-logo-wrapper">
                               {reg.teamId?.logoUrl ? (
                                 <img
                                   src={reg.teamId.logoUrl}
                                   alt=""
-                                  className="w-full h-full object-cover"
+                                  className="atem-team-logo"
                                 />
                               ) : (
-                                <span className="text-xs font-bold text-gray-400">
+                                <span className="atem-team-initials">
                                   {reg.teamId?.name
                                     ?.substring(0, 2)
                                     .toUpperCase()}
                                 </span>
                               )}
                             </div>
-                            <div className="min-w-0">
-                              <div className="font-medium text-white truncate max-w-[150px]">
+                            <div className="atem-team-details">
+                              <div className="atem-team-name">
                                 {reg.teamId?.name || t("UnknownTeam")}
                               </div>
-                              <div className="text-xs text-gray-400 truncate max-w-[150px]">
+                              <div className="atem-team-tag">
                                 {reg.teamId?.tag}
                               </div>
                             </div>
                           </div>
                         </td>
-                        <td className="p-3 text-gray-300">
+                        <td className="atem-td-count">
                           {reg.teamId?.members?.length || 0}
                         </td>
-                        <td className="p-3 text-gray-400 text-xs">
+                        <td className="atem-td-date">
                           {new Date(reg.createdAt).toLocaleDateString()}
                         </td>
-                        <td className="p-3">
+                        <td className="atem-td">
                           <StatusBadge status={reg.status} />
                         </td>
-                        <td className="p-3">
-                          <div className="flex gap-2">
+                        <td className="atem-td">
+                          <div className="atem-actions">
                             {reg.status === "pending" && (
                               <>
                                 <button
                                   onClick={() =>
                                     handleStatusUpdate(reg._id, "approved")
                                   }
-                                  className="p-1 rounded bg-green-900/30 text-green-400 hover:bg-green-900/50 border border-green-900/50 transition-colors"
+                                  className="atem-btn-approve"
                                   title={t("Approve")}
                                 >
                                   <Check size={16} />
@@ -211,7 +196,7 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
                                   onClick={() =>
                                     handleStatusUpdate(reg._id, "rejected")
                                   }
-                                  className="p-1 rounded bg-red-900/30 text-red-400 hover:bg-red-900/50 border border-red-900/50 transition-colors"
+                                  className="atem-btn-reject"
                                   title={t("Reject")}
                                 >
                                   <X size={16} />

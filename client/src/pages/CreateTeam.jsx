@@ -73,7 +73,7 @@ export default function CreateTeam() {
             </select>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div className="ct-grid">
             <div className="ct-input-group">
               <label className="ct-label">{t("TeamTag")}</label>
               <input
@@ -87,21 +87,19 @@ export default function CreateTeam() {
 
             <div className="ct-input-group">
               <label className="ct-label">{t("Logo")}</label>
-              <div className="flex items-center gap-4">
-                <div className="relative w-16 h-16 bg-gray-700/50 rounded-lg overflow-hidden border border-gray-600 flex items-center justify-center shrink-0">
+              <div className="ct-logo-section">
+                <div className="ct-logo-preview">
                   {form.logoUrl ? (
                     <img
                       src={form.logoUrl}
                       alt="Logo Preview"
-                      className="w-full h-full object-cover"
+                      className="ct-logo-img"
                     />
                   ) : (
-                    <span className="text-gray-500 text-xs text-center px-1">
-                      {t("NoLogo")}
-                    </span>
+                    <span className="ct-logo-placeholder">{t("NoLogo")}</span>
                   )}
                 </div>
-                <div className="flex-1">
+                <div className="ct-file-input-wrapper">
                   <input
                     type="file"
                     accept="image/*"
@@ -125,11 +123,9 @@ export default function CreateTeam() {
                         setLoading(false);
                       }
                     }}
-                    className="ct-input file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100 dark:file:bg-gray-700 dark:file:text-gray-200"
+                    className="ct-file-input"
                   />
-                  <p className="text-xs text-gray-400 mt-1">
-                    {t("StartUploadLogo")}
-                  </p>
+                  <p className="ct-help-text">{t("StartUploadLogo")}</p>
                 </div>
               </div>
             </div>
