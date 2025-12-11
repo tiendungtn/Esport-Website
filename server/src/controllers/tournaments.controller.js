@@ -171,20 +171,94 @@ export async function registerTeam(req, res) {
   }
 }
 
+const seedSchema = z.object({
+  seeds: z
+    .array(
+      z.object({
+        teamId: z.string(),
+        seed: z.number().int().min(1),
+      })
+    )
+    .optional(),
+});
+
 export async function seedTournament(req, res) {
   const { id } = req.params;
+
+  // 1. Validation Payload
+  const parse = seedSchema.safeParse(req.body);
+  if (!parse.success) {
+    return res.status(400).json({ message: "Invalid payload" });
+  }
+  const manualSeeds = parse.data.seeds;
+
+  // 2. Lay tat ca dang ky
   const regs = await Registration.find({ tournamentId: id }).sort({
     createdAt: 1,
   });
 
-  await Promise.all(
-    regs.map((r, idx) => {
-      r.seed = idx + 1;
-      return r.save();
-    })
-  );
+  if (manualSeeds && manualSeeds.length > 0) {
+    // 3. Manual Seeding Logic
+    // Validate: tat ca teamId phai thuoc tournament nay
+    const regTeamIds = new Set(regs.map((r) => r.teamId.toString()));
+    const inputTeamIds = new Set(manualSeeds.map((s) => s.teamId));
 
-  res.json(regs);
+    for (const inId of inputTeamIds) {
+      if (!regTeamIds.has(inId)) {
+        return res.status(400).json({
+          message: `Team ID ${inId} is not registered for this tournament`,
+        });
+      }
+    }
+
+    // Validate: seed khong duoc trung nhau
+    const seedValues = manualSeeds.map((s) => s.seed);
+    const uniqueSeeds = new Set(seedValues);
+    if (seedValues.length !== uniqueSeeds.size) {
+      return res.status(400).json({ message: "Seed values must be unique" });
+    }
+
+    // Map seed input
+    const seedMap = new Map(); // teamId -> seed
+    manualSeeds.forEach((s) => seedMap.set(s.teamId, s.seed));
+
+    // Update regs
+    // Note: Nhung team khong co trong manualSeeds se co seed = null (hoac giu seed cu neu muon, o day ta set theo logic cua user yeu cau la loop through)
+    // User request logic: "If req.body.seeds is provided, loop through the registrations and update their seed field based on the input."
+    // Impl: Update provided, others undefined? Or error if missing?
+    // Usually manual seeding implies full seeding or partial. Let's assume partial is allowed but better to be safe.
+    // Requirement says: "loop through the registrations and update their seed field based on the input."
+    // Let's ensure we save the seed.
+    await Promise.all(
+      regs.map((r) => {
+        const s = seedMap.get(r.teamId.toString());
+        if (s !== undefined) {
+          r.seed = s;
+        } else {
+          // If not provided, maybe leave it or set to null?
+          // Let's keep it clean: if switching to manual, maybe we expect full coverage?
+          // User diagram implies sending specific seeds.
+          // Let's just update matches.
+        }
+        return r.save();
+      })
+    );
+  } else {
+    // 4. Fallback Auto Seeding (Sort by createdAt)
+    // regs da duoc sort createdAt: 1 o tren
+    await Promise.all(
+      regs.map((r, idx) => {
+        r.seed = idx + 1;
+        return r.save();
+      })
+    );
+  }
+
+  // Refetch to return clear state
+  const updatedRegs = await Registration.find({ tournamentId: id }).sort({
+    seed: 1,
+  });
+  res.json(updatedRegs);
 }
 
 /* Helper function for bracket generation */

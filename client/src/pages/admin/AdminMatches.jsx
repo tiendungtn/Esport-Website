@@ -16,6 +16,11 @@ export default function AdminMatches() {
   const { t } = useTranslation();
   const [selectedTournament, setSelectedTournament] = useState("");
   const [editingMatch, setEditingMatch] = useState(null);
+  const [confirmReject, setConfirmReject] = useState({
+    isOpen: false,
+    matchId: null,
+    matchName: "",
+  });
 
   const { data: tournaments } = useQuery({
     queryKey: ["tournaments"],
@@ -31,6 +36,31 @@ export default function AdminMatches() {
     },
     enabled: !!selectedTournament,
   });
+
+  const queryClient = useQueryClient();
+  const [rejectId, setRejectId] = useState(null);
+
+  const rejectMutation = useMutation({
+    mutationFn: async (id) => (await api.put(`/api/matches/${id}/reject`)).data,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["matches"] });
+      setConfirmReject({ isOpen: false, matchId: null, matchName: "" });
+      setRejectId(null);
+    },
+    onError: (error) => {
+      alert(t("FailedToRejectMatch"));
+    },
+  });
+
+  const handleReject = (match) => {
+    setConfirmReject({
+      isOpen: true,
+      matchId: match._id,
+      matchName: `${match.teamA?.name || t("TBD")} vs ${
+        match.teamB?.name || t("TBD")
+      }`,
+    });
+  };
 
   if (!selectedTournament && tournaments?.length > 0) {
     setSelectedTournament(tournaments[0]._id);
@@ -100,9 +130,24 @@ export default function AdminMatches() {
                       <button
                         onClick={() => setEditingMatch(match)}
                         className="am-action-btn"
+                        title={t("UpdateScore")}
                       >
                         <Edit size={16} />
                       </button>
+
+                      {(match.state === "reported" ||
+                        match.state === "final" ||
+                        (match.state === "live" &&
+                          (match.scoreA > 0 || match.scoreB > 0))) && (
+                        <button
+                          onClick={() => handleReject(match)}
+                          className="am-action-btn am-btn-reject-row"
+                          title={t("RejectResult")}
+                          style={{ color: "#ef4444" }}
+                        >
+                          <X size={16} />
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -128,10 +173,29 @@ export default function AdminMatches() {
           match={editingMatch}
         />
       )}
+
+      <ConfirmModal
+        isOpen={confirmReject.isOpen}
+        onClose={() => setConfirmReject({ ...confirmReject, isOpen: false })}
+        onConfirm={() => rejectMutation.mutate(confirmReject.matchId)}
+        title={t("ConfirmRejectMatch")}
+        message={
+          <>
+            <p className="mb-2 font-semibold text-slate-200">
+              {confirmReject.matchName}
+            </p>
+            <p>{t("RejectMatchWarning")}</p>
+          </>
+        }
+        confirmText={t("Confirm")}
+        type="danger"
+        isLoading={rejectMutation.isPending}
+      />
     </div>
   );
 }
 
+import ConfirmModal from "../../components/ConfirmModal";
 import AlertModal from "../../components/AlertModal";
 
 // Các import khác

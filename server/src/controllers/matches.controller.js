@@ -144,6 +144,60 @@ export async function updateMatch(req, res) {
   res.json(m);
 }
 
+export async function rejectMatchResult(req, res) {
+  const { id } = req.params;
+
+  const match = await Match.findById(id);
+  if (!match) return res.status(404).json({ message: "Match not found" });
+
+  if (
+    match.state !== "reported" &&
+    match.state !== "live" &&
+    match.state !== "final"
+  ) {
+    return res.status(400).json({
+      message:
+        "Match must be in 'reported', 'live', or 'final' state to reject/reset.",
+    });
+  }
+
+  // Reset state to live, clear scores and report data
+  const m = await Match.findByIdAndUpdate(
+    id,
+    {
+      $set: {
+        state: "live",
+        scoreA: 0,
+        scoreB: 0,
+        report: { proofUrls: [], note: null },
+      },
+    },
+    { new: true }
+  );
+
+  // Notify clients about score reset
+  io.to(`match:${id}`).emit("score:update", {
+    matchId: id,
+    scoreA: 0,
+    scoreB: 0,
+  });
+
+  // Notify about state change
+  io.to(`tournament:${m.tournamentId}`).emit("match:state", {
+    matchId: id,
+    state: "live",
+  });
+
+  // Also emit score update to tournament room for bracket view
+  io.to(`tournament:${m.tournamentId}`).emit("score:update", {
+    matchId: id,
+    scoreA: 0,
+    scoreB: 0,
+  });
+
+  res.json(m);
+}
+
 export async function confirmMatch(req, res) {
   const { id } = req.params; // ID trận đấu
 
