@@ -5,6 +5,7 @@ import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import { useTranslation } from "react-i18next";
 import { Trash2, UserPlus, Search, X, Edit } from "lucide-react";
+import { translateGameName } from "../lib/gameTranslations";
 import "../styles/pages/public-team-profile.css";
 
 export default function PublicTeamProfile() {
@@ -39,7 +40,7 @@ export default function PublicTeamProfile() {
       setIsModalOpen(false);
     },
     onError: (err) => {
-      alert(err.response?.data?.message || "Failed to add member");
+      alert(err.response?.data?.message || t("FailedToAddMember"));
     },
   });
 
@@ -55,7 +56,7 @@ export default function PublicTeamProfile() {
       queryClient.invalidateQueries(["team", id]);
     },
     onError: (err) => {
-      alert(err.response?.data?.message || "Failed to remove member");
+      alert(err.response?.data?.message || t("FailedToRemoveMember"));
     },
   });
 
@@ -67,11 +68,11 @@ export default function PublicTeamProfile() {
       const res = await api.get(`/api/users?search=${searchEmail}`);
       setSearchResults(res.data);
       if (res.data.length === 0) {
-        setSearchError(t("NoUsersFound") || "No users found");
+        setSearchError(t("NoUsersFound"));
       }
     } catch (err) {
       console.error(err);
-      setSearchError("Search failed");
+      setSearchError(t("GenericError"));
     }
   };
 
@@ -95,7 +96,9 @@ export default function PublicTeamProfile() {
           <h1 className="ptp-name">{team.name}</h1>
           <div className="ptp-meta">
             {team.tag && <span className="ptp-tag">{team.tag}</span>}
-            {team.game && <span className="ptp-game">{team.game}</span>}
+            {team.game && (
+              <span className="ptp-game">{translateGameName(team.game)}</span>
+            )}
           </div>
           {isOwner && (
             <button
@@ -103,7 +106,7 @@ export default function PublicTeamProfile() {
               className="mt-2 flex items-center gap-2 text-sm text-violet-400 hover:text-violet-300"
             >
               <Edit size={16} />
-              {t("EditInfo") || "Edit Team Info"}
+              {t("EditInfo")}
             </button>
           )}
         </div>
@@ -111,14 +114,14 @@ export default function PublicTeamProfile() {
 
       <div className="ptp-content">
         <div className="ptp-section-header">
-          <h2 className="ptp-section-title">{t("Roster") || "Roster"}</h2>
+          <h2 className="ptp-section-title">{t("Roster")}</h2>
           {isOwner && (
             <button
               className="ptp-add-btn"
               onClick={() => setIsModalOpen(true)}
             >
               <UserPlus size={18} />
-              {t("AddMember") || "Add Member"}
+              {t("AddMember")}
             </button>
           )}
         </div>
@@ -136,25 +139,18 @@ export default function PublicTeamProfile() {
                 </div>
                 <div className="ptp-member-info">
                   <div className="ptp-member-name">
-                    {member.profile?.displayName || "Unknown"}
+                    {member.profile?.displayName || t("Unknown")}
                   </div>
                   <div className="ptp-member-email">{member.email}</div>
                   {team.ownerUser?._id === member._id && (
-                    <span className="ptp-captain-badge">
-                      {t("Captain") || "Captain"}
-                    </span>
+                    <span className="ptp-captain-badge">{t("Captain")}</span>
                   )}
                 </div>
                 {isOwner && team.ownerUser?._id !== member._id && (
                   <button
                     className="ptp-remove-btn"
                     onClick={() => {
-                      if (
-                        confirm(
-                          t("ConfirmRemoveMember") ||
-                            "Are you sure you want to remove this member?"
-                        )
-                      ) {
+                      if (confirm(t("ConfirmRemoveMember"))) {
                         removeMemberMutation.mutate(member._id);
                       }
                     }}
@@ -166,7 +162,7 @@ export default function PublicTeamProfile() {
               </div>
             ))
           ) : (
-            <p className="ptp-empty-roster">No members found.</p>
+            <p className="ptp-empty-roster">{t("NoMembers")}</p>
           )}
         </div>
       </div>
@@ -176,9 +172,7 @@ export default function PublicTeamProfile() {
         <div className="ptp-modal-overlay">
           <div className="ptp-modal">
             <div className="ptp-modal-header">
-              <h3 className="ptp-modal-title">
-                {t("AddMember") || "Add Member"}
-              </h3>
+              <h3 className="ptp-modal-title">{t("AddMember")}</h3>
               <button
                 onClick={() => setIsModalOpen(false)}
                 className="ptp-modal-close"
@@ -193,9 +187,7 @@ export default function PublicTeamProfile() {
                   type="text"
                   value={searchEmail}
                   onChange={(e) => setSearchEmail(e.target.value)}
-                  placeholder={
-                    t("SearchUserEmail") || "Search user by email..."
-                  }
+                  placeholder={t("SearchUserEmail")}
                   className="ptp-search-input"
                   autoFocus
                 />
@@ -212,7 +204,7 @@ export default function PublicTeamProfile() {
                   <div key={u._id} className="ptp-result-item">
                     <div className="flex flex-col">
                       <span className="font-bold text-slate-200">
-                        {u.profile?.displayName || "Unknown"}
+                        {u.profile?.displayName || t("Unknown")}
                       </span>
                       <span className="text-xs text-slate-500">{u.email}</span>
                     </div>
@@ -221,15 +213,13 @@ export default function PublicTeamProfile() {
                       disabled={addMemberMutation.isPending}
                       className="ptp-result-add-btn"
                     >
-                      {addMemberMutation.isPending
-                        ? "Adding..."
-                        : t("Add") || "Add"}
+                      {addMemberMutation.isPending ? t("Adding") : t("Add")}
                     </button>
                   </div>
                 ))}
                 {searchResults.length === 0 && !searchError && searchEmail && (
                   <p className="text-center text-slate-600 text-sm py-4">
-                    Press Enter to search
+                    {t("PressEnterToSearch")}
                   </p>
                 )}
               </div>
@@ -271,7 +261,7 @@ function EditTeamModal({ isOpen, onClose, team, onSuccess }) {
       onSuccess();
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || "Failed to update team");
+      alert(err.response?.data?.message || t("FailedToUpdateTeam"));
     } finally {
       setLoading(false);
     }
@@ -292,7 +282,7 @@ function EditTeamModal({ isOpen, onClose, team, onSuccess }) {
       setForm({ ...form, logoUrl: res.data.url });
     } catch (err) {
       console.error("Upload failed", err);
-      alert("Failed to upload image");
+      alert(t("UploadImageFailed"));
     } finally {
       setLoading(false);
     }
@@ -302,7 +292,7 @@ function EditTeamModal({ isOpen, onClose, team, onSuccess }) {
     <div className="ptp-modal-overlay">
       <div className="ptp-modal">
         <div className="ptp-modal-header">
-          <h3 className="ptp-modal-title">{t("EditTeam") || "Edit Team"}</h3>
+          <h3 className="ptp-modal-title">{t("EditTeam")}</h3>
           <button onClick={onClose} className="ptp-modal-close">
             <X size={20} />
           </button>
@@ -343,7 +333,9 @@ function EditTeamModal({ isOpen, onClose, team, onSuccess }) {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <span className="text-xs text-slate-500">No Logo</span>
+                    <span className="text-xs text-slate-500">
+                      {t("NoLogo")}
+                    </span>
                   )}
                 </div>
                 <input

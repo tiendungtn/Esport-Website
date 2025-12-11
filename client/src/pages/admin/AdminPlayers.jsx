@@ -33,7 +33,7 @@ export default function AdminPlayers() {
       closeModal();
     },
     onError: (err) =>
-      alert(err.response?.data?.message || "Failed to create user"),
+      alert(err.response?.data?.message || t("FailedCreateUser")),
   });
 
   const updateMutation = useMutation({
@@ -43,7 +43,7 @@ export default function AdminPlayers() {
       closeModal();
     },
     onError: (err) =>
-      alert(err.response?.data?.message || "Failed to update user"),
+      alert(err.response?.data?.message || t("FailedUpdateUser")),
   });
 
   const deleteMutation = useMutation({
@@ -53,7 +53,7 @@ export default function AdminPlayers() {
       closeDeleteModal();
     },
     onError: (err) =>
-      alert(err.response?.data?.message || "Failed to delete user"),
+      alert(err.response?.data?.message || t("FailedDeleteUser")),
   });
 
   const openCreateModal = () => {
@@ -122,7 +122,7 @@ export default function AdminPlayers() {
           </div>
           <button onClick={openCreateModal} className="ap-create-btn">
             <Plus className="h-4 w-4" />
-            {t("AddPlayer") || "Thêm người chơi"}
+            {t("AddPlayer")}
           </button>
         </div>
       </div>
@@ -135,7 +135,7 @@ export default function AdminPlayers() {
               <th className="ap-th">{t("Email")}</th>
               <th className="ap-th">{t("Role")}</th>
               <th className="ap-th">{t("JoinDate")}</th>
-              <th className="ap-th-right">{t("Actions") || "Thao tác"}</th>
+              <th className="ap-th-right">{t("TableActions")}</th>
             </tr>
           </thead>
           <tbody className="ap-tbody">
@@ -171,7 +171,7 @@ export default function AdminPlayers() {
                     <button
                       onClick={() => openEditModal(p)}
                       className="ap-action-btn"
-                      title="Edit"
+                      title={t("EditPlayer")}
                     >
                       <Pencil className="h-4 w-4" />
                     </button>
@@ -189,7 +189,7 @@ export default function AdminPlayers() {
             {players?.length === 0 && (
               <tr>
                 <td colSpan="5" className="ap-no-data">
-                  {t("NoPlayersFound") || "Không tìm thấy người chơi nào"}
+                  {t("NoPlayersFound")}
                 </td>
               </tr>
             )}
@@ -203,9 +203,7 @@ export default function AdminPlayers() {
           <div className="apm-content">
             <div className="apm-header">
               <h2 className="apm-title">
-                {selectedUser
-                  ? t("EditPlayer") || "Sửa người chơi"
-                  : t("AddPlayer") || "Thêm người chơi"}
+                {selectedUser ? t("EditPlayer") : t("AddPlayer")}
               </h2>
               <button onClick={closeModal} className="apm-close-btn">
                 <X className="h-5 w-5" />
@@ -214,9 +212,7 @@ export default function AdminPlayers() {
 
             <form onSubmit={handleSubmit} className="apm-form">
               <div>
-                <label className="apm-label">
-                  {t("DisplayName") || "Tên hiển thị"}
-                </label>
+                <label className="apm-label">{t("DisplayName")}</label>
                 <input
                   type="text"
                   required
@@ -240,7 +236,7 @@ export default function AdminPlayers() {
                 />
               </div>
               <div>
-                <label className="apm-label">{t("Role") || "Vai trò"}</label>
+                <label className="apm-label">{t("Role")}</label>
                 <select
                   value={formData.role}
                   onChange={(e) =>
@@ -253,11 +249,9 @@ export default function AdminPlayers() {
               </div>
               <div>
                 <label className="apm-label">
-                  {t("Password") || "Mật khẩu"}{" "}
+                  {t("Password")}{" "}
                   {selectedUser && (
-                    <span className="apm-hint">
-                      ({t("Optional") || "Để trống nếu không đổi"})
-                    </span>
+                    <span className="apm-hint">({t("Optional")})</span>
                   )}
                 </label>
                 <input
@@ -278,7 +272,7 @@ export default function AdminPlayers() {
                   onClick={closeModal}
                   className="apm-btn-cancel"
                 >
-                  {t("Cancel") || "Hủy"}
+                  {t("Cancel")}
                 </button>
                 <button
                   type="submit"
@@ -288,8 +282,8 @@ export default function AdminPlayers() {
                   className="apm-btn-save"
                 >
                   {createMutation.isPending || updateMutation.isPending
-                    ? "Saving..."
-                    : t("Save") || "Lưu"}
+                    ? t("Saving")
+                    : t("Save")}
                 </button>
               </div>
             </form>
@@ -304,25 +298,18 @@ export default function AdminPlayers() {
             <div className="apm-delete-icon-wrapper">
               <AlertTriangle className="h-6 w-6 text-red-500" />
             </div>
-            <h3 className="apm-delete-title">
-              {t("ConfirmDelete") || "Xác nhận xóa"}?
-            </h3>
-            <p className="apm-delete-desc">
-              {t("DeleteUserWarning") ||
-                "Bạn có chắc chắn muốn xóa người dùng này? Hành động này không thể hoàn tác."}
-            </p>
+            <h3 className="apm-delete-title">{t("ConfirmDelete")}?</h3>
+            <p className="apm-delete-desc">{t("DeleteUserWarning")}</p>
             <div className="flex gap-3">
               <button onClick={closeDeleteModal} className="apm-btn-cancel">
-                {t("Cancel") || "Hủy"}
+                {t("Cancel")}
               </button>
               <button
                 onClick={() => deleteMutation.mutate(selectedUser._id)}
                 disabled={deleteMutation.isPending}
                 className="apm-btn-delete"
               >
-                {deleteMutation.isPending
-                  ? "Deleting..."
-                  : t("Delete") || "Xóa"}
+                {deleteMutation.isPending ? t("Processing") : t("Delete")}
               </button>
             </div>
           </div>

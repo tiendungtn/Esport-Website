@@ -123,6 +123,75 @@ const resources = {
       LoadingMatches: "Loading matches...",
       ErrorLoadingMatches: "Failed to load matches.",
 
+      // Registration Modal
+      RegistrationSuccessTitle: "Success",
+      RegistrationSuccessMessage: "Registration successful!",
+      RegistrationErrorTitle: "Registration Error",
+      RegistrationFailed: "Registration failed",
+      RegisterTitle: "Register to Join",
+      RegisterDescription:
+        "Select your team to participate in this tournament.",
+      SelectTeam: "Select Team",
+      CreateTeamNow: "Create Team Now",
+      NoTeamsYet: "You don't have any teams yet.",
+      Processing: "Processing...",
+      RegisterNow: "Register Now",
+      MemberCount: "{{count}} member",
+      MemberCount_other: "{{count}} members",
+
+      // Admin Teams (Misc)
+      NoLogo: "No Logo",
+      UploadImageFailed: "Failed to upload image",
+      Unnamed: "Unnamed",
+
+      // Public Team Profile & Create Team
+      NoUsersFound: "No users found",
+      SearchUserEmail: "Search user by email...",
+      EditInfo: "Edit Team Info",
+      Roster: "Roster",
+      AddMember: "Add Member",
+      ConfirmRemoveMember: "Are you sure you want to remove this member?",
+      Unknown: "Unknown",
+      Adding: "Adding...",
+      PressEnterToSearch: "Press Enter to search",
+      FailedToUpdateTeam: "Failed to update team",
+      FailedToAddMember: "Failed to add member",
+      FailedToRemoveMember: "Failed to remove member",
+      CreateTeamNamePlaceholder: "e.g. Hanoi Legends",
+      TeamTagPlaceholder: "e.g. HNL",
+      StartUploadLogo: "Start by uploading a logo (optional)",
+      FailedToCreateTeam: "Failed to create team",
+
+      // Admin Players
+      AddPlayer: "Add Player",
+      EditPlayer: "Edit Player",
+      NoPlayersFound: "No players found",
+      Optional: "Optional - leave blank if unchanged",
+      ConfirmDelete: "Confirm Delete",
+      DeleteUserWarning:
+        "Are you sure you want to delete this user? This action cannot be undone.",
+      FailedCreateUser: "Failed to create user",
+      FailedUpdateUser: "Failed to update user",
+      FailedDeleteUser: "Failed to delete user",
+      Password: "Password",
+      Delete: "Delete",
+
+      // Admin Registrations
+      ApproveRegistration: "Approve Registration",
+      StatusAll: "All",
+      StatusPending: "Pending",
+      StatusApproved: "Approved",
+      StatusRejected: "Rejected",
+      RegistrationListTitle: "Registration Approval",
+      NoRegistrationsFilter: "No registrations found for this filter.",
+      UnknownTeam: "Unknown Team",
+      Approve: "Approve",
+      Reject: "Reject",
+      Date: "Date",
+      LoadRegistrations: "Loading registrations...",
+      FailedLoadRegistrations: "Failed to load registrations.",
+      FailedUpdateStatus: "Failed to update status",
+
       // Trang hồ sơ
       ProfileManagement: "Profile Management",
       LoadingProfile: "Loading profile...",
@@ -155,6 +224,8 @@ const resources = {
         "Demo: simulate sending password reset email (backend not implemented).",
       GenericError: "An error occurred. Please try again.",
       PasswordLabel: "Password",
+      ForgotPasswordSent:
+        "If the email exists, a password reset link has been sent.",
     },
   },
   vi: {
@@ -278,6 +349,74 @@ const resources = {
       LoadingMatches: "Đang tải lịch thi đấu...",
       ErrorLoadingMatches: "Không thể tải lịch thi đấu.",
 
+      // Registration Modal
+      RegistrationSuccessTitle: "Thành công",
+      RegistrationSuccessMessage: "Đăng ký thành công!",
+      RegistrationErrorTitle: "Lỗi đăng ký",
+      RegistrationFailed: "Đăng ký thất bại",
+      RegisterTitle: "Đăng ký tham gia",
+      RegisterDescription: "Chọn đội tuyển của bạn để tham gia giải đấu này.",
+      SelectTeam: "Chọn đội tuyển",
+      CreateTeamNow: "Tạo đội ngay",
+      NoTeamsYet: "Bạn chưa có đội tuyển nào.",
+      Processing: "Đang xử lý...",
+      RegisterNow: "Đăng ký ngay",
+      MemberCount: "{{count}} thành viên",
+      MemberCount_other: "{{count}} thành viên",
+
+      // Admin Teams (Misc)
+      NoLogo: "Không có Logo",
+      UploadImageFailed: "Tải ảnh thất bại",
+      Unnamed: "Chưa đặt tên",
+
+      // Public Team Profile & Create Team
+      NoUsersFound: "Không tìm thấy người dùng",
+      SearchUserEmail: "Tìm kiếm user bằng email...",
+      EditInfo: "Chỉnh sửa thông tin",
+      Roster: "Đội hình",
+      AddMember: "Thêm thành viên",
+      ConfirmRemoveMember: "Bạn có chắc chắn muốn xóa thành viên này?",
+      Unknown: "Không rõ",
+      Adding: "Đang thêm...",
+      PressEnterToSearch: "Nhấn Enter để tìm",
+      FailedToUpdateTeam: "Cập nhật đội thất bại",
+      FailedToAddMember: "Thêm thành viên thất bại",
+      FailedToRemoveMember: "Xóa thành viên thất bại",
+      CreateTeamNamePlaceholder: "ví dụ: Hanoi Legends",
+      TeamTagPlaceholder: "ví dụ: HNL",
+      StartUploadLogo: "Bắt đầu bằng việc tải logo (tùy chọn)",
+      FailedToCreateTeam: "Tạo đội thất bại",
+
+      // Admin Players
+      AddPlayer: "Thêm người chơi",
+      EditPlayer: "Sửa người chơi",
+      NoPlayersFound: "Không tìm thấy người chơi nào",
+      Optional: "Không bắt buộc - để trống nếu không đổi",
+      ConfirmDelete: "Xác nhận xóa",
+      DeleteUserWarning:
+        "Bạn có chắc chắn muốn xóa người dùng này? Hành động này không thể hoàn tác.",
+      FailedCreateUser: "Tạo người dùng thất bại",
+      FailedUpdateUser: "Cập nhật thất bại",
+      FailedDeleteUser: "Xóa thất bại",
+      Password: "Mật khẩu",
+      Delete: "Xóa",
+
+      // Admin Registrations
+      ApproveRegistration: "Duyệt đơn đăng ký",
+      StatusAll: "Tất cả",
+      StatusPending: "Chờ duyệt",
+      StatusApproved: "Đã duyệt",
+      StatusRejected: "Từ chối",
+      RegistrationListTitle: "Duyệt Đơn Đăng Ký",
+      NoRegistrationsFilter: "Không tìm thấy đơn nàotheo bộ lọc này.",
+      UnknownTeam: "Đội không rõ",
+      Approve: "Duyệt",
+      Reject: "Từ chối",
+      Date: "Ngày",
+      LoadRegistrations: "Đang tải danh sách...",
+      FailedLoadRegistrations: "Không thể tải danh sách.",
+      FailedUpdateStatus: "Cập nhật trạng thái thất bại",
+
       // Profile Page
       ProfileManagement: "Quản lý Hồ sơ",
       LoadingProfile: "Đang tải hồ sơ...",
@@ -310,6 +449,8 @@ const resources = {
         "Demo: giả lập gửi email đặt lại mật khẩu (không triển khai backend).",
       GenericError: "Đã có lỗi xảy ra. Vui lòng kiểm tra lại.",
       PasswordLabel: "Mật khẩu",
+      ForgotPasswordSent:
+        "Nếu email tồn tại, một liên kết đặt lại mật khẩu đã được gửi.",
     },
   },
 };

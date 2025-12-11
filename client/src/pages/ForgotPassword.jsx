@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "../styles/pages/forgot-password.css";
 
 export default function ForgotPassword() {
+  const { t } = useTranslation();
   const [email, setEmail] = React.useState("");
   const [submitted, setSubmitted] = React.useState(false);
 
@@ -14,36 +16,32 @@ export default function ForgotPassword() {
   return (
     <div className="fp-container">
       <div className="fp-card">
-        <h1 className="fp-title">Forgot password</h1>
-        <p className="fp-description">
-          Demo: hệ thống chỉ giả lập gửi email đặt lại mật khẩu.
-        </p>
+        <h1 className="fp-title">{t("ForgotPasswordTitle")}</h1>
+        <p className="fp-description">{t("ForgotDemoMessage")}</p>
 
         {submitted ? (
-          <p className="fp-success">
-            Nếu email tồn tại, một liên kết đặt lại mật khẩu đã được gửi.
-          </p>
+          <p className="fp-success">{t("ForgotPasswordSent")}</p>
         ) : (
           <form onSubmit={onSubmit} className="fp-form">
             <label className="fp-label">
-              <span className="fp-label-text">Email</span>
+              <span className="fp-label-text">{t("Email")}</span>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="fp-input"
-                placeholder="you@example.com"
+                placeholder={t("EmailPlaceholder")}
               />
             </label>
             <button type="submit" className="fp-submit-btn">
-              Send reset link (demo)
+              {t("SendResetLink")}
             </button>
           </form>
         )}
 
         <div className="fp-back-container">
           <Link to="/login" className="fp-back-link">
-            ← Back to sign in
+            ← {t("BackToLogin")}
           </Link>
         </div>
       </div>

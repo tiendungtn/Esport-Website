@@ -5,17 +5,16 @@ import { Plus, Edit, Trash2, Users, Filter } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import "../../styles/pages/admin-teams.css";
 
-const GAMES = [
-  "Liên Minh Huyền Thoại",
-  "Tốc Chiến",
-  "Liên Quân",
-  "Valorant",
-  "CS2",
-  "FC Online",
-];
+import {
+  getGameNames,
+  translateGameName,
+  gameNameToDB,
+} from "../../lib/gameTranslations";
+import "../../styles/pages/admin-teams.css";
 
 export default function AdminTeams() {
   const { t } = useTranslation();
+  const GAMES = getGameNames();
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTeam, setEditingTeam] = useState(null);
@@ -27,7 +26,7 @@ export default function AdminTeams() {
     queryKey: ["teams", selectedGame],
     queryFn: async () => {
       const params = new URLSearchParams();
-      if (selectedGame) params.append("game", selectedGame);
+      if (selectedGame) params.append("game", gameNameToDB(selectedGame));
       return (await api.get(`/api/teams?${params.toString()}`)).data;
     },
   });
@@ -107,7 +106,9 @@ export default function AdminTeams() {
             {teams?.map((team) => (
               <tr key={team._id} className="ate-tr">
                 <td className="ate-td-name">{team.name}</td>
-                <td className="ate-td-game">{team.game || "-"}</td>
+                <td className="ate-td-game">
+                  {translateGameName(team.game) || "-"}
+                </td>
                 <td className="ate-td">{team.tag}</td>
                 <td className="ate-td">
                   {team.ownerUser?.profile?.displayName ||
@@ -165,19 +166,30 @@ export default function AdminTeams() {
 function TeamModal({ isOpen, onClose, team }) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  const GAMES = getGameNames();
   const [form, setForm] = useState({
     name: team?.name || "",
     tag: team?.tag || "",
-    game: team?.game || GAMES[0],
+    game: translateGameName(team?.game) || GAMES[0],
     logoUrl: team?.logoUrl || "",
   });
 
   const mutation = useMutation({
     mutationFn: async (data) => {
       if (team) {
-        return (await api.put(`/api/teams/${team._id}`, data)).data;
+        return (
+          await api.put(`/api/teams/${team._id}`, {
+            ...data,
+            game: gameNameToDB(data.game),
+          })
+        ).data;
       } else {
-        return (await api.post("/api/teams", data)).data;
+        return (
+          await api.post("/api/teams", {
+            ...data,
+            game: gameNameToDB(data.game),
+          })
+        ).data;
       }
     },
     onSuccess: () => {
@@ -243,7 +255,7 @@ function TeamModal({ isOpen, onClose, team }) {
                   />
                 ) : (
                   <span className="text-gray-500 text-xs text-center px-1">
-                    No Logo
+                    {t("NoLogo")}
                   </span>
                 )}
               </div>
@@ -266,7 +278,7 @@ function TeamModal({ isOpen, onClose, team }) {
                       setForm({ ...form, logoUrl: res.data.url });
                     } catch (err) {
                       console.error("Upload failed", err);
-                      alert("Failed to upload image");
+                      alert(t("UploadImageFailed"));
                     } finally {
                       // setLoading(false);
                     }
@@ -404,7 +416,7 @@ function MembersModal({ isOpen, onClose, team }) {
                   <div className="atem-member-avatar"></div>
                   <div>
                     <p className="atem-member-name">
-                      {member.profile?.displayName || "Unnamed"}
+                      {member.profile?.displayName || t("Unnamed")}
                     </p>
                     <p className="atem-member-email">{member.email}</p>
                   </div>

@@ -2,6 +2,10 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
+import {
+  translateGameName,
+  translateTournamentName,
+} from "../lib/gameTranslations";
 import { api } from "../lib/api";
 import { socket } from "../lib/socket";
 import BracketViewer from "../components/BracketViewer.jsx";
@@ -64,8 +68,12 @@ export default function Tournament() {
       <section className="tournament-header-section">
         <div className="tournament-header-content">
           <div>
-            <p className="tournament-game-label">{tournament.game}</p>
-            <h1 className="tournament-title">{tournament.name}</h1>
+            <p className="tournament-game-label">
+              {translateGameName(tournament.game)}
+            </p>
+            <h1 className="tournament-title">
+              {translateTournamentName(tournament.name)}
+            </h1>
             <p className="tournament-description">
               {tournament.description || t("TournamentDescription")}
             </p>

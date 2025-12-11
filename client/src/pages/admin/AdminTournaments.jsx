@@ -87,7 +87,10 @@ export default function AdminTournaments() {
                         : "at-status-finished"
                     }`}
                   >
-                    {tournament.status}
+                    {tournament.status === "open" && t("StatusOpen")}
+                    {tournament.status === "ongoing" && t("StatusOngoing")}
+                    {tournament.status === "finished" && t("StatusFinished")}
+                    {tournament.status === "draft" && t("StatusDraft")}
                   </span>
                 </td>
                 <td className="at-td-right">
@@ -95,7 +98,7 @@ export default function AdminTournaments() {
                     <button
                       onClick={() => handleViewRegistrations(tournament._id)}
                       className="p-1.5 rounded-md bg-indigo-500/20 text-indigo-400 hover:bg-indigo-500/30 transition-colors"
-                      title="Duyệt Đơn"
+                      title={t("ApproveRegistration")}
                     >
                       <ClipboardCheck size={16} />
                     </button>

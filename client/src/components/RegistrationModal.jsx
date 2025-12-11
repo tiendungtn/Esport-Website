@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import AlertModal from "./AlertModal";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../lib/api";
+import { useTranslation } from "react-i18next";
 import "../styles/components/registration-modal.css";
 
 export default function RegistrationModal({ tournamentId, onClose }) {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [selectedTeam, setSelectedTeam] = useState("");
   const [error, setError] = useState(null);
@@ -41,19 +43,20 @@ export default function RegistrationModal({ tournamentId, onClose }) {
       queryClient.invalidateQueries(["tournament", tournamentId]);
       setAlertState({
         isOpen: true,
-        title: "Thành công",
-        message: "Đăng ký thành công!",
+        title: t("RegistrationSuccessTitle"),
+        message: t("RegistrationSuccessMessage"),
         type: "success",
         onClose: () => onClose(), // Close the modal after alert confirms
       });
     },
     onError: (err) => {
-      const errorMessage = err.response?.data?.message || "Đăng ký thất bại";
+      const errorMessage =
+        err.response?.data?.message || t("RegistrationFailed");
       // setError(errorMessage); // We can just use the AlertModal for the error now, or both.
       // Let's use AlertModal for better consistency as requested.
       setAlertState({
         isOpen: true,
-        title: "Lỗi đăng ký",
+        title: t("RegistrationErrorTitle"),
         message: errorMessage,
         type: "error",
       });
@@ -76,14 +79,12 @@ export default function RegistrationModal({ tournamentId, onClose }) {
         type={alertState.type}
       />
       <div className="rm-content">
-        <h2 className="rm-title">Đăng ký tham gia</h2>
-        <p className="rm-description">
-          Chọn đội tuyển của bạn để tham gia giải đấu này.
-        </p>
+        <h2 className="rm-title">{t("RegisterTitle")}</h2>
+        <p className="rm-description">{t("RegisterDescription")}</p>
 
         <form onSubmit={handleSubmit} className="rm-form">
           <div>
-            <label className="rm-label">Chọn đội tuyển</label>
+            <label className="rm-label">{t("SelectTeam")}</label>
             {isLoading ? (
               <div className="rm-loading" />
             ) : myTeams?.length > 0 ? (
@@ -119,7 +120,7 @@ export default function RegistrationModal({ tournamentId, onClose }) {
                     <div className="rm-team-info">
                       <div className="rm-team-name">{team.name}</div>
                       <div className="rm-team-meta">
-                        {team.members?.length || 1} thành viên
+                        {t("MemberCount", { count: team.members?.length || 1 })}
                       </div>
                     </div>
                     {selectedTeam === team._id && (
@@ -143,9 +144,9 @@ export default function RegistrationModal({ tournamentId, onClose }) {
               </div>
             ) : (
               <div className="rm-empty-state">
-                Bạn chưa có đội tuyển nào.{" "}
+                {t("NoTeamsYet")}{" "}
                 <Link to="/teams/create" className="rm-create-link">
-                  Tạo đội ngay
+                  {t("CreateTeamNow")}
                 </Link>
               </div>
             )}
@@ -153,14 +154,14 @@ export default function RegistrationModal({ tournamentId, onClose }) {
 
           <div className="rm-footer">
             <button type="button" onClick={onClose} className="rm-btn-cancel">
-              Hủy
+              {t("Cancel")}
             </button>
             <button
               type="submit"
               disabled={!selectedTeam || registerMutation.isPending}
               className="rm-btn-submit"
             >
-              {registerMutation.isPending ? "Đang xử lý..." : "Đăng ký ngay"}
+              {registerMutation.isPending ? t("Processing") : t("RegisterNow")}
             </button>
           </div>
         </form>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { api } from "../lib/api";
-import { getGameNames } from "../lib/gameTranslations";
+import { getGameNames, gameNameToDB } from "../lib/gameTranslations";
 import "../styles/pages/create-team.css";
 
 export default function CreateTeam() {
@@ -24,11 +24,14 @@ export default function CreateTeam() {
     setLoading(true);
 
     try {
-      const res = await api.post("/api/teams", form);
+      const res = await api.post("/api/teams", {
+        ...form,
+        game: gameNameToDB(form.game),
+      });
       navigate(`/teams/${res.data._id}`);
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.message || "Failed to create team");
+      setError(err.response?.data?.message || t("FailedToCreateTeam"));
     } finally {
       setLoading(false);
     }
@@ -51,9 +54,7 @@ export default function CreateTeam() {
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               className="ct-input"
               required
-              placeholder={
-                t("CreateTeamNamePlaceholder") || "e.g. Hanoi Legends"
-              }
+              placeholder={t("CreateTeamNamePlaceholder")}
             />
           </div>
 
@@ -79,7 +80,7 @@ export default function CreateTeam() {
                 value={form.tag}
                 onChange={(e) => setForm({ ...form, tag: e.target.value })}
                 className="ct-input"
-                placeholder="e.g. HNL"
+                placeholder={t("TeamTagPlaceholder")}
                 maxLength={5}
               />
             </div>
@@ -96,7 +97,7 @@ export default function CreateTeam() {
                     />
                   ) : (
                     <span className="text-gray-500 text-xs text-center px-1">
-                      No Logo
+                      {t("NoLogo")}
                     </span>
                   )}
                 </div>
@@ -119,7 +120,7 @@ export default function CreateTeam() {
                         setForm({ ...form, logoUrl: res.data.url });
                       } catch (err) {
                         console.error("Upload failed", err);
-                        setError("Failed to upload image");
+                        setError(t("UploadImageFailed"));
                       } finally {
                         setLoading(false);
                       }
@@ -127,7 +128,7 @@ export default function CreateTeam() {
                     className="ct-input file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100 dark:file:bg-gray-700 dark:file:text-gray-200"
                   />
                   <p className="text-xs text-gray-400 mt-1">
-                    Start by uploading a logo (optional)
+                    {t("StartUploadLogo")}
                   </p>
                 </div>
               </div>
