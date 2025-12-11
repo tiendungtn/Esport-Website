@@ -70,12 +70,18 @@ export default function AdminMatches() {
             <tbody className="am-tbody">
               {matches?.map((match) => (
                 <tr key={match._id} className="am-tr">
-                  <td className="am-td">Round {match.round}</td>
-                  <td className="am-td-team">{match.teamA?.name || "TBD"}</td>
+                  <td className="am-td">
+                    {t("RoundN", { count: match.round })}
+                  </td>
+                  <td className="am-td-team">
+                    {match.teamA?.name || t("TBD")}
+                  </td>
                   <td className="am-td-center">
                     {match.scoreA} - {match.scoreB}
                   </td>
-                  <td className="am-td-team">{match.teamB?.name || "TBD"}</td>
+                  <td className="am-td-team">
+                    {match.teamB?.name || t("TBD")}
+                  </td>
                   <td className="am-td">
                     <span
                       className={`am-status-badge ${
@@ -86,7 +92,7 @@ export default function AdminMatches() {
                           : "am-status-pending"
                       }`}
                     >
-                      {match.state}
+                      {t(`MatchStatus_${match.state}`)}
                     </span>
                   </td>
                   <td className="am-td-right">
@@ -177,7 +183,7 @@ function MatchModal({ isOpen, onClose, match }) {
       queryClient.invalidateQueries({ queryKey: ["matches"] });
       onClose();
     },
-    onError: (error) => handleError(error, "Failed to update match"),
+    onError: (error) => handleError(error, t("FailedToUpdateMatch")),
   });
 
   const confirmMutation = useMutation({
@@ -187,7 +193,7 @@ function MatchModal({ isOpen, onClose, match }) {
       queryClient.invalidateQueries({ queryKey: ["matches"] });
       onClose();
     },
-    onError: (error) => handleError(error, "Failed to confirm match"),
+    onError: (error) => handleError(error, t("FailedToConfirmMatch")),
   });
 
   const handleFileUpload = async (e) => {
@@ -235,7 +241,7 @@ function MatchModal({ isOpen, onClose, match }) {
         <h3 className="amm-title">{t("UpdateScore")}</h3>
         <div className="amm-scores">
           <div className="amm-score-box">
-            <p className="amm-team-name">{match.teamA?.name || "Team A"}</p>
+            <p className="amm-team-name">{match.teamA?.name || t("Team1")}</p>
             <input
               type="number"
               min="0"
@@ -251,7 +257,7 @@ function MatchModal({ isOpen, onClose, match }) {
           </div>
           <span className="amm-score-divider">-</span>
           <div className="amm-score-box">
-            <p className="amm-team-name">{match.teamB?.name || "Team B"}</p>
+            <p className="amm-team-name">{match.teamB?.name || t("Team2")}</p>
             <input
               type="number"
               min="0"

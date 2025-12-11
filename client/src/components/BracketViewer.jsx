@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
 import "../styles/components/bracket-viewer.css";
+import { useTranslation } from "react-i18next";
 
 /** Hiển thị Bracket Single-Elimination đơn giản */
 export default function BracketViewer({ matches = [] }) {
+  const { t } = useTranslation();
+
   if (!matches.length)
-    return (
-      <p className="text-sm text-slate-400">
-        Chưa có trận đấu nào trong bracket này.
-      </p>
-    );
+    return <p className="text-sm text-slate-400">{t("NoMatchesInBracket")}</p>;
 
   const roundsMap = new Map();
   matches.forEach((m) => {
@@ -24,7 +23,9 @@ export default function BracketViewer({ matches = [] }) {
       <div className="bv-rounds-container">
         {roundNumbers.map((rNum, idx) => (
           <div key={rNum} className="bv-round-column">
-            <div className="bv-round-header">Round {idx + 1}</div>
+            <div className="bv-round-header">
+              {t("RoundN", { count: idx + 1 })}
+            </div>
             <div className="bv-match-list">
               {roundsMap.get(rNum).map((m) => (
                 <div key={m._id} className="bv-match-card">
@@ -33,14 +34,20 @@ export default function BracketViewer({ matches = [] }) {
                     score={m.scoreA}
                     isWinner={m.scoreA > m.scoreB}
                     teamId={m.teamA?._id}
+                    t={t}
                   />
                   <MatchRow
                     name={m.teamB?.name}
                     score={m.scoreB}
                     isWinner={m.scoreB > m.scoreA}
                     teamId={m.teamB?._id}
+                    t={t}
                   />
-                  <div className="bv-match-state">{m.state}</div>
+                  {m.state === "final" && (
+                    <div className="bv-match-state">
+                      {t(`MatchStatus_${m.state}`)}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -51,7 +58,7 @@ export default function BracketViewer({ matches = [] }) {
   );
 }
 
-function MatchRow({ name, score, isWinner, teamId }) {
+function MatchRow({ name, score, isWinner, teamId, t }) {
   return (
     <div className="bv-row">
       <div
@@ -61,10 +68,10 @@ function MatchRow({ name, score, isWinner, teamId }) {
       >
         {teamId ? (
           <Link to={`/teams/${teamId}`} className="bv-team-link">
-            {name || "TBD"}
+            {name || t("TBD")}
           </Link>
         ) : (
-          name || "TBD"
+          name || t("TBD")
         )}
       </div>
       <div className="bv-score-box">{score ?? 0}</div>

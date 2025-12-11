@@ -79,9 +79,9 @@ export default function PublicTeamProfile() {
     }
   };
 
-  if (isLoading) return <div className="ptp-loading">Loading...</div>;
-  if (error) return <div className="ptp-error">Failed to load team</div>;
-  if (!team) return <div className="ptp-error">Team not found</div>;
+  if (isLoading) return <div className="ptp-loading">{t("Loading")}</div>;
+  if (error) return <div className="ptp-error">{t("FailedToLoadTeam")}</div>;
+  if (!team) return <div className="ptp-error">{t("TeamNotFound")}</div>;
 
   const isOwner = user && team.ownerUser && user.id === team.ownerUser._id;
 
@@ -405,7 +405,7 @@ function EditTeamModal({ isOpen, onClose, team, onSuccess }) {
                   {form.logoUrl ? (
                     <img
                       src={form.logoUrl}
-                      alt="Preview"
+                      alt={t("Preview")}
                       className="w-full h-full object-cover"
                     />
                   ) : (

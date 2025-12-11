@@ -14,6 +14,8 @@ export default function AdminTournaments() {
   const [editingTournament, setEditingTournament] = useState(null);
   const [isRegistrationsOpen, setIsRegistrationsOpen] = useState(false);
   const [selectedTournamentId, setSelectedTournamentId] = useState(null);
+  const [tournamentToDelete, setTournamentToDelete] = useState(null);
+  const [deleteSuccessMessage, setDeleteSuccessMessage] = useState("");
 
   const { data: tournaments, isLoading } = useQuery({
     queryKey: ["tournaments"],
@@ -24,13 +26,12 @@ export default function AdminTournaments() {
     mutationFn: async (id) => (await api.delete(`/api/tournaments/${id}`)).data,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tournaments"] });
+      setDeleteSuccessMessage(t("TournamentDeletedSuccess"));
     },
   });
 
-  const handleDelete = async (id) => {
-    if (confirm(t("DeleteConfirm"))) {
-      deleteMutation.mutate(id);
-    }
+  const handleDelete = (tournament) => {
+    setTournamentToDelete(tournament);
   };
 
   const handleEdit = (tournament) => {
@@ -109,7 +110,7 @@ export default function AdminTournaments() {
                       <Edit size={16} />
                     </button>
                     <button
-                      onClick={() => handleDelete(tournament._id)}
+                      onClick={() => handleDelete(tournament)}
                       className="at-action-btn-delete"
                     >
                       <Trash2 size={16} />
@@ -135,6 +136,77 @@ export default function AdminTournaments() {
           tournamentId={selectedTournamentId}
           onClose={() => setIsRegistrationsOpen(false)}
         />
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {tournamentToDelete && (
+        <div className="atm-overlay">
+          <div className="atm-content">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="atm-title text-xl text-red-500">
+                {t("ConfirmDeleteTournament")}
+              </h3>
+              <button
+                onClick={() => setTournamentToDelete(null)}
+                className="text-slate-400 hover:text-white"
+              >
+                <Trash2 size={20} className="hidden" />{" "}
+                {/* Hidden icon, just for consistency if needed, but we use X usually */}
+                X
+              </button>
+            </div>
+            <p className="text-slate-300 mb-6">
+              {t("AreYouSureDeleteTournament", {
+                name: tournamentToDelete.name,
+              })}
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setTournamentToDelete(null)}
+                className="px-4 py-2 rounded bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors"
+              >
+                {t("Cancel")}
+              </button>
+              <button
+                onClick={() => {
+                  deleteMutation.mutate(tournamentToDelete._id);
+                  setTournamentToDelete(null);
+                }}
+                className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-500 transition-colors"
+              >
+                {t("Delete")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Modal */}
+      {deleteSuccessMessage && (
+        <div className="atm-overlay">
+          <div className="atm-content">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="atm-title text-xl text-green-500">
+                {t("RegistrationSuccessTitle")}
+              </h3>
+              <button
+                onClick={() => setDeleteSuccessMessage("")}
+                className="text-slate-400 hover:text-white"
+              >
+                X
+              </button>
+            </div>
+            <p className="text-slate-300 mb-6">{deleteSuccessMessage}</p>
+            <div className="flex justify-end">
+              <button
+                onClick={() => setDeleteSuccessMessage("")}
+                className="px-4 py-2 rounded bg-violet-600 text-white hover:bg-violet-500 transition-colors"
+              >
+                {t("Close")}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
