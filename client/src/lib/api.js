@@ -11,3 +11,7 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+export const seedTournament = async (tournamentId, seeds) => {
+  return await api.post(`/api/tournaments/${tournamentId}/seed`, { seeds });
+};

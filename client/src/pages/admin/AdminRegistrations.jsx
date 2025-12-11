@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Check, X, AlertCircle, RefreshCw } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { api } from "../../lib/api";
+
+import { api, seedTournament } from "../../lib/api";
 import "../../styles/pages/admin-registrations.css";
 
 // Helper component for status badges
@@ -31,7 +32,10 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
   const [registrations, setRegistrations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
   const [filter, setFilter] = useState("all"); // 'all', 'pending', 'approved', 'rejected'
+  const [seeds, setSeeds] = useState({}); // { teamId: seedValue }
+  const [savingSeeds, setSavingSeeds] = useState(false);
 
   // Fetch registrations when tournamentId changes
   useEffect(() => {
@@ -45,6 +49,12 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
           `/api/tournaments/${tournamentId}/registrations`
         );
         setRegistrations(res.data);
+        // Initialize seeds
+        const initialSeeds = {};
+        res.data.forEach((r) => {
+          if (r.seed) initialSeeds[r.teamId._id] = r.seed;
+        });
+        setSeeds(initialSeeds);
       } catch (err) {
         console.error("Failed to fetch registrations", err);
         setError(t("FailedLoadRegistrations"));
@@ -74,6 +84,34 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
     } catch (err) {
       console.error("Failed to update status", err);
       alert(t("FailedUpdateStatus"));
+    }
+  };
+
+  const handleSeedChange = (teamId, value) => {
+    setSeeds((prev) => ({
+      ...prev,
+      [teamId]: value,
+    }));
+  };
+
+  const handleSaveSeeding = async () => {
+    setSavingSeeds(true);
+    try {
+      // Build payload
+      const payload = Object.entries(seeds)
+        .filter(([_, v]) => v !== "" && v !== null && v !== undefined)
+        .map(([teamId, seed]) => ({
+          teamId,
+          seed: parseInt(seed),
+        }));
+
+      await seedTournament(tournamentId, payload);
+      alert(t("SeedingSaved") || "Seeding saved successfully!");
+    } catch (err) {
+      console.error("Failed to save seeding", err);
+      alert(err.response?.data?.message || t("FailedSaveSeeding"));
+    } finally {
+      setSavingSeeds(false);
     }
   };
 
@@ -111,6 +149,30 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
           ))}
         </div>
 
+        <div className="atem-actions-row" style={{ marginBottom: "1rem" }}>
+          <button
+            onClick={handleSaveSeeding}
+            disabled={savingSeeds}
+            className="atem-btn-save-seeds"
+            style={{
+              padding: "8px 16px",
+              backgroundColor: "#2563eb",
+              color: "white",
+              borderRadius: "4px",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            {savingSeeds ? (
+              <RefreshCw className="animate-spin" size={16} />
+            ) : (
+              <Check size={16} />
+            )}
+            {t("SaveSeeding") || "Save Seeding"}
+          </button>
+        </div>
+
         {error && (
           <div className="atem-error">
             <AlertCircle size={20} />
@@ -128,6 +190,7 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
                   <tr>
                     <th className="atem-th">{t("TeamName")}</th>
                     <th className="atem-th">{t("Members")}</th>
+                    <th className="atem-th">{t("Seed") || "Seed"}</th>
                     <th className="atem-th">{t("Date")}</th>
                     <th className="atem-th">{t("TableStatus")}</th>
                     <th className="atem-th">{t("TableActions")}</th>
@@ -172,6 +235,25 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
                         </td>
                         <td className="atem-td-count">
                           {reg.teamId?.members?.length || 0}
+                        </td>
+                        <td className="atem-td">
+                          <input
+                            type="number"
+                            min="1"
+                            className="atem-seed-input"
+                            value={seeds[reg.teamId._id] || ""}
+                            onChange={(e) =>
+                              handleSeedChange(reg.teamId._id, e.target.value)
+                            }
+                            style={{
+                              width: "60px",
+                              padding: "4px",
+                              background: "#334155",
+                              color: "white",
+                              border: "1px solid #475569",
+                              borderRadius: "4px",
+                            }}
+                          />
                         </td>
                         <td className="atem-td-date">
                           {new Date(reg.createdAt).toLocaleDateString()}
