@@ -93,6 +93,9 @@ const resources = {
       DisplayName: "Display Name",
       Email: "Email",
       Role: "Role",
+      RolePlayer: "Player",
+      RoleAdmin: "Admin",
+      RoleOrganizer: "Organizer",
       JoinDate: "Join Date",
 
       // Quản lý trận đấu (Admin)
@@ -172,8 +175,11 @@ const resources = {
 
       // Admin Teams (Misc)
       NoLogo: "No Logo",
+      Logo: "Logo",
+      LogoPreview: "Logo Preview",
       UploadImageFailed: "Failed to upload image",
       Unnamed: "Unnamed",
+      ViewRegistrations: "View Registrations",
 
       // Public Team Profile & Create Team
       NoUsersFound: "No users found",
@@ -225,6 +231,10 @@ const resources = {
       LoadRegistrations: "Loading registrations...",
       FailedLoadRegistrations: "Failed to load registrations.",
       FailedUpdateStatus: "Failed to update status",
+      SaveSeeding: "Save Seeding",
+      SeedingSaved: "Seeding saved successfully",
+      FailedSaveSeeding: "Failed to save seeding",
+      Seed: "Seed",
 
       // Trang hồ sơ
       ProfileManagement: "Profile Management",
@@ -352,6 +362,9 @@ const resources = {
       DisplayName: "Tên hiển thị",
       Email: "Email",
       Role: "Vai trò",
+      RolePlayer: "Người chơi",
+      RoleAdmin: "Quản trị viên",
+      RoleOrganizer: "Ban tổ chức",
       JoinDate: "Ngày tham gia",
 
       // Admin Matches
@@ -432,8 +445,11 @@ const resources = {
 
       // Admin Teams (Misc)
       NoLogo: "Không có Logo",
+      Logo: "Logo",
+      LogoPreview: "Xem trước Logo",
       UploadImageFailed: "Tải ảnh thất bại",
       Unnamed: "Chưa đặt tên",
+      ViewRegistrations: "Xem đơn đăng ký",
 
       // Public Team Profile & Create Team
       NoUsersFound: "Không tìm thấy người dùng",
@@ -485,6 +501,10 @@ const resources = {
       LoadRegistrations: "Đang tải danh sách...",
       FailedLoadRegistrations: "Không thể tải danh sách.",
       FailedUpdateStatus: "Cập nhật trạng thái thất bại",
+      SaveSeeding: "Lưu Hạt Giống",
+      SeedingSaved: "Lưu hạt giống thành công!",
+      FailedSaveSeeding: "Lưu hạt giống thất bại",
+      Seed: "Hạt giống",
 
       // Profile Page
       ProfileManagement: "Quản lý Hồ sơ",

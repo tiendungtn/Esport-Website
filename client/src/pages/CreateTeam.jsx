@@ -92,7 +92,7 @@ export default function CreateTeam() {
                   {form.logoUrl ? (
                     <img
                       src={form.logoUrl}
-                      alt="Logo Preview"
+                      alt={t("LogoPreview")}
                       className="ct-logo-img"
                     />
                   ) : (

@@ -49,7 +49,7 @@ export default function AdminTournaments() {
     setIsRegistrationsOpen(true);
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>{t("Loading")}</div>;
 
   return (
     <div className="at-container">
@@ -99,7 +99,7 @@ export default function AdminTournaments() {
                     <button
                       onClick={() => handleViewRegistrations(tournament._id)}
                       className="p-1.5 rounded-md bg-indigo-500/20 text-indigo-400 hover:bg-indigo-500/30 transition-colors"
-                      title={t("ApproveRegistration")}
+                      title={t("ViewRegistrations")}
                     >
                       <ClipboardCheck size={16} />
                     </button>

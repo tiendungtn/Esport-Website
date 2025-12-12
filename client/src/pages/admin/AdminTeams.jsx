@@ -66,7 +66,7 @@ export default function AdminTeams() {
     setIsMembersModalOpen(true);
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>{t("Loading")}</div>;
 
   return (
     <div className="ate-container">
@@ -327,7 +327,7 @@ function TeamModal({ isOpen, onClose, team }) {
                 {form.logoUrl ? (
                   <img
                     src={form.logoUrl}
-                    alt="Logo Preview"
+                    alt={t("LogoPreview")}
                     className="w-full h-full object-cover"
                   />
                 ) : (

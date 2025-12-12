@@ -122,18 +122,18 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
       // alert(t("SeedingSaved") || "Seeding saved successfully!");
       setAlertState({
         isOpen: true,
-        title: t("Success") || "Success",
-        message: t("SeedingSaved") || "Seeding saved successfully!",
         type: "success",
+        title: t("Success"),
+        message: t("SeedingSaved"),
       });
     } catch (err) {
       console.error("Failed to save seeding", err);
       // alert(err.response?.data?.message || t("FailedSaveSeeding"));
       setAlertState({
         isOpen: true,
+        type: "error",
         title: t("Error"),
         message: err.response?.data?.message || t("FailedSaveSeeding"),
-        type: "error",
       });
     } finally {
       setSavingSeeds(false);
@@ -169,11 +169,11 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
                 }}
               >
                 {savingSeeds ? (
-                  <RefreshCw className="animate-spin" size={14} />
+                  <RefreshCw className="h-4 w-4 animate-spin" />
                 ) : (
-                  <Check size={14} />
+                  <Check className="h-4 w-4" />
                 )}
-                {t("SaveSeeding") || "Save Seeding"}
+                {t("SaveSeeding")}
               </button>
               <button onClick={onClose} className="atem-close-btn">
                 <X size={24} />
@@ -218,7 +218,7 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
                       <th className="atem-th">{t("TeamName")}</th>
                       <th className="atem-th">{t("Members")}</th>
                       <th className="atem-th">{t("Date")}</th>
-                      <th className="atem-th">{t("Seed") || "Seed"}</th>
+                      <th className="atem-th">{t("Seed")}</th>
                       <th className="atem-th">{t("TableStatus")}</th>
                       <th className="atem-th">{t("TableActions")}</th>
                     </tr>

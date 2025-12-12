@@ -224,7 +224,7 @@ export default function AdminPlayers() {
                 />
               </div>
               <div>
-                <label className="apm-label">Email</label>
+                <label className="apm-label">{t("Email")}</label>
                 <input
                   type="email"
                   required
@@ -244,7 +244,7 @@ export default function AdminPlayers() {
                   }
                   className="apm-select"
                 >
-                  <option value="player">Player</option>
+                  <option value="player">{t("RolePlayer")}</option>
                 </select>
               </div>
               <div>
