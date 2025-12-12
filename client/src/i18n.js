@@ -235,6 +235,9 @@ const resources = {
       SeedingSaved: "Seeding saved successfully",
       FailedSaveSeeding: "Failed to save seeding",
       Seed: "Seed",
+      GenerateBracket: "Generate Bracket",
+      BracketGenerated: "Bracket generated successfully!",
+      FailedGenerateBracket: "Failed to generate bracket",
 
       // Trang hồ sơ
       ProfileManagement: "Profile Management",
@@ -505,6 +508,9 @@ const resources = {
       SeedingSaved: "Lưu hạt giống thành công!",
       FailedSaveSeeding: "Lưu hạt giống thất bại",
       Seed: "Hạt giống",
+      GenerateBracket: "Tạo nhánh đấu",
+      BracketGenerated: "Đã tạo nhánh đấu thành công!",
+      FailedGenerateBracket: "Tạo nhánh đấu thất bại",
 
       // Profile Page
       ProfileManagement: "Quản lý Hồ sơ",

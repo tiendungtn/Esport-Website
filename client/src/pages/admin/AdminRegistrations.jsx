@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Check, X, AlertCircle, RefreshCw } from "lucide-react";
+import { Check, X, AlertCircle, RefreshCw, Trophy } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { api, seedTournament } from "../../lib/api";
+import { api, seedTournament, generateBracket } from "../../lib/api";
 import AlertModal from "../../components/AlertModal";
 import "../../styles/pages/admin-registrations.css";
 
@@ -37,6 +37,7 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
   const [filter, setFilter] = useState("all"); // 'all', 'pending', 'approved', 'rejected'
   const [seeds, setSeeds] = useState({}); // { teamId: seedValue }
   const [savingSeeds, setSavingSeeds] = useState(false);
+  const [generatingBracket, setGeneratingBracket] = useState(false);
   const [alertState, setAlertState] = useState({
     isOpen: false,
     title: "",
@@ -140,6 +141,29 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
     }
   };
 
+  const handleGenerateBracket = async () => {
+    setGeneratingBracket(true);
+    try {
+      await api.post(`/api/tournaments/${tournamentId}/generate-bracket`);
+      setAlertState({
+        isOpen: true,
+        type: "success",
+        title: t("Success"),
+        message: t("BracketGenerated"),
+      });
+    } catch (err) {
+      console.error("Failed to generate bracket", err);
+      setAlertState({
+        isOpen: true,
+        type: "error",
+        title: t("Error"),
+        message: err.response?.data?.message || t("FailedGenerateBracket"),
+      });
+    } finally {
+      setGeneratingBracket(false);
+    }
+  };
+
   const filteredRegistrations = registrations.filter((reg) => {
     if (filter === "all") return true;
     return reg.status === filter;
@@ -174,6 +198,30 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
                   <Check className="h-4 w-4" />
                 )}
                 {t("SaveSeeding")}
+              </button>
+              <button
+                onClick={handleGenerateBracket}
+                disabled={generatingBracket}
+                style={{
+                  padding: "6px 12px",
+                  backgroundColor: "#10b981",
+                  color: "white",
+                  borderRadius: "4px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  fontSize: "14px",
+                  border: "none",
+                  cursor: "pointer",
+                  opacity: generatingBracket ? 0.7 : 1,
+                }}
+              >
+                {generatingBracket ? (
+                  <RefreshCw className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Trophy className="h-4 w-4" />
+                )}
+                {t("GenerateBracket")}
               </button>
               <button onClick={onClose} className="atem-close-btn">
                 <X size={24} />
