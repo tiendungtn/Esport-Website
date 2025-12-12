@@ -29,20 +29,17 @@ export default function ConfirmModal({
     }
   };
 
-  const getColorClass = () => {
-    switch (type) {
-      case "danger":
-        return "bg-red-500/10 border-red-500/20";
-      case "warning":
-        return "bg-yellow-500/10 border-yellow-500/20";
-      default:
-        return "bg-slate-800 border-slate-700";
-    }
-  };
-
   return (
     <div className="alert-modal-overlay">
-      <div className={`alert-modal-content ${getColorClass()}`}>
+      <div
+        className={`alert-modal-content ${
+          type === "danger"
+            ? "alert-modal-danger"
+            : type === "warning"
+            ? "alert-modal-warning"
+            : "alert-modal-info"
+        }`}
+      >
         <div className="alert-modal-header">
           <div className="alert-modal-title-container">
             {getIcon()}
@@ -59,20 +56,20 @@ export default function ConfirmModal({
 
         <p className="alert-modal-message">{message}</p>
 
-        <div className="alert-modal-footer flex gap-3 justify-end">
+        <div className="alert-modal-footer">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-md border border-slate-700 hover:bg-slate-800 text-slate-300 text-sm font-medium transition-colors"
+            className="alert-modal-btn-cancel"
             disabled={isLoading}
           >
             {cancelText || t("Cancel")}
           </button>
           <button
             onClick={onConfirm}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+            className={`alert-modal-btn-confirm ${
               type === "danger"
-                ? "bg-red-500 hover:bg-red-600 text-white"
-                : "bg-sky-500 hover:bg-sky-600 text-white"
+                ? "alert-modal-btn-danger"
+                : "alert-modal-btn-warning"
             }`}
             disabled={isLoading}
           >

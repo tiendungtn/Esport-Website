@@ -215,7 +215,11 @@ export async function seedTournament(req, res) {
     const seedValues = manualSeeds.map((s) => s.seed);
     const uniqueSeeds = new Set(seedValues);
     if (seedValues.length !== uniqueSeeds.size) {
-      return res.status(400).json({ message: "Seed values must be unique" });
+      return res
+        .status(400)
+        .json({
+          message: "Không được đặt cùng seed (Duplicate seeds not allowed)",
+        });
     }
 
     // Map seed input

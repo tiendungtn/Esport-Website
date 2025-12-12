@@ -3,6 +3,7 @@ import { Check, X, AlertCircle, RefreshCw } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { api, seedTournament } from "../../lib/api";
+import AlertModal from "../../components/AlertModal";
 import "../../styles/pages/admin-registrations.css";
 
 // Helper component for status badges
@@ -36,6 +37,12 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
   const [filter, setFilter] = useState("all"); // 'all', 'pending', 'approved', 'rejected'
   const [seeds, setSeeds] = useState({}); // { teamId: seedValue }
   const [savingSeeds, setSavingSeeds] = useState(false);
+  const [alertState, setAlertState] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    type: "info", // success, error, info
+  });
 
   // Fetch registrations when tournamentId changes
   useEffect(() => {
@@ -83,7 +90,13 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
       );
     } catch (err) {
       console.error("Failed to update status", err);
-      alert(t("FailedUpdateStatus"));
+      // alert(t("FailedUpdateStatus")); // Replaced with modal
+      setAlertState({
+        isOpen: true,
+        title: t("Error"),
+        message: t("FailedUpdateStatus"),
+        type: "error",
+      });
     }
   };
 
@@ -106,10 +119,22 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
         }));
 
       await seedTournament(tournamentId, payload);
-      alert(t("SeedingSaved") || "Seeding saved successfully!");
+      // alert(t("SeedingSaved") || "Seeding saved successfully!");
+      setAlertState({
+        isOpen: true,
+        title: t("Success") || "Success",
+        message: t("SeedingSaved") || "Seeding saved successfully!",
+        type: "success",
+      });
     } catch (err) {
       console.error("Failed to save seeding", err);
-      alert(err.response?.data?.message || t("FailedSaveSeeding"));
+      // alert(err.response?.data?.message || t("FailedSaveSeeding"));
+      setAlertState({
+        isOpen: true,
+        title: t("Error"),
+        message: err.response?.data?.message || t("FailedSaveSeeding"),
+        type: "error",
+      });
     } finally {
       setSavingSeeds(false);
     }
@@ -121,181 +146,192 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
   });
 
   return (
-    <div className="atem-overlay">
-      <div className="atem-content-lg">
-        <div className="atem-header-row">
-          <h3 className="atem-title">{t("RegistrationListTitle")}</h3>
-          <button onClick={onClose} className="atem-close-btn">
-            <X size={24} />
-          </button>
-        </div>
-
-        <div className="atem-filters">
-          {["all", "pending", "approved", "rejected"].map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`atem-filter-btn ${
-                filter === f
-                  ? "atem-filter-btn-active"
-                  : "atem-filter-btn-inactive"
-              }`}
-            >
-              {f === "all" && t("StatusAll")}
-              {f === "pending" && t("StatusPending")}
-              {f === "approved" && t("StatusApproved")}
-              {f === "rejected" && t("StatusRejected")}
-            </button>
-          ))}
-        </div>
-
-        <div className="atem-actions-row" style={{ marginBottom: "1rem" }}>
-          <button
-            onClick={handleSaveSeeding}
-            disabled={savingSeeds}
-            className="atem-btn-save-seeds"
-            style={{
-              padding: "8px 16px",
-              backgroundColor: "#2563eb",
-              color: "white",
-              borderRadius: "4px",
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-            }}
-          >
-            {savingSeeds ? (
-              <RefreshCw className="animate-spin" size={16} />
-            ) : (
-              <Check size={16} />
-            )}
-            {t("SaveSeeding") || "Save Seeding"}
-          </button>
-        </div>
-
-        {error && (
-          <div className="atem-error">
-            <AlertCircle size={20} />
-            {error}
-          </div>
-        )}
-
-        {loading ? (
-          <div className="atem-loading">{t("LoadRegistrations")}</div>
-        ) : (
-          <div className="atem-table-container">
-            <div className="atem-table-scroll custom-scrollbar">
-              <table className="atem-table">
-                <thead className="atem-thead">
-                  <tr>
-                    <th className="atem-th">{t("TeamName")}</th>
-                    <th className="atem-th">{t("Members")}</th>
-                    <th className="atem-th">{t("Seed") || "Seed"}</th>
-                    <th className="atem-th">{t("Date")}</th>
-                    <th className="atem-th">{t("TableStatus")}</th>
-                    <th className="atem-th">{t("TableActions")}</th>
-                  </tr>
-                </thead>
-                <tbody className="atem-tbody">
-                  {filteredRegistrations.length === 0 ? (
-                    <tr>
-                      <td colSpan="5" className="atem-empty-row">
-                        {t("NoRegistrationsFilter")}
-                      </td>
-                    </tr>
-                  ) : (
-                    filteredRegistrations.map((reg) => (
-                      <tr key={reg._id} className="atem-row">
-                        <td className="atem-td">
-                          <div className="atem-team-info">
-                            <div className="atem-team-logo-wrapper">
-                              {reg.teamId?.logoUrl ? (
-                                <img
-                                  src={reg.teamId.logoUrl}
-                                  alt=""
-                                  className="atem-team-logo"
-                                />
-                              ) : (
-                                <span className="atem-team-initials">
-                                  {reg.teamId?.name
-                                    ?.substring(0, 2)
-                                    .toUpperCase()}
-                                </span>
-                              )}
-                            </div>
-                            <div className="atem-team-details">
-                              <div className="atem-team-name">
-                                {reg.teamId?.name || t("UnknownTeam")}
-                              </div>
-                              <div className="atem-team-tag">
-                                {reg.teamId?.tag}
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="atem-td-count">
-                          {reg.teamId?.members?.length || 0}
-                        </td>
-                        <td className="atem-td">
-                          <input
-                            type="number"
-                            min="1"
-                            className="atem-seed-input"
-                            value={seeds[reg.teamId._id] || ""}
-                            onChange={(e) =>
-                              handleSeedChange(reg.teamId._id, e.target.value)
-                            }
-                            style={{
-                              width: "60px",
-                              padding: "4px",
-                              background: "#334155",
-                              color: "white",
-                              border: "1px solid #475569",
-                              borderRadius: "4px",
-                            }}
-                          />
-                        </td>
-                        <td className="atem-td-date">
-                          {new Date(reg.createdAt).toLocaleDateString()}
-                        </td>
-                        <td className="atem-td">
-                          <StatusBadge status={reg.status} />
-                        </td>
-                        <td className="atem-td">
-                          <div className="atem-actions">
-                            {reg.status === "pending" && (
-                              <>
-                                <button
-                                  onClick={() =>
-                                    handleStatusUpdate(reg._id, "approved")
-                                  }
-                                  className="atem-btn-approve"
-                                  title={t("Approve")}
-                                >
-                                  <Check size={16} />
-                                </button>
-                                <button
-                                  onClick={() =>
-                                    handleStatusUpdate(reg._id, "rejected")
-                                  }
-                                  className="atem-btn-reject"
-                                  title={t("Reject")}
-                                >
-                                  <X size={16} />
-                                </button>
-                              </>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
+    <>
+      <div className="atem-overlay">
+        <div className="atem-content-lg">
+          <div className="atem-header-row">
+            <h3 className="atem-title">{t("RegistrationListTitle")}</h3>
+            <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+              <button
+                onClick={handleSaveSeeding}
+                disabled={savingSeeds}
+                className="atem-btn-save-seeds"
+                style={{
+                  padding: "6px 12px",
+                  backgroundColor: "#2563eb",
+                  color: "white",
+                  borderRadius: "4px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  fontSize: "14px",
+                  opacity: savingSeeds ? 0.7 : 1,
+                }}
+              >
+                {savingSeeds ? (
+                  <RefreshCw className="animate-spin" size={14} />
+                ) : (
+                  <Check size={14} />
+                )}
+                {t("SaveSeeding") || "Save Seeding"}
+              </button>
+              <button onClick={onClose} className="atem-close-btn">
+                <X size={24} />
+              </button>
             </div>
           </div>
-        )}
+
+          <div className="atem-filters">
+            {["all", "pending", "approved", "rejected"].map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`atem-filter-btn ${
+                  filter === f
+                    ? "atem-filter-btn-active"
+                    : "atem-filter-btn-inactive"
+                }`}
+              >
+                {f === "all" && t("StatusAll")}
+                {f === "pending" && t("StatusPending")}
+                {f === "approved" && t("StatusApproved")}
+                {f === "rejected" && t("StatusRejected")}
+              </button>
+            ))}
+          </div>
+
+          {error && (
+            <div className="atem-error">
+              <AlertCircle size={20} />
+              {error}
+            </div>
+          )}
+
+          {loading ? (
+            <div className="atem-loading">{t("LoadRegistrations")}</div>
+          ) : (
+            <div className="atem-table-container">
+              <div className="atem-table-scroll custom-scrollbar">
+                <table className="atem-table">
+                  <thead className="atem-thead">
+                    <tr>
+                      <th className="atem-th">{t("TeamName")}</th>
+                      <th className="atem-th">{t("Members")}</th>
+                      <th className="atem-th">{t("Date")}</th>
+                      <th className="atem-th">{t("Seed") || "Seed"}</th>
+                      <th className="atem-th">{t("TableStatus")}</th>
+                      <th className="atem-th">{t("TableActions")}</th>
+                    </tr>
+                  </thead>
+                  <tbody className="atem-tbody">
+                    {filteredRegistrations.length === 0 ? (
+                      <tr>
+                        <td colSpan="5" className="atem-empty-row">
+                          {t("NoRegistrationsFilter")}
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredRegistrations.map((reg) => (
+                        <tr key={reg._id} className="atem-row">
+                          <td className="atem-td">
+                            <div className="atem-team-info">
+                              <div className="atem-team-logo-wrapper">
+                                {reg.teamId?.logoUrl ? (
+                                  <img
+                                    src={reg.teamId.logoUrl}
+                                    alt=""
+                                    className="atem-team-logo"
+                                  />
+                                ) : (
+                                  <span className="atem-team-initials">
+                                    {reg.teamId?.name
+                                      ?.substring(0, 2)
+                                      .toUpperCase()}
+                                  </span>
+                                )}
+                              </div>
+                              <div className="atem-team-details">
+                                <div className="atem-team-name">
+                                  {reg.teamId?.name || t("UnknownTeam")}
+                                </div>
+                                <div className="atem-team-tag">
+                                  {reg.teamId?.tag}
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="atem-td-count">
+                            {reg.teamId?.members?.length || 0}
+                          </td>
+                          <td className="atem-td-date">
+                            {new Date(reg.createdAt).toLocaleDateString()}
+                          </td>
+                          <td className="atem-td">
+                            <input
+                              type="number"
+                              min="1"
+                              className="atem-seed-input"
+                              value={seeds[reg.teamId._id] || ""}
+                              onChange={(e) =>
+                                handleSeedChange(reg.teamId._id, e.target.value)
+                              }
+                              style={{
+                                width: "60px",
+                                padding: "4px",
+                                background: "#1e293b",
+                                color: "white",
+                                border: "1px solid #475569",
+                                borderRadius: "4px",
+                              }}
+                            />
+                          </td>
+                          <td className="atem-td">
+                            <StatusBadge status={reg.status} />
+                          </td>
+                          <td className="atem-td">
+                            <div className="atem-actions">
+                              {reg.status === "pending" && (
+                                <>
+                                  <button
+                                    onClick={() =>
+                                      handleStatusUpdate(reg._id, "approved")
+                                    }
+                                    className="atem-btn-approve"
+                                    title={t("Approve")}
+                                  >
+                                    <Check size={16} />
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      handleStatusUpdate(reg._id, "rejected")
+                                    }
+                                    className="atem-btn-reject"
+                                    title={t("Reject")}
+                                  >
+                                    <X size={16} />
+                                  </button>
+                                </>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+
+      <AlertModal
+        isOpen={alertState.isOpen}
+        onClose={() => setAlertState((prev) => ({ ...prev, isOpen: false }))}
+        title={alertState.title}
+        message={alertState.message}
+        type={alertState.type}
+      />
+    </>
   );
 }
