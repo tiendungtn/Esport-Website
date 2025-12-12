@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Check, X, AlertCircle, RefreshCw, Trophy } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { api, seedTournament, generateBracket } from "../../lib/api";
+import { api, seedTournament } from "../../lib/api";
 import AlertModal from "../../components/AlertModal";
 import "../../styles/pages/admin-registrations.css";
 
