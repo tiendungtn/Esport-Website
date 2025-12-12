@@ -55,6 +55,8 @@ const resources = {
       FormGame: "Game",
       FormMaxTeams: "Max Teams",
       FormDescription: "Description",
+      FormRegOpen: "Registration Open Time",
+      FormRegClose: "Registration Close Time",
       Cancel: "Cancel",
       Save: "Save Changes",
       Saving: "Saving...",
@@ -150,6 +152,7 @@ const resources = {
       TournamentNotFound: "Tournament not found.",
       TournamentDescription:
         "eSports tournament managed by HUMG Esports system.",
+      RegistrationClosed: "Registration Closed",
       RegisterToJoin: "Register to Join",
       BracketSE: "Single Elimination Bracket",
       LoadingMatches: "Loading matches...",
@@ -327,6 +330,8 @@ const resources = {
       FormGame: "Game",
       FormMaxTeams: "Số đội tối đa",
       FormDescription: "Mô tả",
+      FormRegOpen: "Thời gian mở đăng ký",
+      FormRegClose: "Thời hạn đóng đăng ký",
       Cancel: "Hủy",
       Save: "Lưu thay đổi",
       Saving: "Đang lưu...",
@@ -423,6 +428,7 @@ const resources = {
       TournamentNotFound: "Không tìm thấy giải đấu này.",
       TournamentDescription:
         "Giải đấu eSports được quản lý bởi hệ thống HUMG Esports.",
+      RegistrationClosed: "Hết hạn đăng ký",
       RegisterToJoin: "Đăng ký tham gia",
       BracketSE: "Bảng đấu loại trực tiếp",
       LoadingMatches: "Đang tải lịch thi đấu...",

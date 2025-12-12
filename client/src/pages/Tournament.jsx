@@ -78,14 +78,23 @@ export default function Tournament() {
               {tournament.description || t("TournamentDescription")}
             </p>
           </div>
-          {tournament.status === "open" && (
-            <button
-              onClick={() => setShowRegisterModal(true)}
-              className="tournament-register-btn"
-            >
-              {t("RegisterToJoin")}
-            </button>
-          )}
+          {tournament.status === "open" &&
+            (tournament.schedule?.regClose &&
+            new Date() > new Date(tournament.schedule.regClose) ? (
+              <button
+                disabled
+                className="tournament-register-btn opacity-50 cursor-not-allowed bg-gray-400 hover:bg-gray-400 border-gray-400 text-slate-100"
+              >
+                {t("RegistrationClosed")}
+              </button>
+            ) : (
+              <button
+                onClick={() => setShowRegisterModal(true)}
+                className="tournament-register-btn"
+              >
+                {t("RegisterToJoin")}
+              </button>
+            ))}
         </div>
       </section>
 

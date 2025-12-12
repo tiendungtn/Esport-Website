@@ -215,20 +215,44 @@ export default function AdminTournaments() {
 function TournamentModal({ isOpen, onClose, tournament }) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  // Helper to format Date to input datetime-local string (YYYY-MM-DDTHH:mm)
+  const formatDateForInput = (dateStr) => {
+    if (!dateStr) return "";
+    const date = new Date(dateStr);
+    // Adjust to local time string specifically for input value
+    const pad = (n) => n.toString().padStart(2, "0");
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
+      date.getDate()
+    )}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+  };
+
   const [form, setForm] = useState({
     name: tournament?.name || "",
     game: tournament?.game || "",
     maxTeams: tournament?.maxTeams || 16,
     description: tournament?.description || "",
+    schedule: {
+      regOpen: formatDateForInput(tournament?.schedule?.regOpen),
+      regClose: formatDateForInput(tournament?.schedule?.regClose),
+    },
   });
 
   const mutation = useMutation({
     mutationFn: async (data) => {
+      // Clean up schedule if empty values
+      const payload = { ...data };
+      if (payload.schedule) {
+        if (!payload.schedule.regOpen) delete payload.schedule.regOpen;
+        if (!payload.schedule.regClose) delete payload.schedule.regClose;
+      }
+
       if (tournament) {
-        return (await api.put(`/api/tournaments/${tournament._id}`, data)).data;
-      } else {
-        return (await api.post("/api/tournaments", { ...data, format: "SE" }))
+        return (await api.put(`/api/tournaments/${tournament._id}`, payload))
           .data;
+      } else {
+        return (
+          await api.post("/api/tournaments", { ...payload, format: "SE" })
+        ).data;
       }
     },
     onSuccess: () => {
@@ -280,6 +304,40 @@ function TournamentModal({ isOpen, onClose, tournament }) {
               className="atm-input"
             />
           </div>
+
+          <div style={{ display: "flex", gap: "1rem" }}>
+            <div style={{ flex: 1 }}>
+              <label className="atm-label">{t("FormRegOpen")}</label>
+              <input
+                type="datetime-local"
+                value={form.schedule.regOpen}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    schedule: { ...form.schedule, regOpen: e.target.value },
+                  })
+                }
+                className="atm-input"
+                style={{ colorScheme: "dark" }}
+              />
+            </div>
+            <div style={{ flex: 1 }}>
+              <label className="atm-label">{t("FormRegClose")}</label>
+              <input
+                type="datetime-local"
+                value={form.schedule.regClose}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    schedule: { ...form.schedule, regClose: e.target.value },
+                  })
+                }
+                className="atm-input"
+                style={{ colorScheme: "dark" }}
+              />
+            </div>
+          </div>
+
           <div>
             <label className="atm-label">{t("FormDescription")}</label>
             <textarea

@@ -14,6 +14,12 @@ const createSchema = z.object({
   format: z.enum(["SE", "DE", "RR"]).default("SE"),
   maxTeams: z.number().int().min(2).max(128).default(16),
   description: z.string().optional(),
+  schedule: z
+    .object({
+      regOpen: z.string().optional(),
+      regClose: z.string().optional(),
+    })
+    .optional(),
 });
 
 export async function createTournament(req, res) {
@@ -129,6 +135,16 @@ export async function registerTeam(req, res) {
     const team = await Team.findById(parse.data.teamId);
     if (!team) return res.status(404).json({ message: "Team not found" });
 
+    // Kiểm tra thời gian Registration
+    if (
+      tournament.schedule?.regClose &&
+      new Date() > new Date(tournament.schedule.regClose)
+    ) {
+      return res.status(400).json({
+        message: "Registration is closed for this tournament.",
+      });
+    }
+
     // Validate Game Matching
     const teamGame = NORMALIZE_GAME_NAME[team.game] || team.game;
     const tourGame = NORMALIZE_GAME_NAME[tournament.game] || tournament.game;
@@ -215,11 +231,9 @@ export async function seedTournament(req, res) {
     const seedValues = manualSeeds.map((s) => s.seed);
     const uniqueSeeds = new Set(seedValues);
     if (seedValues.length !== uniqueSeeds.size) {
-      return res
-        .status(400)
-        .json({
-          message: "Không được đặt cùng seed (Duplicate seeds not allowed)",
-        });
+      return res.status(400).json({
+        message: "Không được đặt cùng seed (Duplicate seeds not allowed)",
+      });
     }
 
     // Map seed input
