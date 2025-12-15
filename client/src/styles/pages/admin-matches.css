@@ -185,3 +185,49 @@
 .amm-btn-close {
     @apply w-full rounded-md border border-slate-800 py-2 text-sm font-medium text-slate-400 hover:bg-slate-900;
 }
+
+/* Schedule Cell Styles */
+.am-schedule-cell {
+    @apply flex items-center gap-2;
+}
+
+.am-schedule-time {
+    @apply text-xs text-slate-400;
+}
+
+.am-no-schedule {
+    @apply text-xs italic text-slate-600;
+}
+
+.am-btn-schedule {
+    @apply p-1 text-slate-500 hover:text-sky-400 rounded transition-colors;
+}
+
+/* Schedule Modal Styles */
+.asm-content {
+    @apply max-w-sm;
+}
+
+.asm-match-name {
+    @apply text-center text-lg font-semibold text-slate-200 mb-1;
+}
+
+.asm-round {
+    @apply text-center text-sm text-slate-500 mb-6;
+}
+
+.asm-form {
+    @apply space-y-4;
+}
+
+.asm-input-group {
+    @apply space-y-2;
+}
+
+.asm-label {
+    @apply block text-sm font-medium text-slate-400;
+}
+
+.asm-datetime-input {
+    @apply w-full rounded-md border border-slate-700 bg-slate-800 px-3 py-2 text-slate-100 focus:border-sky-500 focus:outline-none;
+}

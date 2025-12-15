@@ -1,0 +1,2212 @@
+{
+  "exportedAt": "2025-12-12T14:21:47.720Z",
+  "exportVersion": "1.0",
+  "data": {
+    "users": [
+      {
+        "_id": "691db7eb0402e0bbcc8545b2",
+        "email": "admin-Esports@gmail.com",
+        "passwordHash": "$2b$10$SVH3aolqMBKe.IMMhEsaaOIjoPDQz5a/QDQKSMM6Pkzfv96RiWGai",
+        "role": "admin",
+        "profile": {
+          "displayName": "Admin"
+        },
+        "createdAt": "2025-11-19T12:28:27.590Z",
+        "updatedAt": "2025-11-19T12:28:27.590Z",
+        "__v": 0
+      },
+      {
+        "_id": "69230375832a8ba2b56eebde",
+        "email": "test3@example.com",
+        "passwordHash": "$2b$10$ChFQQotUWWUqSro09HSEkuBwn7UPeWuzPIxVGIWZn7EOxNyN50Fxi",
+        "role": "player",
+        "profile": {
+          "displayName": "Test User 3Final User",
+          "avatar": "",
+          "phone": "555555555"
+        },
+        "createdAt": "2025-11-23T12:52:06.330Z",
+        "updatedAt": "2025-11-23T17:01:09.747Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939795de16eb9797fa01666",
+        "email": "dungevk@gmail.com",
+        "passwordHash": "$2b$10$GCqzxc.x.8Fh4DysyxE1Zu1oA3vPwxvEFKOMl7fs.Zj.zFl3syUq.",
+        "role": "player",
+        "profile": {
+          "displayName": "Dũng Trần",
+          "avatar": "http://localhost:4000/uploads/1765388908887-950189030.jpg",
+          "phone": ""
+        },
+        "createdAt": "2025-12-10T13:45:01.615Z",
+        "updatedAt": "2025-12-10T17:48:31.941Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b8bf6840424cdc613927",
+        "email": "user1@test.com",
+        "passwordHash": "$2b$10$hjyL5E/v9RMSkdlThSUdtuye1gk0TsyfNIpG/S9P2js5KOCHZUFZ6",
+        "role": "admin",
+        "profile": {
+          "displayName": "User 1",
+          "avatar": "",
+          "phone": "1234567891"
+        },
+        "createdAt": "2025-12-10T18:15:27.445Z",
+        "updatedAt": "2025-12-11T15:31:09.701Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b8bf6840424cdc61392a",
+        "email": "user2@test.com",
+        "passwordHash": "$2b$10$hjyL5E/v9RMSkdlThSUdtuye1gk0TsyfNIpG/S9P2js5KOCHZUFZ6",
+        "role": "player",
+        "profile": {
+          "displayName": "User 2",
+          "avatar": "",
+          "phone": "1234567892"
+        },
+        "createdAt": "2025-12-10T18:15:27.531Z",
+        "updatedAt": "2025-12-10T18:15:27.531Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b8bf6840424cdc61392d",
+        "email": "user3@test.com",
+        "passwordHash": "$2b$10$hjyL5E/v9RMSkdlThSUdtuye1gk0TsyfNIpG/S9P2js5KOCHZUFZ6",
+        "role": "player",
+        "profile": {
+          "displayName": "User 3",
+          "avatar": "",
+          "phone": "1234567893"
+        },
+        "createdAt": "2025-12-10T18:15:27.598Z",
+        "updatedAt": "2025-12-10T18:15:27.598Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b8bf6840424cdc613930",
+        "email": "user4@test.com",
+        "passwordHash": "$2b$10$hjyL5E/v9RMSkdlThSUdtuye1gk0TsyfNIpG/S9P2js5KOCHZUFZ6",
+        "role": "player",
+        "profile": {
+          "displayName": "User 4",
+          "avatar": "",
+          "phone": "1234567894"
+        },
+        "createdAt": "2025-12-10T18:15:27.669Z",
+        "updatedAt": "2025-12-10T18:15:27.669Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b8bf6840424cdc613933",
+        "email": "user5@test.com",
+        "passwordHash": "$2b$10$hjyL5E/v9RMSkdlThSUdtuye1gk0TsyfNIpG/S9P2js5KOCHZUFZ6",
+        "role": "player",
+        "profile": {
+          "displayName": "User 5",
+          "avatar": "",
+          "phone": "1234567895"
+        },
+        "createdAt": "2025-12-10T18:15:27.818Z",
+        "updatedAt": "2025-12-10T18:15:27.818Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b8bf6840424cdc613936",
+        "email": "user6@test.com",
+        "passwordHash": "$2b$10$hjyL5E/v9RMSkdlThSUdtuye1gk0TsyfNIpG/S9P2js5KOCHZUFZ6",
+        "role": "player",
+        "profile": {
+          "displayName": "User 6",
+          "avatar": "",
+          "phone": "1234567896"
+        },
+        "createdAt": "2025-12-10T18:15:27.908Z",
+        "updatedAt": "2025-12-10T18:15:27.908Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b8c06840424cdc613939",
+        "email": "user7@test.com",
+        "passwordHash": "$2b$10$hjyL5E/v9RMSkdlThSUdtuye1gk0TsyfNIpG/S9P2js5KOCHZUFZ6",
+        "role": "player",
+        "profile": {
+          "displayName": "User 7",
+          "avatar": "",
+          "phone": "1234567897"
+        },
+        "createdAt": "2025-12-10T18:15:28.006Z",
+        "updatedAt": "2025-12-10T18:15:28.006Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b8c06840424cdc61393c",
+        "email": "user8@test.com",
+        "passwordHash": "$2b$10$hjyL5E/v9RMSkdlThSUdtuye1gk0TsyfNIpG/S9P2js5KOCHZUFZ6",
+        "role": "player",
+        "profile": {
+          "displayName": "User 8",
+          "avatar": "",
+          "phone": "1234567898"
+        },
+        "createdAt": "2025-12-10T18:15:28.078Z",
+        "updatedAt": "2025-12-10T18:15:28.078Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b8c06840424cdc61393f",
+        "email": "user9@test.com",
+        "passwordHash": "$2b$10$hjyL5E/v9RMSkdlThSUdtuye1gk0TsyfNIpG/S9P2js5KOCHZUFZ6",
+        "role": "player",
+        "profile": {
+          "displayName": "User 9",
+          "avatar": "",
+          "phone": "1234567899"
+        },
+        "createdAt": "2025-12-10T18:15:28.139Z",
+        "updatedAt": "2025-12-10T18:15:28.139Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b8c06840424cdc613942",
+        "email": "user10@test.com",
+        "passwordHash": "$2b$10$hjyL5E/v9RMSkdlThSUdtuye1gk0TsyfNIpG/S9P2js5KOCHZUFZ6",
+        "role": "player",
+        "profile": {
+          "displayName": "User 10",
+          "avatar": "",
+          "phone": "12345678910"
+        },
+        "createdAt": "2025-12-10T18:15:28.216Z",
+        "updatedAt": "2025-12-10T18:15:28.216Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b8c06840424cdc613945",
+        "email": "user11@test.com",
+        "passwordHash": "$2b$10$hjyL5E/v9RMSkdlThSUdtuye1gk0TsyfNIpG/S9P2js5KOCHZUFZ6",
+        "role": "player",
+        "profile": {
+          "displayName": "User 11",
+          "avatar": "",
+          "phone": "12345678911"
+        },
+        "createdAt": "2025-12-10T18:15:28.299Z",
+        "updatedAt": "2025-12-10T18:15:28.299Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b8c06840424cdc613948",
+        "email": "user12@test.com",
+        "passwordHash": "$2b$10$hjyL5E/v9RMSkdlThSUdtuye1gk0TsyfNIpG/S9P2js5KOCHZUFZ6",
+        "role": "player",
+        "profile": {
+          "displayName": "User 12",
+          "avatar": "",
+          "phone": "12345678912"
+        },
+        "createdAt": "2025-12-10T18:15:28.370Z",
+        "updatedAt": "2025-12-10T18:15:28.370Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b8c06840424cdc61394b",
+        "email": "user13@test.com",
+        "passwordHash": "$2b$10$hjyL5E/v9RMSkdlThSUdtuye1gk0TsyfNIpG/S9P2js5KOCHZUFZ6",
+        "role": "player",
+        "profile": {
+          "displayName": "User 13",
+          "avatar": "",
+          "phone": "12345678913"
+        },
+        "createdAt": "2025-12-10T18:15:28.444Z",
+        "updatedAt": "2025-12-10T18:15:28.444Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b8c06840424cdc61394e",
+        "email": "user14@test.com",
+        "passwordHash": "$2b$10$hjyL5E/v9RMSkdlThSUdtuye1gk0TsyfNIpG/S9P2js5KOCHZUFZ6",
+        "role": "player",
+        "profile": {
+          "displayName": "User 14",
+          "avatar": "",
+          "phone": "12345678914"
+        },
+        "createdAt": "2025-12-10T18:15:28.519Z",
+        "updatedAt": "2025-12-10T18:15:28.519Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b8c06840424cdc613951",
+        "email": "user15@test.com",
+        "passwordHash": "$2b$10$hjyL5E/v9RMSkdlThSUdtuye1gk0TsyfNIpG/S9P2js5KOCHZUFZ6",
+        "role": "player",
+        "profile": {
+          "displayName": "User 15",
+          "avatar": "",
+          "phone": "12345678915"
+        },
+        "createdAt": "2025-12-10T18:15:28.610Z",
+        "updatedAt": "2025-12-10T18:15:28.610Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b8c06840424cdc613954",
+        "email": "user16@test.com",
+        "passwordHash": "$2b$10$hjyL5E/v9RMSkdlThSUdtuye1gk0TsyfNIpG/S9P2js5KOCHZUFZ6",
+        "role": "player",
+        "profile": {
+          "displayName": "User 16",
+          "avatar": "",
+          "phone": "12345678916"
+        },
+        "createdAt": "2025-12-10T18:15:28.693Z",
+        "updatedAt": "2025-12-10T18:15:28.693Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b8c06840424cdc613957",
+        "email": "user17@test.com",
+        "passwordHash": "$2b$10$hjyL5E/v9RMSkdlThSUdtuye1gk0TsyfNIpG/S9P2js5KOCHZUFZ6",
+        "role": "player",
+        "profile": {
+          "displayName": "User 17",
+          "avatar": "",
+          "phone": "12345678917"
+        },
+        "createdAt": "2025-12-10T18:15:28.758Z",
+        "updatedAt": "2025-12-10T18:15:28.758Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b8c06840424cdc61395a",
+        "email": "user18@test.com",
+        "passwordHash": "$2b$10$hjyL5E/v9RMSkdlThSUdtuye1gk0TsyfNIpG/S9P2js5KOCHZUFZ6",
+        "role": "player",
+        "profile": {
+          "displayName": "User 18",
+          "avatar": "",
+          "phone": "12345678918"
+        },
+        "createdAt": "2025-12-10T18:15:28.839Z",
+        "updatedAt": "2025-12-10T18:15:28.839Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b8c06840424cdc61395d",
+        "email": "user19@test.com",
+        "passwordHash": "$2b$10$hjyL5E/v9RMSkdlThSUdtuye1gk0TsyfNIpG/S9P2js5KOCHZUFZ6",
+        "role": "player",
+        "profile": {
+          "displayName": "User 19",
+          "avatar": "",
+          "phone": "12345678919"
+        },
+        "createdAt": "2025-12-10T18:15:28.961Z",
+        "updatedAt": "2025-12-10T18:15:28.961Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b8c16840424cdc613960",
+        "email": "user20@test.com",
+        "passwordHash": "$2b$10$hjyL5E/v9RMSkdlThSUdtuye1gk0TsyfNIpG/S9P2js5KOCHZUFZ6",
+        "role": "player",
+        "profile": {
+          "displayName": "User 20",
+          "avatar": "",
+          "phone": "12345678920"
+        },
+        "createdAt": "2025-12-10T18:15:29.082Z",
+        "updatedAt": "2025-12-10T18:15:29.082Z",
+        "__v": 0
+      }
+    ],
+    "teams": [
+      {
+        "_id": "69156526b1fa5e0a3cc68737",
+        "name": "Hanoi Legends",
+        "tag": "HNL",
+        "ownerUser": "6939b8c06840424cdc613942",
+        "members": [
+          "6939b8c06840424cdc613942",
+          "6939b8c06840424cdc613945",
+          "6939b8c06840424cdc613948",
+          "6939b8c06840424cdc61394b",
+          "6939b8c06840424cdc61394e"
+        ],
+        "createdAt": "2025-11-13T04:57:10.192Z",
+        "updatedAt": "2025-12-12T14:04:22.093Z",
+        "__v": 0,
+        "game": "Liên Minh Huyền Thoại",
+        "logoUrl": "http://localhost:4000/uploads/1765465116565-552927998.png"
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc6873c",
+        "name": "SaiGon Storm",
+        "tag": "SGS",
+        "ownerUser": "69156526b1fa5e0a3cc6873b",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:10.278Z",
+        "updatedAt": "2025-11-20T15:59:36.907Z",
+        "__v": 0,
+        "game": "Liên Minh Huyền Thoại"
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc68742",
+        "name": "Dragon Esports",
+        "tag": "DRG",
+        "ownerUser": "69156526b1fa5e0a3cc68741",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:10.334Z",
+        "updatedAt": "2025-11-20T15:59:36.941Z",
+        "__v": 0,
+        "game": "Liên Minh Huyền Thoại"
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc68748",
+        "name": "Midlane Magic",
+        "tag": "MLM",
+        "ownerUser": "69156526b1fa5e0a3cc68747",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:10.391Z",
+        "updatedAt": "2025-11-20T15:59:36.975Z",
+        "__v": 0,
+        "game": "Liên Minh Huyền Thoại"
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc6874d",
+        "name": "Blue Phoenix",
+        "tag": "BPX",
+        "ownerUser": "69156526b1fa5e0a3cc6874c",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:10.448Z",
+        "updatedAt": "2025-11-20T15:59:37.038Z",
+        "__v": 0,
+        "game": "Liên Minh Huyền Thoại"
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc68752",
+        "name": "Shadow Wolves",
+        "tag": "SWV",
+        "ownerUser": "69156526b1fa5e0a3cc68751",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:10.525Z",
+        "updatedAt": "2025-11-20T15:59:37.070Z",
+        "__v": 0,
+        "game": "Liên Minh Huyền Thoại"
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc68757",
+        "name": "Golden Rift",
+        "tag": "GRF",
+        "ownerUser": "69156526b1fa5e0a3cc68756",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:10.583Z",
+        "updatedAt": "2025-11-20T15:59:37.103Z",
+        "__v": 0,
+        "game": "Liên Minh Huyền Thoại"
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc6875c",
+        "name": "Infinity Core",
+        "tag": "IFC",
+        "ownerUser": "69156526b1fa5e0a3cc6875b",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:10.649Z",
+        "updatedAt": "2025-11-20T15:59:37.167Z",
+        "__v": 0,
+        "game": "Liên Minh Huyền Thoại"
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc68761",
+        "name": "Rift Hunters",
+        "tag": "RHT",
+        "ownerUser": "69156526b1fa5e0a3cc68760",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:10.707Z",
+        "updatedAt": "2025-11-20T15:59:37.207Z",
+        "__v": 0,
+        "game": "Liên Minh Huyền Thoại"
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc68764",
+        "name": "Omega Team",
+        "tag": "OMG",
+        "ownerUser": "69156526b1fa5e0a3cc68763",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:10.735Z",
+        "updatedAt": "2025-11-20T15:59:37.240Z",
+        "__v": 0,
+        "game": "Liên Minh Huyền Thoại"
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc6876a",
+        "name": "WildFlash",
+        "tag": "WF",
+        "ownerUser": "69156526b1fa5e0a3cc68769",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:10.793Z",
+        "updatedAt": "2025-11-20T15:59:37.273Z",
+        "__v": 0,
+        "game": "Tốc Chiến"
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc6876f",
+        "name": "Neo Titans",
+        "tag": "NTT",
+        "ownerUser": "69156526b1fa5e0a3cc6876e",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:10.850Z",
+        "updatedAt": "2025-11-20T15:59:37.303Z",
+        "__v": 0,
+        "game": "Tốc Chiến"
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc68774",
+        "name": "Delta Wolves",
+        "tag": "DWV",
+        "ownerUser": "69156526b1fa5e0a3cc68773",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:10.904Z",
+        "updatedAt": "2025-11-20T15:59:37.332Z",
+        "__v": 0,
+        "game": "Tốc Chiến"
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc68779",
+        "name": "Sky Hunters",
+        "tag": "SKH",
+        "ownerUser": "69156526b1fa5e0a3cc68778",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:10.960Z",
+        "updatedAt": "2025-11-20T15:59:37.362Z",
+        "__v": 0,
+        "game": "Tốc Chiến"
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc6877e",
+        "name": "StormBorn",
+        "tag": "SB",
+        "ownerUser": "69156527b1fa5e0a3cc6877d",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:11.013Z",
+        "updatedAt": "2025-11-20T15:59:37.392Z",
+        "__v": 0,
+        "game": "Tốc Chiến"
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc68783",
+        "name": "Nova Fire",
+        "tag": "NVF",
+        "ownerUser": "69156527b1fa5e0a3cc68782",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:11.065Z",
+        "updatedAt": "2025-11-20T15:59:37.422Z",
+        "__v": 0,
+        "game": "Tốc Chiến"
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc68788",
+        "name": "RedZone",
+        "tag": "RZN",
+        "ownerUser": "69156527b1fa5e0a3cc68787",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:11.117Z",
+        "updatedAt": "2025-11-20T15:59:37.461Z",
+        "__v": 0,
+        "game": "Tốc Chiến"
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc6878d",
+        "name": "Vortex Esports",
+        "tag": "VTX",
+        "ownerUser": "69156527b1fa5e0a3cc6878c",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:11.170Z",
+        "updatedAt": "2025-11-20T15:59:37.505Z",
+        "__v": 0,
+        "game": "Tốc Chiến"
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc68792",
+        "name": "ThunderFox",
+        "tag": "TFX",
+        "ownerUser": "69156527b1fa5e0a3cc68791",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:11.223Z",
+        "updatedAt": "2025-11-20T15:59:37.534Z",
+        "__v": 0,
+        "game": "Tốc Chiến"
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc68795",
+        "name": "Rapid Claw",
+        "tag": "RPC",
+        "ownerUser": "69156527b1fa5e0a3cc68794",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:11.250Z",
+        "updatedAt": "2025-11-20T15:59:37.566Z",
+        "__v": 0,
+        "game": "Tốc Chiến"
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc6879b",
+        "name": "AOV Empire",
+        "tag": "AEM",
+        "ownerUser": "69156527b1fa5e0a3cc6879a",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:11.309Z",
+        "updatedAt": "2025-11-20T15:59:37.597Z",
+        "__v": 0,
+        "game": "Liên Quân"
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687a0",
+        "name": "Galaxy Rivals",
+        "tag": "GLR",
+        "ownerUser": "69156527b1fa5e0a3cc6879f",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:11.365Z",
+        "updatedAt": "2025-11-20T15:59:37.634Z",
+        "__v": 0,
+        "game": "Liên Quân"
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687a5",
+        "name": "Moonlight",
+        "tag": "MNL",
+        "ownerUser": "69156527b1fa5e0a3cc687a4",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:11.419Z",
+        "updatedAt": "2025-11-20T15:59:37.664Z",
+        "__v": 0,
+        "game": "Liên Quân"
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687aa",
+        "name": "SkyBreakers",
+        "tag": "SKB",
+        "ownerUser": "69156527b1fa5e0a3cc687a9",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:11.475Z",
+        "updatedAt": "2025-11-20T15:59:37.693Z",
+        "__v": 0,
+        "game": "Liên Quân"
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687af",
+        "name": "Nova Elite",
+        "tag": "NEL",
+        "ownerUser": "69156527b1fa5e0a3cc687ae",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:11.532Z",
+        "updatedAt": "2025-11-20T15:59:37.722Z",
+        "__v": 0,
+        "game": "Liên Quân"
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687b4",
+        "name": "ShadowStrike",
+        "tag": "SDS",
+        "ownerUser": "69156527b1fa5e0a3cc687b3",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:11.592Z",
+        "updatedAt": "2025-11-20T15:59:37.753Z",
+        "__v": 0,
+        "game": "Liên Quân"
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687b9",
+        "name": "EagleEyes",
+        "tag": "EGE",
+        "ownerUser": "69156527b1fa5e0a3cc687b8",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:11.646Z",
+        "updatedAt": "2025-11-20T15:59:37.798Z",
+        "__v": 0,
+        "game": "Liên Quân"
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687be",
+        "name": "IronFist",
+        "tag": "IRF",
+        "ownerUser": "69156527b1fa5e0a3cc687bd",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:11.700Z",
+        "updatedAt": "2025-11-20T15:59:37.837Z",
+        "__v": 0,
+        "game": "Liên Quân"
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687c3",
+        "name": "PhoenixArmy",
+        "tag": "PHX",
+        "ownerUser": "69156527b1fa5e0a3cc687c2",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:11.754Z",
+        "updatedAt": "2025-11-20T15:59:37.867Z",
+        "__v": 0,
+        "game": "Liên Quân"
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687c6",
+        "name": "BlueNova",
+        "tag": "BNV",
+        "ownerUser": "69156527b1fa5e0a3cc687c5",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:11.780Z",
+        "updatedAt": "2025-11-20T15:59:37.896Z",
+        "__v": 0,
+        "game": "Liên Quân"
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687cc",
+        "name": "Vanguard",
+        "tag": "VGD",
+        "ownerUser": "69156527b1fa5e0a3cc687cb",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:11.836Z",
+        "updatedAt": "2025-11-20T15:59:37.926Z",
+        "__v": 0,
+        "game": "Valorant"
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687d1",
+        "name": "SilentKill",
+        "tag": "SLK",
+        "ownerUser": "69156527b1fa5e0a3cc687d0",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:11.893Z",
+        "updatedAt": "2025-11-20T15:59:37.960Z",
+        "__v": 0,
+        "game": "Valorant"
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687d6",
+        "name": "CrimsonFox",
+        "tag": "CMF",
+        "ownerUser": "69156527b1fa5e0a3cc687d5",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:11.948Z",
+        "updatedAt": "2025-11-20T15:59:37.991Z",
+        "__v": 0,
+        "game": "Valorant"
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc687db",
+        "name": "HyperEdge",
+        "tag": "HED",
+        "ownerUser": "69156528b1fa5e0a3cc687da",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:12.004Z",
+        "updatedAt": "2025-11-20T15:59:38.028Z",
+        "__v": 0,
+        "game": "Valorant"
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc687e0",
+        "name": "NightRunners",
+        "tag": "NTR",
+        "ownerUser": "69156528b1fa5e0a3cc687df",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:12.061Z",
+        "updatedAt": "2025-11-20T15:59:38.063Z",
+        "__v": 0,
+        "game": "Valorant"
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc687e5",
+        "name": "EchoWave",
+        "tag": "ECW",
+        "ownerUser": "69156528b1fa5e0a3cc687e4",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:12.118Z",
+        "updatedAt": "2025-11-20T15:59:38.091Z",
+        "__v": 0,
+        "game": "Valorant"
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc687ea",
+        "name": "VoltGuard",
+        "tag": "VLG",
+        "ownerUser": "69156528b1fa5e0a3cc687e9",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:12.172Z",
+        "updatedAt": "2025-11-20T15:59:38.122Z",
+        "__v": 0,
+        "game": "Valorant"
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc687ef",
+        "name": "DreamShot",
+        "tag": "DRS",
+        "ownerUser": "69156528b1fa5e0a3cc687ee",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:12.226Z",
+        "updatedAt": "2025-11-20T15:59:38.153Z",
+        "__v": 0,
+        "game": "Valorant"
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc687f4",
+        "name": "NovaNine",
+        "tag": "NVN",
+        "ownerUser": "69156528b1fa5e0a3cc687f3",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:12.280Z",
+        "updatedAt": "2025-11-20T15:59:38.182Z",
+        "__v": 0,
+        "game": "Valorant"
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc687f7",
+        "name": "FlashPoint",
+        "tag": "FLP",
+        "ownerUser": "69156528b1fa5e0a3cc687f6",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:12.307Z",
+        "updatedAt": "2025-11-20T15:59:38.391Z",
+        "__v": 0,
+        "game": "CS2"
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc687fd",
+        "name": "StrikeZone",
+        "tag": "STZ",
+        "ownerUser": "69156528b1fa5e0a3cc687fc",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:12.361Z",
+        "updatedAt": "2025-11-20T15:59:38.240Z",
+        "__v": 0,
+        "game": "CS2"
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc68802",
+        "name": "HeadshotKings",
+        "tag": "HSK",
+        "ownerUser": "69156528b1fa5e0a3cc68801",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:12.416Z",
+        "updatedAt": "2025-11-20T15:59:38.271Z",
+        "__v": 0,
+        "game": "CS2"
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc68807",
+        "name": "MidRush",
+        "tag": "MRS",
+        "ownerUser": "69156528b1fa5e0a3cc68806",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:12.481Z",
+        "updatedAt": "2025-11-20T15:59:38.300Z",
+        "__v": 0,
+        "game": "CS2"
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc6880c",
+        "name": "AIMGods",
+        "tag": "AMG",
+        "ownerUser": "69156528b1fa5e0a3cc6880b",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:12.546Z",
+        "updatedAt": "2025-11-20T15:59:38.330Z",
+        "__v": 0,
+        "game": "CS2"
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc68811",
+        "name": "BOMBTech",
+        "tag": "BMT",
+        "ownerUser": "69156528b1fa5e0a3cc68810",
+        "members": [],
+        "createdAt": "2025-11-13T04:57:12.605Z",
+        "updatedAt": "2025-11-20T15:59:38.362Z",
+        "__v": 0,
+        "game": "CS2"
+      },
+      {
+        "_id": "6922f56246e89056fcee85a6",
+        "name": "GAM Esports",
+        "tag": "GAM",
+        "game": "Liên Minh Huyền Thoại",
+        "ownerUser": "6922f56246e89056fcee85a5",
+        "members": [],
+        "createdAt": "2025-11-23T11:52:02.539Z",
+        "updatedAt": "2025-11-23T11:52:02.539Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56246e89056fcee85ab",
+        "name": "Team Whales",
+        "tag": "TW",
+        "game": "Liên Minh Huyền Thoại",
+        "ownerUser": "6922f56246e89056fcee85aa",
+        "members": [],
+        "createdAt": "2025-11-23T11:52:02.808Z",
+        "updatedAt": "2025-11-23T11:52:02.808Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56246e89056fcee85b1",
+        "name": "Vikings Esports",
+        "tag": "VKE",
+        "game": "Liên Minh Huyền Thoại",
+        "ownerUser": "6922f56246e89056fcee85b0",
+        "members": [],
+        "createdAt": "2025-11-23T11:52:02.879Z",
+        "updatedAt": "2025-11-23T11:52:02.879Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56246e89056fcee85b9",
+        "name": "Cerberus Esports",
+        "tag": "CES",
+        "game": "Tốc Chiến",
+        "ownerUser": "6922f56246e89056fcee85b8",
+        "members": [],
+        "createdAt": "2025-11-23T11:52:03.000Z",
+        "updatedAt": "2025-11-23T11:52:03.000Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85be",
+        "name": "Team Flash",
+        "tag": "FL",
+        "game": "Tốc Chiến",
+        "ownerUser": "6922f56346e89056fcee85bd",
+        "members": [],
+        "createdAt": "2025-11-23T11:52:03.107Z",
+        "updatedAt": "2025-11-23T11:52:03.107Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85c3",
+        "name": "Royale Esports",
+        "tag": "RYL",
+        "game": "Tốc Chiến",
+        "ownerUser": "6922f56346e89056fcee85c2",
+        "members": [],
+        "createdAt": "2025-11-23T11:52:03.180Z",
+        "updatedAt": "2025-11-23T11:52:03.180Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85cb",
+        "name": "Saigon Phantom",
+        "tag": "SGP",
+        "game": "Liên Quân",
+        "ownerUser": "6922f56346e89056fcee85ca",
+        "members": [],
+        "createdAt": "2025-11-23T11:52:03.292Z",
+        "updatedAt": "2025-11-23T11:52:03.292Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85d0",
+        "name": "V Gaming",
+        "tag": "VGM",
+        "game": "Liên Quân",
+        "ownerUser": "6922f56346e89056fcee85cf",
+        "members": [],
+        "createdAt": "2025-11-23T11:52:03.367Z",
+        "updatedAt": "2025-11-23T11:52:03.367Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85d5",
+        "name": "One Star Esports",
+        "tag": "1S",
+        "game": "Liên Quân",
+        "ownerUser": "6922f56346e89056fcee85d4",
+        "members": [],
+        "createdAt": "2025-11-23T11:52:03.462Z",
+        "updatedAt": "2025-11-23T11:52:03.462Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85dd",
+        "name": "Fancy United",
+        "tag": "FCY",
+        "game": "Valorant",
+        "ownerUser": "6922f56346e89056fcee85dc",
+        "members": [],
+        "createdAt": "2025-11-23T11:52:03.557Z",
+        "updatedAt": "2025-11-23T11:52:03.557Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85e2",
+        "name": "Rapid Lofi",
+        "tag": "RLF",
+        "game": "Valorant",
+        "ownerUser": "6922f56346e89056fcee85e1",
+        "members": [],
+        "createdAt": "2025-11-23T11:52:03.626Z",
+        "updatedAt": "2025-11-23T11:52:03.626Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85e7",
+        "name": "Lazybutwannawin",
+        "tag": "LBW",
+        "game": "Valorant",
+        "ownerUser": "6922f56346e89056fcee85e6",
+        "members": [],
+        "createdAt": "2025-11-23T11:52:03.702Z",
+        "updatedAt": "2025-11-23T11:52:03.702Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85ef",
+        "name": "The MongolZ",
+        "tag": "MGZ",
+        "game": "CS2",
+        "ownerUser": "6922f56346e89056fcee85ee",
+        "members": [],
+        "createdAt": "2025-11-23T11:52:03.811Z",
+        "updatedAt": "2025-11-23T11:52:03.811Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85f4",
+        "name": "Rare Atom",
+        "tag": "RA",
+        "game": "CS2",
+        "ownerUser": "6922f56346e89056fcee85f3",
+        "members": [],
+        "createdAt": "2025-11-23T11:52:03.871Z",
+        "updatedAt": "2025-11-23T11:52:03.871Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85f9",
+        "name": "Tyloo",
+        "tag": "TYL",
+        "game": "CS2",
+        "ownerUser": "6922f56346e89056fcee85f8",
+        "members": [],
+        "createdAt": "2025-11-23T11:52:03.946Z",
+        "updatedAt": "2025-11-23T11:52:03.946Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939ad5fbbfb1fae24fa0951",
+        "name": "Hanoi Da",
+        "tag": "HND",
+        "game": "Liên Minh Huyền Thoại",
+        "logoUrl": "http://localhost:4000/uploads/1765389668385-718263868.png",
+        "ownerUser": "6939795de16eb9797fa01666",
+        "members": [
+          "6939795de16eb9797fa01666",
+          "69230375832a8ba2b56eebde",
+          "6939b8bf6840424cdc613927",
+          "6939b8bf6840424cdc61392a",
+          "6939b8bf6840424cdc61392d",
+          "6939b8bf6840424cdc613930"
+        ],
+        "createdAt": "2025-12-10T17:26:55.174Z",
+        "updatedAt": "2025-12-11T14:32:03.304Z",
+        "__v": 13
+      },
+      {
+        "_id": "693ae25b9349d3579338d2ab",
+        "name": "Test Team Status",
+        "tag": "TTS",
+        "game": "League of Legends",
+        "logoUrl": "http://example.com/logo.png",
+        "ownerUser": "693ae25b9349d3579338d2a4",
+        "members": [
+          "693ae25b9349d3579338d2a4",
+          "693ae25b9349d3579338d2a5",
+          "693ae25b9349d3579338d2a6",
+          "693ae25b9349d3579338d2a7",
+          "693ae25b9349d3579338d2a8"
+        ],
+        "createdAt": "2025-12-11T15:25:15.665Z",
+        "updatedAt": "2025-12-11T15:25:15.665Z",
+        "__v": 0
+      }
+    ],
+    "tournaments": [
+      {
+        "_id": "69156526b1fa5e0a3cc68733",
+        "name": "Liên Minh Huyền Thoại Championship",
+        "game": "Liên Minh Huyền Thoại",
+        "format": "SE",
+        "status": "open",
+        "maxTeams": 16,
+        "organizerUser": "69156526b1fa5e0a3cc68732",
+        "createdAt": "2025-11-13T04:57:10.096Z",
+        "updatedAt": "2025-12-11T09:18:00.233Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc68767",
+        "name": "Tốc Chiến Championship",
+        "game": "Tốc Chiến",
+        "format": "SE",
+        "status": "open",
+        "maxTeams": 16,
+        "organizerUser": "69156526b1fa5e0a3cc68766",
+        "createdAt": "2025-11-13T04:57:10.764Z",
+        "updatedAt": "2025-12-11T09:18:00.233Z",
+        "__v": 0,
+        "description": ""
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc68798",
+        "name": "Liên Quân Championship",
+        "game": "Liên Quân",
+        "format": "SE",
+        "status": "open",
+        "maxTeams": 16,
+        "organizerUser": "69156527b1fa5e0a3cc68797",
+        "createdAt": "2025-11-13T04:57:11.279Z",
+        "updatedAt": "2025-12-12T06:31:00.672Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687c9",
+        "name": "Valorant Championship",
+        "game": "Valorant",
+        "format": "SE",
+        "status": "ongoing",
+        "maxTeams": 16,
+        "organizerUser": "69156527b1fa5e0a3cc687c8",
+        "createdAt": "2025-11-13T04:57:11.807Z",
+        "updatedAt": "2025-12-12T08:46:48.991Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc687fa",
+        "name": "CS2 Championship",
+        "game": "CS2",
+        "format": "SE",
+        "status": "ongoing",
+        "maxTeams": 16,
+        "organizerUser": "69156528b1fa5e0a3cc687f9",
+        "createdAt": "2025-11-13T04:57:12.334Z",
+        "updatedAt": "2025-12-12T08:01:24.279Z",
+        "__v": 0,
+        "description": ""
+      },
+      {
+        "_id": "693c1e5fa95533828f6848ab",
+        "name": "Test Giải Đang Diễn Ra",
+        "game": "Liên Minh Huyền Thoại",
+        "description": "Giải đấu test để kiểm tra conflict (ONGOING)",
+        "format": "SE",
+        "status": "ongoing",
+        "maxTeams": 8,
+        "schedule": {
+          "regOpen": "2025-11-21T13:53:35.790Z",
+          "regClose": "2025-12-05T13:53:35.790Z",
+          "startAt": "2025-12-05T13:53:35.790Z",
+          "endAt": "2025-12-19T13:53:35.790Z"
+        },
+        "createdAt": "2025-12-12T13:53:35.805Z",
+        "updatedAt": "2025-12-12T13:53:35.805Z",
+        "__v": 0
+      },
+      {
+        "_id": "693c1e5fa95533828f6848b0",
+        "name": "Test Giải Mới Overlap",
+        "game": "Liên Minh Huyền Thoại",
+        "description": "Giải đấu test OPEN để thử đăng ký conflict",
+        "format": "SE",
+        "status": "open",
+        "maxTeams": 8,
+        "schedule": {
+          "regOpen": "2025-12-12T13:53:35.790Z",
+          "regClose": "2025-12-15T13:53:35.790Z",
+          "startAt": "2025-12-13T13:53:35.790Z",
+          "endAt": "2025-12-22T13:53:35.790Z"
+        },
+        "createdAt": "2025-12-12T13:53:35.996Z",
+        "updatedAt": "2025-12-12T13:53:35.996Z",
+        "__v": 0
+      }
+    ],
+    "matches": [
+      {
+        "_id": "693bcbd4321a3dc6f9a23c79",
+        "tournamentId": "69156528b1fa5e0a3cc687fa",
+        "stage": 1,
+        "round": 1,
+        "bestOf": 3,
+        "teamA": "69156528b1fa5e0a3cc687fd",
+        "teamB": "6922f56346e89056fcee85f9",
+        "scoreA": 0,
+        "scoreB": 0,
+        "state": "scheduled",
+        "report": {
+          "proofUrls": []
+        },
+        "nextMatchIdA": "693bcbd4321a3dc6f9a23c7d",
+        "__v": 0,
+        "createdAt": "2025-12-12T08:01:24.235Z",
+        "updatedAt": "2025-12-12T08:01:24.235Z"
+      },
+      {
+        "_id": "693bcbd4321a3dc6f9a23c7a",
+        "tournamentId": "69156528b1fa5e0a3cc687fa",
+        "stage": 1,
+        "round": 1,
+        "bestOf": 3,
+        "teamA": "69156528b1fa5e0a3cc68802",
+        "teamB": "6922f56346e89056fcee85f4",
+        "scoreA": 0,
+        "scoreB": 0,
+        "state": "scheduled",
+        "report": {
+          "proofUrls": []
+        },
+        "nextMatchIdB": "693bcbd4321a3dc6f9a23c7d",
+        "__v": 0,
+        "createdAt": "2025-12-12T08:01:24.237Z",
+        "updatedAt": "2025-12-12T08:01:24.237Z"
+      },
+      {
+        "_id": "693bcbd4321a3dc6f9a23c7b",
+        "tournamentId": "69156528b1fa5e0a3cc687fa",
+        "stage": 1,
+        "round": 1,
+        "bestOf": 3,
+        "teamA": "69156528b1fa5e0a3cc68807",
+        "teamB": "6922f56346e89056fcee85ef",
+        "scoreA": 0,
+        "scoreB": 0,
+        "state": "scheduled",
+        "report": {
+          "proofUrls": []
+        },
+        "nextMatchIdA": "693bcbd4321a3dc6f9a23c7e",
+        "__v": 0,
+        "createdAt": "2025-12-12T08:01:24.237Z",
+        "updatedAt": "2025-12-12T08:01:24.237Z"
+      },
+      {
+        "_id": "693bcbd4321a3dc6f9a23c7c",
+        "tournamentId": "69156528b1fa5e0a3cc687fa",
+        "stage": 1,
+        "round": 1,
+        "bestOf": 3,
+        "teamA": "69156528b1fa5e0a3cc6880c",
+        "teamB": "69156528b1fa5e0a3cc68811",
+        "scoreA": 0,
+        "scoreB": 0,
+        "state": "scheduled",
+        "report": {
+          "proofUrls": []
+        },
+        "nextMatchIdB": "693bcbd4321a3dc6f9a23c7e",
+        "__v": 0,
+        "createdAt": "2025-12-12T08:01:24.237Z",
+        "updatedAt": "2025-12-12T08:01:24.237Z"
+      },
+      {
+        "_id": "693bcbd4321a3dc6f9a23c7d",
+        "tournamentId": "69156528b1fa5e0a3cc687fa",
+        "stage": 1,
+        "round": 2,
+        "bestOf": 5,
+        "teamA": null,
+        "teamB": null,
+        "scoreA": 0,
+        "scoreB": 0,
+        "state": "scheduled",
+        "report": {
+          "proofUrls": []
+        },
+        "nextMatchIdA": "693bcbd4321a3dc6f9a23c7f",
+        "__v": 0,
+        "createdAt": "2025-12-12T08:01:24.237Z",
+        "updatedAt": "2025-12-12T08:01:24.237Z"
+      },
+      {
+        "_id": "693bcbd4321a3dc6f9a23c7e",
+        "tournamentId": "69156528b1fa5e0a3cc687fa",
+        "stage": 1,
+        "round": 2,
+        "bestOf": 5,
+        "teamA": null,
+        "teamB": null,
+        "scoreA": 0,
+        "scoreB": 0,
+        "state": "scheduled",
+        "report": {
+          "proofUrls": []
+        },
+        "nextMatchIdB": "693bcbd4321a3dc6f9a23c7f",
+        "__v": 0,
+        "createdAt": "2025-12-12T08:01:24.237Z",
+        "updatedAt": "2025-12-12T08:01:24.237Z"
+      },
+      {
+        "_id": "693bcbd4321a3dc6f9a23c7f",
+        "tournamentId": "69156528b1fa5e0a3cc687fa",
+        "stage": 1,
+        "round": 3,
+        "bestOf": 5,
+        "teamA": null,
+        "teamB": null,
+        "scoreA": 0,
+        "scoreB": 0,
+        "state": "scheduled",
+        "report": {
+          "proofUrls": []
+        },
+        "__v": 0,
+        "createdAt": "2025-12-12T08:01:24.238Z",
+        "updatedAt": "2025-12-12T08:01:24.238Z"
+      },
+      {
+        "_id": "693bd6788ffb4d8930674f3e",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "stage": 1,
+        "round": 1,
+        "bestOf": 3,
+        "teamA": "69156527b1fa5e0a3cc687cc",
+        "teamB": null,
+        "scoreA": 2,
+        "scoreB": 0,
+        "state": "final",
+        "report": {
+          "proofUrls": []
+        },
+        "nextMatchIdA": "693bd6788ffb4d8930674f46",
+        "__v": 0,
+        "createdAt": "2025-12-12T08:46:48.942Z",
+        "updatedAt": "2025-12-12T08:46:48.942Z"
+      },
+      {
+        "_id": "693bd6788ffb4d8930674f3f",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "stage": 1,
+        "round": 1,
+        "bestOf": 3,
+        "teamA": "69156527b1fa5e0a3cc687d1",
+        "teamB": null,
+        "scoreA": 2,
+        "scoreB": 0,
+        "state": "final",
+        "report": {
+          "proofUrls": []
+        },
+        "nextMatchIdB": "693bd6788ffb4d8930674f46",
+        "__v": 0,
+        "createdAt": "2025-12-12T08:46:48.943Z",
+        "updatedAt": "2025-12-12T08:46:48.943Z"
+      },
+      {
+        "_id": "693bd6788ffb4d8930674f40",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "stage": 1,
+        "round": 1,
+        "bestOf": 3,
+        "teamA": "69156527b1fa5e0a3cc687d6",
+        "teamB": null,
+        "scoreA": 2,
+        "scoreB": 0,
+        "state": "final",
+        "report": {
+          "proofUrls": []
+        },
+        "nextMatchIdA": "693bd6788ffb4d8930674f47",
+        "__v": 0,
+        "createdAt": "2025-12-12T08:46:48.943Z",
+        "updatedAt": "2025-12-12T08:46:48.943Z"
+      },
+      {
+        "_id": "693bd6788ffb4d8930674f41",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "stage": 1,
+        "round": 1,
+        "bestOf": 3,
+        "teamA": "69156528b1fa5e0a3cc687db",
+        "teamB": null,
+        "scoreA": 2,
+        "scoreB": 0,
+        "state": "final",
+        "report": {
+          "proofUrls": []
+        },
+        "nextMatchIdB": "693bd6788ffb4d8930674f47",
+        "__v": 0,
+        "createdAt": "2025-12-12T08:46:48.943Z",
+        "updatedAt": "2025-12-12T08:46:48.943Z"
+      },
+      {
+        "_id": "693bd6788ffb4d8930674f42",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "stage": 1,
+        "round": 1,
+        "bestOf": 3,
+        "teamA": "69156528b1fa5e0a3cc687e0",
+        "teamB": null,
+        "scoreA": 2,
+        "scoreB": 0,
+        "state": "final",
+        "report": {
+          "proofUrls": []
+        },
+        "nextMatchIdA": "693bd6788ffb4d8930674f48",
+        "__v": 0,
+        "createdAt": "2025-12-12T08:46:48.944Z",
+        "updatedAt": "2025-12-12T08:46:48.944Z"
+      },
+      {
+        "_id": "693bd6788ffb4d8930674f43",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "stage": 1,
+        "round": 1,
+        "bestOf": 3,
+        "teamA": "69156528b1fa5e0a3cc687e5",
+        "teamB": "6922f56346e89056fcee85e7",
+        "scoreA": 0,
+        "scoreB": 0,
+        "state": "scheduled",
+        "report": {
+          "proofUrls": []
+        },
+        "nextMatchIdB": "693bd6788ffb4d8930674f48",
+        "__v": 0,
+        "createdAt": "2025-12-12T08:46:48.944Z",
+        "updatedAt": "2025-12-12T08:46:48.944Z"
+      },
+      {
+        "_id": "693bd6788ffb4d8930674f44",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "stage": 1,
+        "round": 1,
+        "bestOf": 3,
+        "teamA": "69156528b1fa5e0a3cc687ea",
+        "teamB": "6922f56346e89056fcee85e2",
+        "scoreA": 0,
+        "scoreB": 0,
+        "state": "scheduled",
+        "report": {
+          "proofUrls": []
+        },
+        "nextMatchIdA": "693bd6788ffb4d8930674f49",
+        "__v": 0,
+        "createdAt": "2025-12-12T08:46:48.944Z",
+        "updatedAt": "2025-12-12T08:46:48.944Z"
+      },
+      {
+        "_id": "693bd6788ffb4d8930674f45",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "stage": 1,
+        "round": 1,
+        "bestOf": 3,
+        "teamA": "69156528b1fa5e0a3cc687ef",
+        "teamB": "6922f56346e89056fcee85dd",
+        "scoreA": 0,
+        "scoreB": 0,
+        "state": "scheduled",
+        "report": {
+          "proofUrls": []
+        },
+        "nextMatchIdB": "693bd6788ffb4d8930674f49",
+        "__v": 0,
+        "createdAt": "2025-12-12T08:46:48.944Z",
+        "updatedAt": "2025-12-12T08:46:48.944Z"
+      },
+      {
+        "_id": "693bd6788ffb4d8930674f46",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "stage": 1,
+        "round": 2,
+        "bestOf": 5,
+        "teamA": "69156527b1fa5e0a3cc687cc",
+        "teamB": "69156527b1fa5e0a3cc687d1",
+        "scoreA": 0,
+        "scoreB": 0,
+        "state": "scheduled",
+        "report": {
+          "proofUrls": []
+        },
+        "nextMatchIdA": "693bd6788ffb4d8930674f4a",
+        "__v": 0,
+        "createdAt": "2025-12-12T08:46:48.944Z",
+        "updatedAt": "2025-12-12T08:46:48.944Z"
+      },
+      {
+        "_id": "693bd6788ffb4d8930674f47",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "stage": 1,
+        "round": 2,
+        "bestOf": 5,
+        "teamA": "69156527b1fa5e0a3cc687d6",
+        "teamB": "69156528b1fa5e0a3cc687db",
+        "scoreA": 0,
+        "scoreB": 0,
+        "state": "scheduled",
+        "report": {
+          "proofUrls": []
+        },
+        "nextMatchIdB": "693bd6788ffb4d8930674f4a",
+        "__v": 0,
+        "createdAt": "2025-12-12T08:46:48.944Z",
+        "updatedAt": "2025-12-12T08:46:48.944Z"
+      },
+      {
+        "_id": "693bd6788ffb4d8930674f48",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "stage": 1,
+        "round": 2,
+        "bestOf": 5,
+        "teamA": "69156528b1fa5e0a3cc687e0",
+        "teamB": null,
+        "scoreA": 0,
+        "scoreB": 0,
+        "state": "scheduled",
+        "report": {
+          "proofUrls": []
+        },
+        "nextMatchIdA": "693bd6788ffb4d8930674f4b",
+        "__v": 0,
+        "createdAt": "2025-12-12T08:46:48.945Z",
+        "updatedAt": "2025-12-12T08:46:48.945Z"
+      },
+      {
+        "_id": "693bd6788ffb4d8930674f49",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "stage": 1,
+        "round": 2,
+        "bestOf": 5,
+        "teamA": null,
+        "teamB": null,
+        "scoreA": 0,
+        "scoreB": 0,
+        "state": "scheduled",
+        "report": {
+          "proofUrls": []
+        },
+        "nextMatchIdB": "693bd6788ffb4d8930674f4b",
+        "__v": 0,
+        "createdAt": "2025-12-12T08:46:48.945Z",
+        "updatedAt": "2025-12-12T08:46:48.945Z"
+      },
+      {
+        "_id": "693bd6788ffb4d8930674f4a",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "stage": 1,
+        "round": 3,
+        "bestOf": 5,
+        "teamA": null,
+        "teamB": null,
+        "scoreA": 0,
+        "scoreB": 0,
+        "state": "scheduled",
+        "report": {
+          "proofUrls": []
+        },
+        "nextMatchIdA": "693bd6788ffb4d8930674f4c",
+        "__v": 0,
+        "createdAt": "2025-12-12T08:46:48.945Z",
+        "updatedAt": "2025-12-12T08:46:48.945Z"
+      },
+      {
+        "_id": "693bd6788ffb4d8930674f4b",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "stage": 1,
+        "round": 3,
+        "bestOf": 5,
+        "teamA": null,
+        "teamB": null,
+        "scoreA": 0,
+        "scoreB": 0,
+        "state": "scheduled",
+        "report": {
+          "proofUrls": []
+        },
+        "nextMatchIdB": "693bd6788ffb4d8930674f4c",
+        "__v": 0,
+        "createdAt": "2025-12-12T08:46:48.945Z",
+        "updatedAt": "2025-12-12T08:46:48.945Z"
+      },
+      {
+        "_id": "693bd6788ffb4d8930674f4c",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "stage": 1,
+        "round": 4,
+        "bestOf": 5,
+        "teamA": null,
+        "teamB": null,
+        "scoreA": 0,
+        "scoreB": 0,
+        "state": "scheduled",
+        "report": {
+          "proofUrls": []
+        },
+        "__v": 0,
+        "createdAt": "2025-12-12T08:46:48.945Z",
+        "updatedAt": "2025-12-12T08:46:48.945Z"
+      },
+      {
+        "_id": "693c1e60a95533828f6848b4",
+        "tournamentId": "693c1e5fa95533828f6848ab",
+        "stage": 1,
+        "round": 1,
+        "bestOf": 3,
+        "teamA": "69156526b1fa5e0a3cc68737",
+        "teamB": "69156526b1fa5e0a3cc6873c",
+        "scoreA": 0,
+        "scoreB": 0,
+        "state": "scheduled",
+        "report": {
+          "proofUrls": []
+        },
+        "createdAt": "2025-12-12T13:53:36.150Z",
+        "updatedAt": "2025-12-12T14:10:59.952Z",
+        "__v": 0,
+        "scheduledAt": "2025-12-13T00:05:00.000Z"
+      },
+      {
+        "_id": "693c1e60a95533828f6848b6",
+        "tournamentId": "693c1e5fa95533828f6848ab",
+        "stage": 1,
+        "round": 1,
+        "bestOf": 3,
+        "teamA": "69156526b1fa5e0a3cc68737",
+        "teamB": "69156526b1fa5e0a3cc68742",
+        "scoreA": 0,
+        "scoreB": 0,
+        "state": "scheduled",
+        "report": {
+          "proofUrls": []
+        },
+        "createdAt": "2025-12-12T13:53:36.208Z",
+        "updatedAt": "2025-12-12T14:11:06.802Z",
+        "__v": 0,
+        "scheduledAt": "2025-12-12T00:05:00.000Z"
+      },
+      {
+        "_id": "693c1e60a95533828f6848b8",
+        "tournamentId": "693c1e5fa95533828f6848ab",
+        "stage": 1,
+        "round": 1,
+        "bestOf": 3,
+        "teamA": "69156526b1fa5e0a3cc68742",
+        "teamB": "69156526b1fa5e0a3cc68748",
+        "scoreA": 0,
+        "scoreB": 0,
+        "state": "scheduled",
+        "report": {
+          "proofUrls": []
+        },
+        "createdAt": "2025-12-12T13:53:36.277Z",
+        "updatedAt": "2025-12-12T14:05:52.932Z",
+        "__v": 0,
+        "scheduledAt": "2025-12-14T14:05:00.000Z"
+      }
+    ],
+    "registrations": [
+      {
+        "_id": "69156526b1fa5e0a3cc68739",
+        "tournamentId": "69156526b1fa5e0a3cc68733",
+        "teamId": "69156526b1fa5e0a3cc68737",
+        "status": "pending",
+        "seed": 1,
+        "createdAt": "2025-11-13T04:57:10.249Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc6873e",
+        "tournamentId": "69156526b1fa5e0a3cc68733",
+        "teamId": "69156526b1fa5e0a3cc6873c",
+        "status": "pending",
+        "seed": 2,
+        "createdAt": "2025-11-13T04:57:10.306Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc68745",
+        "tournamentId": "69156526b1fa5e0a3cc68733",
+        "teamId": "69156526b1fa5e0a3cc68742",
+        "status": "pending",
+        "seed": 3,
+        "createdAt": "2025-11-13T04:57:10.362Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc6874a",
+        "tournamentId": "69156526b1fa5e0a3cc68733",
+        "teamId": "69156526b1fa5e0a3cc68748",
+        "status": "pending",
+        "seed": 4,
+        "createdAt": "2025-11-13T04:57:10.419Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc6874f",
+        "tournamentId": "69156526b1fa5e0a3cc68733",
+        "teamId": "69156526b1fa5e0a3cc6874d",
+        "status": "pending",
+        "seed": 6,
+        "createdAt": "2025-11-13T04:57:10.496Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc68754",
+        "tournamentId": "69156526b1fa5e0a3cc68733",
+        "teamId": "69156526b1fa5e0a3cc68752",
+        "status": "pending",
+        "seed": 7,
+        "createdAt": "2025-11-13T04:57:10.555Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc68759",
+        "tournamentId": "69156526b1fa5e0a3cc68733",
+        "teamId": "69156526b1fa5e0a3cc68757",
+        "status": "pending",
+        "seed": 7,
+        "createdAt": "2025-11-13T04:57:10.611Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc6875e",
+        "tournamentId": "69156526b1fa5e0a3cc68733",
+        "teamId": "69156526b1fa5e0a3cc6875c",
+        "status": "pending",
+        "seed": 8,
+        "createdAt": "2025-11-13T04:57:10.679Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc6876c",
+        "tournamentId": "69156526b1fa5e0a3cc68767",
+        "teamId": "69156526b1fa5e0a3cc6876a",
+        "status": "pending",
+        "seed": 1,
+        "createdAt": "2025-11-13T04:57:10.822Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc68771",
+        "tournamentId": "69156526b1fa5e0a3cc68767",
+        "teamId": "69156526b1fa5e0a3cc6876f",
+        "status": "pending",
+        "seed": 2,
+        "createdAt": "2025-11-13T04:57:10.877Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc68776",
+        "tournamentId": "69156526b1fa5e0a3cc68767",
+        "teamId": "69156526b1fa5e0a3cc68774",
+        "status": "pending",
+        "seed": 3,
+        "createdAt": "2025-11-13T04:57:10.932Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156526b1fa5e0a3cc6877b",
+        "tournamentId": "69156526b1fa5e0a3cc68767",
+        "teamId": "69156526b1fa5e0a3cc68779",
+        "status": "pending",
+        "seed": 4,
+        "createdAt": "2025-11-13T04:57:10.987Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc68780",
+        "tournamentId": "69156526b1fa5e0a3cc68767",
+        "teamId": "69156527b1fa5e0a3cc6877e",
+        "status": "pending",
+        "seed": 5,
+        "createdAt": "2025-11-13T04:57:11.039Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc68785",
+        "tournamentId": "69156526b1fa5e0a3cc68767",
+        "teamId": "69156527b1fa5e0a3cc68783",
+        "status": "pending",
+        "seed": 6,
+        "createdAt": "2025-11-13T04:57:11.091Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc6878a",
+        "tournamentId": "69156526b1fa5e0a3cc68767",
+        "teamId": "69156527b1fa5e0a3cc68788",
+        "status": "pending",
+        "seed": 7,
+        "createdAt": "2025-11-13T04:57:11.144Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc6878f",
+        "tournamentId": "69156526b1fa5e0a3cc68767",
+        "teamId": "69156527b1fa5e0a3cc6878d",
+        "status": "pending",
+        "seed": 8,
+        "createdAt": "2025-11-13T04:57:11.197Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc6879d",
+        "tournamentId": "69156527b1fa5e0a3cc68798",
+        "teamId": "69156527b1fa5e0a3cc6879b",
+        "status": "pending",
+        "seed": 1,
+        "createdAt": "2025-11-13T04:57:11.337Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687a2",
+        "tournamentId": "69156527b1fa5e0a3cc68798",
+        "teamId": "69156527b1fa5e0a3cc687a0",
+        "status": "pending",
+        "seed": 2,
+        "createdAt": "2025-11-13T04:57:11.392Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687a7",
+        "tournamentId": "69156527b1fa5e0a3cc68798",
+        "teamId": "69156527b1fa5e0a3cc687a5",
+        "status": "pending",
+        "seed": 3,
+        "createdAt": "2025-11-13T04:57:11.447Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687ac",
+        "tournamentId": "69156527b1fa5e0a3cc68798",
+        "teamId": "69156527b1fa5e0a3cc687aa",
+        "status": "pending",
+        "seed": 4,
+        "createdAt": "2025-11-13T04:57:11.503Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687b1",
+        "tournamentId": "69156527b1fa5e0a3cc68798",
+        "teamId": "69156527b1fa5e0a3cc687af",
+        "status": "pending",
+        "seed": 5,
+        "createdAt": "2025-11-13T04:57:11.563Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687b6",
+        "tournamentId": "69156527b1fa5e0a3cc68798",
+        "teamId": "69156527b1fa5e0a3cc687b4",
+        "status": "pending",
+        "seed": 6,
+        "createdAt": "2025-11-13T04:57:11.619Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687bb",
+        "tournamentId": "69156527b1fa5e0a3cc68798",
+        "teamId": "69156527b1fa5e0a3cc687b9",
+        "status": "pending",
+        "seed": 7,
+        "createdAt": "2025-11-13T04:57:11.673Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687c0",
+        "tournamentId": "69156527b1fa5e0a3cc68798",
+        "teamId": "69156527b1fa5e0a3cc687be",
+        "status": "pending",
+        "seed": 8,
+        "createdAt": "2025-11-13T04:57:11.727Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687ce",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "teamId": "69156527b1fa5e0a3cc687cc",
+        "status": "approved",
+        "seed": 1,
+        "createdAt": "2025-11-13T04:57:11.865Z",
+        "updatedAt": "2025-12-12T08:46:48.742Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687d3",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "teamId": "69156527b1fa5e0a3cc687d1",
+        "status": "approved",
+        "seed": 2,
+        "createdAt": "2025-11-13T04:57:11.920Z",
+        "updatedAt": "2025-12-12T08:46:48.261Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156527b1fa5e0a3cc687d8",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "teamId": "69156527b1fa5e0a3cc687d6",
+        "status": "approved",
+        "seed": 3,
+        "createdAt": "2025-11-13T04:57:11.975Z",
+        "updatedAt": "2025-12-12T08:46:47.749Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc687dd",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "teamId": "69156528b1fa5e0a3cc687db",
+        "status": "approved",
+        "seed": 4,
+        "createdAt": "2025-11-13T04:57:12.033Z",
+        "updatedAt": "2025-12-12T08:46:46.507Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc687e2",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "teamId": "69156528b1fa5e0a3cc687e0",
+        "status": "approved",
+        "seed": 5,
+        "createdAt": "2025-11-13T04:57:12.090Z",
+        "updatedAt": "2025-12-12T08:46:45.889Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc687e7",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "teamId": "69156528b1fa5e0a3cc687e5",
+        "status": "approved",
+        "seed": 6,
+        "createdAt": "2025-11-13T04:57:12.146Z",
+        "updatedAt": "2025-12-12T08:46:45.315Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc687ec",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "teamId": "69156528b1fa5e0a3cc687ea",
+        "status": "approved",
+        "seed": 7,
+        "createdAt": "2025-11-13T04:57:12.199Z",
+        "updatedAt": "2025-12-12T08:46:44.857Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc687f1",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "teamId": "69156528b1fa5e0a3cc687ef",
+        "status": "approved",
+        "seed": 8,
+        "createdAt": "2025-11-13T04:57:12.253Z",
+        "updatedAt": "2025-12-12T08:46:43.377Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc687ff",
+        "tournamentId": "69156528b1fa5e0a3cc687fa",
+        "teamId": "69156528b1fa5e0a3cc687fd",
+        "status": "approved",
+        "seed": 1,
+        "createdAt": "2025-11-13T04:57:12.389Z",
+        "updatedAt": "2025-12-12T08:01:24.090Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc68804",
+        "tournamentId": "69156528b1fa5e0a3cc687fa",
+        "teamId": "69156528b1fa5e0a3cc68802",
+        "status": "approved",
+        "seed": 2,
+        "createdAt": "2025-11-13T04:57:12.445Z",
+        "updatedAt": "2025-12-12T07:53:31.253Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc68809",
+        "tournamentId": "69156528b1fa5e0a3cc687fa",
+        "teamId": "69156528b1fa5e0a3cc68807",
+        "status": "approved",
+        "seed": 3,
+        "createdAt": "2025-11-13T04:57:12.515Z",
+        "updatedAt": "2025-12-12T07:53:30.815Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc6880e",
+        "tournamentId": "69156528b1fa5e0a3cc687fa",
+        "teamId": "69156528b1fa5e0a3cc6880c",
+        "status": "approved",
+        "seed": 4,
+        "createdAt": "2025-11-13T04:57:12.575Z",
+        "updatedAt": "2025-12-12T07:53:30.410Z",
+        "__v": 0
+      },
+      {
+        "_id": "69156528b1fa5e0a3cc68813",
+        "tournamentId": "69156528b1fa5e0a3cc687fa",
+        "teamId": "69156528b1fa5e0a3cc68811",
+        "status": "approved",
+        "seed": 5,
+        "createdAt": "2025-11-13T04:57:12.639Z",
+        "updatedAt": "2025-12-12T07:53:29.279Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56246e89056fcee85a8",
+        "tournamentId": "69156526b1fa5e0a3cc68733",
+        "teamId": "6922f56246e89056fcee85a6",
+        "status": "pending",
+        "seed": 9,
+        "createdAt": "2025-11-23T11:52:02.752Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56246e89056fcee85ae",
+        "tournamentId": "69156526b1fa5e0a3cc68733",
+        "teamId": "6922f56246e89056fcee85ab",
+        "status": "pending",
+        "seed": 10,
+        "createdAt": "2025-11-23T11:52:02.844Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56246e89056fcee85b3",
+        "tournamentId": "69156526b1fa5e0a3cc68733",
+        "teamId": "6922f56246e89056fcee85b1",
+        "status": "pending",
+        "seed": 11,
+        "createdAt": "2025-11-23T11:52:02.913Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85bb",
+        "tournamentId": "69156526b1fa5e0a3cc68767",
+        "teamId": "6922f56246e89056fcee85b9",
+        "status": "pending",
+        "seed": 1,
+        "createdAt": "2025-11-23T11:52:03.053Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85c0",
+        "tournamentId": "69156526b1fa5e0a3cc68767",
+        "teamId": "6922f56346e89056fcee85be",
+        "status": "pending",
+        "seed": 2,
+        "createdAt": "2025-11-23T11:52:03.140Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85c5",
+        "tournamentId": "69156526b1fa5e0a3cc68767",
+        "teamId": "6922f56346e89056fcee85c3",
+        "status": "pending",
+        "seed": null,
+        "createdAt": "2025-11-23T11:52:03.220Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85cd",
+        "tournamentId": "69156527b1fa5e0a3cc68798",
+        "teamId": "6922f56346e89056fcee85cb",
+        "status": "pending",
+        "seed": 1,
+        "createdAt": "2025-11-23T11:52:03.331Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85d2",
+        "tournamentId": "69156527b1fa5e0a3cc68798",
+        "teamId": "6922f56346e89056fcee85d0",
+        "status": "pending",
+        "seed": 2,
+        "createdAt": "2025-11-23T11:52:03.419Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85d7",
+        "tournamentId": "69156527b1fa5e0a3cc68798",
+        "teamId": "6922f56346e89056fcee85d5",
+        "status": "pending",
+        "seed": null,
+        "createdAt": "2025-11-23T11:52:03.492Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85df",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "teamId": "6922f56346e89056fcee85dd",
+        "status": "approved",
+        "seed": 10,
+        "createdAt": "2025-11-23T11:52:03.598Z",
+        "updatedAt": "2025-12-12T08:46:42.815Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85e4",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "teamId": "6922f56346e89056fcee85e2",
+        "status": "approved",
+        "seed": 11,
+        "createdAt": "2025-11-23T11:52:03.655Z",
+        "updatedAt": "2025-12-12T08:46:42.409Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85e9",
+        "tournamentId": "69156527b1fa5e0a3cc687c9",
+        "teamId": "6922f56346e89056fcee85e7",
+        "status": "approved",
+        "seed": null,
+        "createdAt": "2025-11-23T11:52:03.732Z",
+        "updatedAt": "2025-12-12T08:46:41.869Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85f1",
+        "tournamentId": "69156528b1fa5e0a3cc687fa",
+        "teamId": "6922f56346e89056fcee85ef",
+        "status": "approved",
+        "seed": 7,
+        "createdAt": "2025-11-23T11:52:03.843Z",
+        "updatedAt": "2025-12-12T07:54:05.865Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85f6",
+        "tournamentId": "69156528b1fa5e0a3cc687fa",
+        "teamId": "6922f56346e89056fcee85f4",
+        "status": "approved",
+        "seed": 8,
+        "createdAt": "2025-11-23T11:52:03.912Z",
+        "updatedAt": "2025-12-12T07:54:05.865Z",
+        "__v": 0
+      },
+      {
+        "_id": "6922f56346e89056fcee85fb",
+        "tournamentId": "69156528b1fa5e0a3cc687fa",
+        "teamId": "6922f56346e89056fcee85f9",
+        "status": "approved",
+        "seed": null,
+        "createdAt": "2025-11-23T11:52:03.988Z",
+        "updatedAt": "2025-12-12T07:53:27.764Z",
+        "__v": 0
+      },
+      {
+        "_id": "6939b9f745455de8fa1db302",
+        "tournamentId": "6939b52e9e07e2478068454c",
+        "teamId": "6939ad5fbbfb1fae24fa0951",
+        "status": "pending",
+        "createdAt": "2025-12-10T18:20:39.514Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "693ae25b9349d3579338d2b0",
+        "tournamentId": "693ae25b9349d3579338d2a9",
+        "teamId": "693ae25b9349d3579338d2ab",
+        "status": "pending",
+        "createdAt": "2025-12-11T15:25:15.841Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0
+      },
+      {
+        "_id": "693ae760a889e11d42ed77bd",
+        "tournamentId": "693ae25b9349d3579338d2a9",
+        "teamId": "6939ad5fbbfb1fae24fa0951",
+        "status": "pending",
+        "createdAt": "2025-12-11T15:46:40.793Z",
+        "updatedAt": "2025-12-12T06:31:00.506Z",
+        "__v": 0,
+        "seed": 1
+      },
+      {
+        "_id": "693bef4d8ffb4d893067504b",
+        "tournamentId": "69156526b1fa5e0a3cc68733",
+        "teamId": "6939ad5fbbfb1fae24fa0951",
+        "status": "pending",
+        "createdAt": "2025-12-12T10:32:45.052Z",
+        "updatedAt": "2025-12-12T10:32:45.052Z",
+        "__v": 0
+      },
+      {
+        "_id": "693bf4e68ffb4d893067511a",
+        "tournamentId": "693bf3138ffb4d89306750d5",
+        "teamId": "6939ad5fbbfb1fae24fa0951",
+        "status": "pending",
+        "createdAt": "2025-12-12T10:56:38.029Z",
+        "updatedAt": "2025-12-12T10:56:38.029Z",
+        "__v": 0
+      },
+      {
+        "_id": "693c15c430731e59e1743410",
+        "tournamentId": "693c0bc28ffb4d893067514f",
+        "teamId": "6939ad5fbbfb1fae24fa0951",
+        "status": "approved",
+        "createdAt": "2025-12-12T13:16:52.845Z",
+        "updatedAt": "2025-12-12T13:18:29.239Z",
+        "__v": 0
+      },
+      {
+        "_id": "693c1e5fa95533828f6848ae",
+        "tournamentId": "693c1e5fa95533828f6848ab",
+        "teamId": "69156526b1fa5e0a3cc68737",
+        "status": "approved",
+        "seed": 1,
+        "createdAt": "2025-12-12T13:53:35.898Z",
+        "updatedAt": "2025-12-12T13:53:35.898Z",
+        "__v": 0
+      },
+      {
+        "_id": "693c1ecf243b213bf28d7789",
+        "tournamentId": "693c1e5fa95533828f6848b0",
+        "teamId": "6939ad5fbbfb1fae24fa0951",
+        "status": "pending",
+        "createdAt": "2025-12-12T13:55:27.291Z",
+        "updatedAt": "2025-12-12T13:55:27.291Z",
+        "__v": 0
+      }
+    ]
+  },
+  "stats": {
+    "totalUsers": 23,
+    "totalTeams": 62,
+    "totalTournaments": 7,
+    "totalMatches": 25,
+    "totalRegistrations": 60
+  }
+}

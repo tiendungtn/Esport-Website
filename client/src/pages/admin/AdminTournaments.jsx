@@ -138,7 +138,7 @@ export default function AdminTournaments() {
         />
       )}
 
-      {/* Delete Confirmation Modal */}
+      {/* Modal xác nhận xóa */}
       {tournamentToDelete && (
         <div className="atm-overlay">
           <div className="atm-content">
@@ -151,8 +151,7 @@ export default function AdminTournaments() {
                 className="text-slate-400 hover:text-white"
               >
                 <Trash2 size={20} className="hidden" />{" "}
-                {/* Hidden icon, just for consistency if needed, but we use X usually */}
-                X
+                {/* Icon ẩn, chỉ để nhất quán nếu cần, nhưng thường dùng X */}X
               </button>
             </div>
             <p className="text-slate-300 mb-6">
@@ -181,7 +180,7 @@ export default function AdminTournaments() {
         </div>
       )}
 
-      {/* Success Modal */}
+      {/* Modal thành công */}
       {deleteSuccessMessage && (
         <div className="atm-overlay">
           <div className="atm-content">
@@ -215,11 +214,12 @@ export default function AdminTournaments() {
 function TournamentModal({ isOpen, onClose, tournament }) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  // Helper to format Date to input datetime-local string (YYYY-MM-DDTHH:mm)
+
+  // Hàm hỗ trợ: Định dạng ngày ISO thành yyyy-MM-ddThh:mm cho input
   const formatDateForInput = (dateStr) => {
     if (!dateStr) return "";
     const date = new Date(dateStr);
-    // Adjust to local time string specifically for input value
+    if (isNaN(date.getTime())) return ""; // Ngày không hợp lệ
     const pad = (n) => n.toString().padStart(2, "0");
     return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
       date.getDate()
@@ -227,24 +227,64 @@ function TournamentModal({ isOpen, onClose, tournament }) {
   };
 
   const [form, setForm] = useState({
-    name: tournament?.name || "",
-    game: tournament?.game || "",
-    maxTeams: tournament?.maxTeams || 16,
-    description: tournament?.description || "",
+    name: "",
+    game: "",
+    maxTeams: 16,
+    description: "",
     schedule: {
-      regOpen: formatDateForInput(tournament?.schedule?.regOpen),
-      regClose: formatDateForInput(tournament?.schedule?.regClose),
+      regOpen: "",
+      regClose: "",
     },
   });
 
+  // Cập nhật form khi giải đấu thay đổi (cho chế độ chỉnh sửa)
+  React.useEffect(() => {
+    if (tournament) {
+      console.log("Đang tải giải đấu để chỉnh sửa:", tournament); // Log debug
+      setForm({
+        name: tournament.name || "",
+        game: tournament.game || "",
+        maxTeams: tournament.maxTeams || 16,
+        description: tournament.description || "",
+        schedule: {
+          regOpen: formatDateForInput(tournament.schedule?.regOpen),
+          regClose: formatDateForInput(tournament.schedule?.regClose),
+        },
+      });
+    } else {
+      // Đặt lại form cho chế độ tạo mới
+      setForm({
+        name: "",
+        game: "",
+        maxTeams: 16,
+        description: "",
+        schedule: {
+          regOpen: "",
+          regClose: "",
+        },
+      });
+    }
+  }, [tournament]);
+
   const mutation = useMutation({
     mutationFn: async (data) => {
-      // Clean up schedule if empty values
+      // Xây dựng đối tượng schedule đúng cách
       const payload = { ...data };
-      if (payload.schedule) {
-        if (!payload.schedule.regOpen) delete payload.schedule.regOpen;
-        if (!payload.schedule.regClose) delete payload.schedule.regClose;
+
+      // Xây dựng schedule chỉ với các giá trị không rỗng
+      const schedule = {};
+      if (data.schedule.regOpen) schedule.regOpen = data.schedule.regOpen;
+      if (data.schedule.regClose) schedule.regClose = data.schedule.regClose;
+
+      // Chỉ bao gồm schedule nếu có giá trị
+      if (Object.keys(schedule).length > 0) {
+        payload.schedule = schedule;
+      } else {
+        // Xóa hoàn toàn schedule nếu rỗng để tránh ghi đè bằng đối tượng rỗng
+        delete payload.schedule;
       }
+
+      console.log("Gửi payload:", payload); // Log debug
 
       if (tournament) {
         return (await api.put(`/api/tournaments/${tournament._id}`, payload))
@@ -305,38 +345,58 @@ function TournamentModal({ isOpen, onClose, tournament }) {
             />
           </div>
 
-          <div style={{ display: "flex", gap: "1rem" }}>
-            <div style={{ flex: 1 }}>
-              <label className="atm-label">{t("FormRegOpen")}</label>
-              <input
-                type="datetime-local"
-                value={form.schedule.regOpen}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    schedule: { ...form.schedule, regOpen: e.target.value },
-                  })
-                }
-                className="atm-input"
-                style={{ colorScheme: "dark" }}
-              />
+          {/* Cài đặt thời gian đăng ký */}
+          <fieldset
+            style={{
+              border: "1px solid rgb(51 65 85)",
+              borderRadius: "0.5rem",
+              padding: "1rem",
+              marginTop: "0.5rem",
+            }}
+          >
+            <legend
+              style={{
+                color: "rgb(148 163 184)",
+                padding: "0 0.5rem",
+                fontSize: "0.875rem",
+                fontWeight: "500",
+              }}
+            >
+              {t("RegistrationTimeSettings") || "Cài đặt thời gian đăng ký"}
+            </legend>
+            <div style={{ display: "flex", gap: "1rem" }}>
+              <div style={{ flex: 1 }}>
+                <label className="atm-label">{t("FormRegOpen")}</label>
+                <input
+                  type="datetime-local"
+                  value={form.schedule.regOpen}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      schedule: { ...form.schedule, regOpen: e.target.value },
+                    })
+                  }
+                  className="atm-input"
+                  style={{ colorScheme: "dark" }}
+                />
+              </div>
+              <div style={{ flex: 1 }}>
+                <label className="atm-label">{t("FormRegClose")}</label>
+                <input
+                  type="datetime-local"
+                  value={form.schedule.regClose}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      schedule: { ...form.schedule, regClose: e.target.value },
+                    })
+                  }
+                  className="atm-input"
+                  style={{ colorScheme: "dark" }}
+                />
+              </div>
             </div>
-            <div style={{ flex: 1 }}>
-              <label className="atm-label">{t("FormRegClose")}</label>
-              <input
-                type="datetime-local"
-                value={form.schedule.regClose}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    schedule: { ...form.schedule, regClose: e.target.value },
-                  })
-                }
-                className="atm-input"
-                style={{ colorScheme: "dark" }}
-              />
-            </div>
-          </div>
+          </fieldset>
 
           <div>
             <label className="atm-label">{t("FormDescription")}</label>

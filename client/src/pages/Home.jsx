@@ -83,6 +83,23 @@ export default function Home() {
                       <p className="tournament-game-name">
                         {translateGameName(tournament.game)}
                       </p>
+                      {/* Registration Time Display */}
+                      {tournament.schedule?.regOpen && (
+                        <p className="tournament-reg-time">
+                          📅 {t("RegOpenShort")}:{" "}
+                          {new Date(
+                            tournament.schedule.regOpen
+                          ).toLocaleDateString()}
+                        </p>
+                      )}
+                      {tournament.schedule?.regClose && (
+                        <p className="tournament-reg-time">
+                          ⏰ {t("RegCloseShort")}:{" "}
+                          {new Date(
+                            tournament.schedule.regClose
+                          ).toLocaleDateString()}
+                        </p>
+                      )}
                       <p className="tournament-max-teams">
                         {t("MaxTeams", { count: tournament.maxTeams })}
                       </p>

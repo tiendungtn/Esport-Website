@@ -45,9 +45,9 @@ export function generateFullSEBracket(teamIds, tournamentId) {
         _id: new mongoose.Types.ObjectId(), // Tạo ID ngay lập tức
         tournamentId,
         round: r,
-        bestOf: r === 1 ? 3 : 5, // Round 1 BO3, others BO5
-        matchIndex: i, // dùng để truy xuất
-        // Init fields
+        bestOf: r === 1 ? 3 : 5, // Vòng 1 BO3, các vòng khác BO5
+        matchIndex: i, // Dùng để truy xuất
+        // Khởi tạo các trường
         teamA: null,
         teamB: null,
         scoreA: 0,
@@ -67,7 +67,7 @@ export function generateFullSEBracket(teamIds, tournamentId) {
       const parentIndex = Math.floor(i / 2);
       const parentMatch = nextRound[parentIndex];
 
-      // Index chẵn -> Slot A, Lẻ -> Slot B
+      // Chỉ số chẵn -> Slot A, Lẻ -> Slot B
       if (i % 2 === 0) {
         currentMatch.nextMatchIdA = parentMatch._id;
         // Giữ tham chiếu để dễ xử lý logic Bye bên dưới
@@ -91,27 +91,27 @@ export function generateFullSEBracket(teamIds, tournamentId) {
       match.teamB = pair[1]; // Có thể là ID hoặc null
 
       // Xử lý Bye ngay tại đây
-      // Bye xảy ra khi 1 trong 2 team là null
+      // Bye xảy ra khi 1 trong 2 đội là null
       const hasTeamA = !!match.teamA;
       const hasTeamB = !!match.teamB;
 
       if (hasTeamA && !hasTeamB) {
-        // A thắng
+        // Đội A thắng
         match.state = "final"; // Đánh dấu hoàn thành
         match.scoreA = 2; // Giả định thắng tuyệt đối
         match.scoreB = 0;
-        // Advance A
+        // Đưa A vào vòng sau
         if (match.nextMatchRef) {
           if (match.nextMatchSlot === "A")
             match.nextMatchRef.teamA = match.teamA;
           else match.nextMatchRef.teamB = match.teamA;
         }
       } else if (!hasTeamA && hasTeamB) {
-        // B thắng
+        // Đội B thắng
         match.state = "final";
         match.scoreA = 0;
         match.scoreB = 2;
-        // Advance B
+        // Đưa B vào vòng sau
         if (match.nextMatchRef) {
           if (match.nextMatchSlot === "A")
             match.nextMatchRef.teamA = match.teamB;
@@ -121,11 +121,11 @@ export function generateFullSEBracket(teamIds, tournamentId) {
     }
   });
 
-  // 4. Cleanup và Flatten
+  // 4. Dọn dẹp và Làm phẳng
   const allMatches = [];
   Object.values(rounds).forEach((roundMatches) => {
     roundMatches.forEach((m) => {
-      // Xóa các trường tạm dùng cho logic in-memory
+      // Xóa các trường tạm dùng cho logic trong bộ nhớ
       delete m.nextMatchRef;
       delete m.nextMatchSlot;
       delete m.matchIndex;

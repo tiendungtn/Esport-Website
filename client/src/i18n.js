@@ -31,6 +31,10 @@ const resources = {
       NoTournaments:
         "No tournaments yet. Be the first to create one in the Admin page.",
       MaxTeams: "Max {{count}} teams",
+      RegOpenShort: "Opens",
+      RegCloseShort: "Closes",
+      RegOpenLabel: "Registration Opens",
+      RegCloseLabel: "Registration Closes",
 
       // Trạng thái giải đấu
       StatusOpen: "Register",
@@ -57,6 +61,7 @@ const resources = {
       FormDescription: "Description",
       FormRegOpen: "Registration Open Time",
       FormRegClose: "Registration Close Time",
+      RegistrationTimeSettings: "Registration Time Settings",
       Cancel: "Cancel",
       Save: "Save Changes",
       Saving: "Saving...",
@@ -146,6 +151,21 @@ const resources = {
       TeamNotFound: "Team not found",
       NoMatchesInBracket: "No matches in this bracket yet.",
       Preview: "Preview",
+
+      // Schedule Management
+      ScheduleMatch: "Schedule Match",
+      ScheduledAt: "Scheduled Time",
+      ScheduleConflict: "Schedule Conflict",
+      ScheduleConflictMessage:
+        "This team is already registered for another tournament during this period: {{tournament}}",
+      NoSchedule: "Not scheduled",
+      SetSchedule: "Set Schedule",
+      FailedToSetSchedule: "Failed to set schedule",
+      PleaseSelectDateTime: "Please select a date and time",
+      ConflictDetected: "Conflict detected with {{count}} other match(es)",
+      Error_SCHEDULE_CONFLICT:
+        "Schedule conflict detected. Team is already participating in another tournament.",
+      Error_MATCH_SCHEDULE_CONFLICT: "Schedule conflict with another match",
 
       // Trang giải đấu
       LoadingTournament: "Loading tournament...",
@@ -306,6 +326,10 @@ const resources = {
       NoTournaments:
         "Chưa có giải nào. Hãy là người đầu tiên tạo giải ở trang Admin.",
       MaxTeams: "Tối đa {{count}} đội",
+      RegOpenShort: "Mở",
+      RegCloseShort: "Đóng",
+      RegOpenLabel: "Thời gian mở đăng ký",
+      RegCloseLabel: "Hạn đăng ký",
 
       // Tournament Status
       StatusOpen: "Đăng ký",
@@ -332,6 +356,7 @@ const resources = {
       FormDescription: "Mô tả",
       FormRegOpen: "Thời gian mở đăng ký",
       FormRegClose: "Thời hạn đóng đăng ký",
+      RegistrationTimeSettings: "Cài đặt thời gian đăng ký",
       Cancel: "Hủy",
       Save: "Lưu thay đổi",
       Saving: "Đang lưu...",
@@ -422,6 +447,21 @@ const resources = {
       TeamNotFound: "Không tìm thấy đội",
       NoMatchesInBracket: "Chưa có trận đấu nào trong bảng đấu này.",
       Preview: "Xem trước",
+
+      // Schedule Management
+      ScheduleMatch: "Xếp lịch thi đấu",
+      ScheduledAt: "Thời gian thi đấu",
+      ScheduleConflict: "Xung đột lịch",
+      ScheduleConflictMessage:
+        "Đội này đã đăng ký giải đấu khác trong khoảng thời gian này: {{tournament}}",
+      NoSchedule: "Chưa xếp lịch",
+      SetSchedule: "Đặt lịch",
+      FailedToSetSchedule: "Xếp lịch thất bại",
+      PleaseSelectDateTime: "Vui lòng chọn ngày và giờ",
+      ConflictDetected: "Phát hiện xung đột với {{count}} trận đấu khác",
+      Error_SCHEDULE_CONFLICT:
+        "Xung đột lịch. Đội đang tham gia giải đấu khác.",
+      Error_MATCH_SCHEDULE_CONFLICT: "Xung đột lịch với trận đấu khác",
 
       // Tournament Page
       LoadingTournament: "Đang tải giải đấu...",

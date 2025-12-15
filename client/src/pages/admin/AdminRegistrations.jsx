@@ -6,7 +6,7 @@ import { api, seedTournament } from "../../lib/api";
 import AlertModal from "../../components/AlertModal";
 import "../../styles/pages/admin-registrations.css";
 
-// Helper component for status badges
+// Component hỗ trợ cho badge trạng thái
 const StatusBadge = ({ status }) => {
   const { t } = useTranslation();
   const styles = {
@@ -34,18 +34,18 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const [filter, setFilter] = useState("all"); // 'all', 'pending', 'approved', 'rejected'
-  const [seeds, setSeeds] = useState({}); // { teamId: seedValue }
+  const [filter, setFilter] = useState("all"); // 'tất cả', 'đang chờ', 'đã duyệt', 'từ chối'
+  const [seeds, setSeeds] = useState({}); // { teamId: giá trị seed }
   const [savingSeeds, setSavingSeeds] = useState(false);
   const [generatingBracket, setGeneratingBracket] = useState(false);
   const [alertState, setAlertState] = useState({
     isOpen: false,
     title: "",
     message: "",
-    type: "info", // success, error, info
+    type: "info", // thành công, lỗi, thông tin
   });
 
-  // Fetch registrations when tournamentId changes
+  // Lấy danh sách đăng ký khi tournamentId thay đổi
   useEffect(() => {
     if (!tournamentId) return;
 
@@ -57,7 +57,7 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
           `/api/tournaments/${tournamentId}/registrations`
         );
         setRegistrations(res.data);
-        // Initialize seeds
+        // Khởi tạo seeds
         const initialSeeds = {};
         res.data.forEach((r) => {
           if (r.seed) initialSeeds[r.teamId._id] = r.seed;
@@ -83,7 +83,7 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
         }
       );
 
-      // Update local state
+      // Cập nhật state cục bộ
       setRegistrations((prev) =>
         prev.map((reg) =>
           reg._id === regId ? { ...reg, status: newStatus } : reg
@@ -91,7 +91,7 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
       );
     } catch (err) {
       console.error("Failed to update status", err);
-      // alert(t("FailedUpdateStatus")); // Replaced with modal
+      // alert(t("FailedUpdateStatus")); // Đã thay thế bằng modal
       setAlertState({
         isOpen: true,
         title: t("Error"),
@@ -111,7 +111,7 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
   const handleSaveSeeding = async () => {
     setSavingSeeds(true);
     try {
-      // Build payload
+      // Xây dựng payload
       const payload = Object.entries(seeds)
         .filter(([_, v]) => v !== "" && v !== null && v !== undefined)
         .map(([teamId, seed]) => ({
@@ -120,7 +120,7 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
         }));
 
       await seedTournament(tournamentId, payload);
-      // alert(t("SeedingSaved") || "Seeding saved successfully!");
+      // alert(t("SeedingSaved") || "Lưu seeding thành công!");
       setAlertState({
         isOpen: true,
         type: "success",
@@ -129,7 +129,7 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
       });
     } catch (err) {
       console.error("Failed to save seeding", err);
-      // alert(err.response?.data?.message || t("FailedSaveSeeding"));
+      // alert(err.response?.data?.message || t("Lưu seeding thất bại"));
       setAlertState({
         isOpen: true,
         type: "error",

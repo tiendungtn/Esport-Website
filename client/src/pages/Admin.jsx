@@ -20,7 +20,7 @@ export default function Admin() {
   const tabs = [
     {
       id: "tournaments",
-      label: t("TournamentsTab") + " (DEBUG)",
+      label: t("TournamentsTab"),
       icon: Trophy,
       component: AdminTournaments,
     },

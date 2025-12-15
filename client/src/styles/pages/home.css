@@ -97,3 +97,7 @@
 .tournament-max-teams {
     @apply text-xs font-medium text-white/70;
 }
+
+.tournament-reg-time {
+    @apply text-xs font-medium text-white/80;
+}

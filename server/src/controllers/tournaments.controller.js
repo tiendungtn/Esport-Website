@@ -25,11 +25,26 @@ const createSchema = z.object({
 export async function createTournament(req, res) {
   const parse = createSchema.safeParse(req.body);
   if (!parse.success) {
+    console.log("Validation error:", parse.error);
     return res.status(400).json({ message: "Invalid payload" });
   }
 
+  // Chuyển đổi chuỗi schedule sang đối tượng Date
+  const tournamentData = { ...parse.data };
+  if (parse.data.schedule) {
+    tournamentData.schedule = {};
+    if (parse.data.schedule.regOpen) {
+      tournamentData.schedule.regOpen = new Date(parse.data.schedule.regOpen);
+    }
+    if (parse.data.schedule.regClose) {
+      tournamentData.schedule.regClose = new Date(parse.data.schedule.regClose);
+    }
+  }
+
+  console.log("Tạo giải đấu với:", tournamentData); // Log debug
+
   const t = await Tournament.create({
-    ...parse.data,
+    ...tournamentData,
     status: "open",
     organizerUser: req.user?.id ?? null,
   });
@@ -60,6 +75,7 @@ export async function updateTournament(req, res) {
   const { id } = req.params;
   const parse = createSchema.partial().safeParse(req.body);
   if (!parse.success) {
+    console.log("Validation error:", parse.error);
     return res.status(400).json({ message: "Invalid payload" });
   }
 
@@ -68,7 +84,31 @@ export async function updateTournament(req, res) {
     query.organizerUser = req.user.id;
   }
 
-  const t = await Tournament.findOneAndUpdate(query, parse.data, { new: true });
+  // Xây dựng đối tượng cập nhật, xử lý schedule lồng nhau đúng cách
+  const updateData = { ...parse.data };
+
+  // Nếu schedule được cung cấp, chuyển sang đối tượng Date và sử dụng ký hiệu chấm
+  if (parse.data.schedule) {
+    const scheduleUpdates = {};
+    if (parse.data.schedule.regOpen) {
+      scheduleUpdates["schedule.regOpen"] = new Date(
+        parse.data.schedule.regOpen
+      );
+    }
+    if (parse.data.schedule.regClose) {
+      scheduleUpdates["schedule.regClose"] = new Date(
+        parse.data.schedule.regClose
+      );
+    }
+
+    // Xóa schedule khỏi cập nhật chính và sử dụng ký hiệu chấm
+    delete updateData.schedule;
+    Object.assign(updateData, scheduleUpdates);
+  }
+
+  console.log("Cập nhật giải đấu với:", updateData); // Log debug
+
+  const t = await Tournament.findOneAndUpdate(query, updateData, { new: true });
   if (!t)
     return res
       .status(404)
@@ -95,6 +135,43 @@ export async function deleteTournament(req, res) {
 const registerSchema = z.object({
   teamId: z.string().min(1),
 });
+
+/**
+ * Kiểm tra xung đột lịch thi đấu cho team
+ * @param {string} teamId - ID của đội
+ * @param {object} newTournament - Giải đấu mới muốn đăng ký
+ * @returns {Promise<Array>} - Danh sách các giải đấu có xung đột
+ */
+async function checkScheduleConflict(teamId, newTournament) {
+  // Tìm các giải đấu mà team đã đăng ký (approved)
+  const approvedRegs = await Registration.find({
+    teamId,
+    status: "approved",
+  }).lean();
+
+  if (approvedRegs.length === 0) return [];
+
+  const tournamentIds = approvedRegs.map((r) => r.tournamentId);
+
+  // Lấy các giải đấu đang ongoing hoặc có lịch trùng
+  const conflictConditions = [{ status: "ongoing" }];
+
+  // Nếu giải đấu mới có thời gian startAt/endAt, kiểm tra overlap
+  if (newTournament.schedule?.startAt && newTournament.schedule?.endAt) {
+    conflictConditions.push({
+      status: { $in: ["open", "ongoing"] },
+      "schedule.startAt": { $lte: new Date(newTournament.schedule.endAt) },
+      "schedule.endAt": { $gte: new Date(newTournament.schedule.startAt) },
+    });
+  }
+
+  const conflictingTournaments = await Tournament.find({
+    _id: { $in: tournamentIds, $ne: newTournament._id },
+    $or: conflictConditions,
+  }).lean();
+
+  return conflictingTournaments;
+}
 
 const MIN_MEMBERS_MAPPING = {
   "League of Legends": 5,
@@ -145,7 +222,7 @@ export async function registerTeam(req, res) {
       });
     }
 
-    // Validate Game Matching
+    // Kiểm tra game phù hợp
     const teamGame = NORMALIZE_GAME_NAME[team.game] || team.game;
     const tourGame = NORMALIZE_GAME_NAME[tournament.game] || tournament.game;
 
@@ -155,7 +232,7 @@ export async function registerTeam(req, res) {
       });
     }
 
-    // Validate Min Members
+    // Kiểm tra số thành viên tối thiểu
     const minRequired = MIN_MEMBERS_MAPPING[tournament.game] || 1;
     if (team.members.length < minRequired) {
       return res.status(400).json({
@@ -163,10 +240,30 @@ export async function registerTeam(req, res) {
       });
     }
 
-    // Check if user is authorized (Owner only)
+    // Kiểm tra quyền người dùng (Chỉ chủ đội)
     if (team.ownerUser.toString() !== req.user.id) {
       return res.status(403).json({
         message: "Only the team captain can register for tournaments",
+      });
+    }
+
+    // Kiểm tra xung đột lịch thi đấu (Tầng Đăng ký)
+    const conflictingTournaments = await checkScheduleConflict(
+      parse.data.teamId,
+      tournament
+    );
+    if (conflictingTournaments.length > 0) {
+      const conflictNames = conflictingTournaments
+        .map((t) => t.name)
+        .join(", ");
+      return res.status(409).json({
+        message: `Schedule conflict detected. Team is already participating in: ${conflictNames}`,
+        code: "SCHEDULE_CONFLICT",
+        conflicts: conflictingTournaments.map((t) => ({
+          id: t._id,
+          name: t.name,
+          status: t.status,
+        })),
       });
     }
 
@@ -201,21 +298,21 @@ const seedSchema = z.object({
 export async function seedTournament(req, res) {
   const { id } = req.params;
 
-  // 1. Validation Payload
+  // 1. Xác thực Payload
   const parse = seedSchema.safeParse(req.body);
   if (!parse.success) {
     return res.status(400).json({ message: "Invalid payload" });
   }
   const manualSeeds = parse.data.seeds;
 
-  // 2. Lay tat ca dang ky
+  // 2. Lấy tất cả đăng ký
   const regs = await Registration.find({ tournamentId: id }).sort({
     createdAt: 1,
   });
 
   if (manualSeeds && manualSeeds.length > 0) {
-    // 3. Manual Seeding Logic
-    // Validate: tat ca teamId phai thuoc tournament nay
+    // 3. Logic seeding thủ công
+    // Kiểm tra: tất cả teamId phải thuộc giải đấu này
     const regTeamIds = new Set(regs.map((r) => r.teamId.toString()));
     const inputTeamIds = new Set(manualSeeds.map((s) => s.teamId));
 
@@ -227,7 +324,7 @@ export async function seedTournament(req, res) {
       }
     }
 
-    // Validate: seed khong duoc trung nhau
+    // Kiểm tra: seed không được trùng nhau
     const seedValues = manualSeeds.map((s) => s.seed);
     const uniqueSeeds = new Set(seedValues);
     if (seedValues.length !== uniqueSeeds.size) {
@@ -236,34 +333,34 @@ export async function seedTournament(req, res) {
       });
     }
 
-    // Map seed input
+    // Ánh xạ seed đầu vào
     const seedMap = new Map(); // teamId -> seed
     manualSeeds.forEach((s) => seedMap.set(s.teamId, s.seed));
 
-    // Update regs
-    // Note: Nhung team khong co trong manualSeeds se co seed = null (hoac giu seed cu neu muon, o day ta set theo logic cua user yeu cau la loop through)
-    // User request logic: "If req.body.seeds is provided, loop through the registrations and update their seed field based on the input."
-    // Impl: Update provided, others undefined? Or error if missing?
-    // Usually manual seeding implies full seeding or partial. Let's assume partial is allowed but better to be safe.
-    // Requirement says: "loop through the registrations and update their seed field based on the input."
-    // Let's ensure we save the seed.
+    // Cập nhật registrations
+    // Ghi chú: Những team không có trong manualSeeds sẽ có seed = null (hoặc giữ seed cũ nếu muốn, ở đây ta set theo logic yêu cầu)
+    // Logic yêu cầu: "Nếu req.body.seeds được cung cấp, lặp qua các đăng ký và cập nhật trường seed dựa trên đầu vào."
+    // Triển khai: Cập nhật đã cung cấp, các giá trị khác undefined? Hoặc báo lỗi nếu thiếu?
+    // Thường seeding thủ công có nghĩa là seeding đầy đủ hoặc một phần. Giả sử cho phép một phần.
+    // Yêu cầu nói: "lặp qua các đăng ký và cập nhật trường seed dựa trên đầu vào."
+    // Đảm bảo lưu seed.
     await Promise.all(
       regs.map((r) => {
         const s = seedMap.get(r.teamId.toString());
         if (s !== undefined) {
           r.seed = s;
         } else {
-          // If not provided, maybe leave it or set to null?
-          // Let's keep it clean: if switching to manual, maybe we expect full coverage?
-          // User diagram implies sending specific seeds.
-          // Let's just update matches.
+          // Nếu không cung cấp, có thể giữ nguyên hoặc đặt null?
+          // Để sạch: nếu chuyển sang thủ công, có thể cần bao phủ đầy đủ?
+          // Sơ đồ người dùng ngụ ý gửi seeds cụ thể.
+          // Chỉ cập nhật trận đấu.
         }
         return r.save();
       })
     );
   } else {
-    // 4. Fallback Auto Seeding (Sort by createdAt)
-    // regs da duoc sort createdAt: 1 o tren
+    // 4. Seeding tự động dự phòng (Sắp xếp theo createdAt)
+    // regs đã được sắp xếp createdAt: 1 ở trên
     await Promise.all(
       regs.map((r, idx) => {
         r.seed = idx + 1;
@@ -272,16 +369,16 @@ export async function seedTournament(req, res) {
     );
   }
 
-  // Refetch to return clear state
+  // Lấy lại để trả về trạng thái rõ ràng
   const updatedRegs = await Registration.find({ tournamentId: id }).sort({
     seed: 1,
   });
   res.json(updatedRegs);
 }
 
-/* Helper function for bracket generation */
+/* Hàm hỗ trợ cho việc tạo bracket */
 async function generateBracketInternal(tournamentId) {
-  // Check if matches already exist
+  // Kiểm tra xem các trận đấu đã tồn tại chưa
   const existingMatches = await Match.countDocuments({ tournamentId });
   if (existingMatches > 0) {
     return { skipped: true, reason: "Bracket already exists" };
@@ -297,14 +394,14 @@ async function generateBracketInternal(tournamentId) {
     return { skipped: true, reason: "Not enough teams to generate bracket" };
   }
 
-  // Use the bracket generation algorithm
+  // Sử dụng thuật toán tạo bracket
   const { generateFullSEBracket } = await import("../utils/bracket.js");
   const matchesData = generateFullSEBracket(seeds, tournamentId);
 
-  // Save to DB
+  // Lưu vào DB
   const created = await Match.insertMany(matchesData);
 
-  // Optionally update tournament status
+  // Tùy chọn cập nhật trạng thái giải đấu
   await Tournament.findByIdAndUpdate(tournamentId, { status: "ongoing" });
 
   return { skipped: false, matches: created };
@@ -313,7 +410,7 @@ async function generateBracketInternal(tournamentId) {
 export async function generateBracket(req, res) {
   const { id } = req.params;
 
-  // Check pending
+  // Kiểm tra đang chờ xử lý
   const pendingCount = await Registration.countDocuments({
     tournamentId: id,
     status: "pending",
@@ -350,7 +447,7 @@ export async function getTournamentRegistrations(req, res) {
   }
 
   const registrations = await Registration.find({ tournamentId: id })
-    .populate("teamId") // Để lấy thông tin team (name, logo, members...)
+    .populate("teamId") // Để lấy thông tin đội (tên, logo, thành viên...)
     .sort({ createdAt: -1 });
 
   res.json(registrations);
@@ -358,7 +455,7 @@ export async function getTournamentRegistrations(req, res) {
 
 export async function updateRegistrationStatus(req, res) {
   const { id, regId } = req.params;
-  const { status } = req.body; // 'approved' | 'rejected' | 'pending'
+  const { status } = req.body; // 'đã duyệt' | 'từ chối' | 'đang chờ'
 
   if (!["approved", "rejected", "pending"].includes(status)) {
     return res.status(400).json({ message: "Invalid status" });
@@ -381,7 +478,7 @@ export async function updateRegistrationStatus(req, res) {
 
   if (!reg) return res.status(404).json({ message: "Registration not found" });
 
-  // Auto-generate bracket if all registrations are processed
+  // Tự động tạo bracket nếu tất cả đăng ký đã được xử lý
   try {
     const pendingCount = await Registration.countDocuments({
       tournamentId: id,

@@ -33,3 +33,11 @@
 .tournament-bracket-title {
     @apply mb-3 text-sm font-semibold uppercase tracking-wide text-slate-400;
 }
+
+.tournament-reg-info {
+    @apply mt-4 flex flex-wrap gap-4 text-sm;
+}
+
+.tournament-reg-item {
+    @apply flex items-center gap-1 text-slate-300 bg-slate-800/50 px-3 py-1.5 rounded-lg border border-slate-700/50;
+}

@@ -15,3 +15,7 @@ api.interceptors.request.use((config) => {
 export const seedTournament = async (tournamentId, seeds) => {
   return await api.post(`/api/tournaments/${tournamentId}/seed`, { seeds });
 };
+
+export const updateMatchSchedule = async (matchId, scheduledAt) => {
+  return await api.put(`/api/matches/${matchId}/schedule`, { scheduledAt });
+};

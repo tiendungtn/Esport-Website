@@ -77,6 +77,24 @@ export default function Tournament() {
             <p className="tournament-description">
               {tournament.description || t("TournamentDescription")}
             </p>
+            {/* Registration Time Display */}
+            {(tournament.schedule?.regOpen ||
+              tournament.schedule?.regClose) && (
+              <div className="tournament-reg-info">
+                {tournament.schedule?.regOpen && (
+                  <p className="tournament-reg-item">
+                    📅 <strong>{t("RegOpenLabel")}:</strong>{" "}
+                    {new Date(tournament.schedule.regOpen).toLocaleString()}
+                  </p>
+                )}
+                {tournament.schedule?.regClose && (
+                  <p className="tournament-reg-item">
+                    ⏰ <strong>{t("RegCloseLabel")}:</strong>{" "}
+                    {new Date(tournament.schedule.regClose).toLocaleString()}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
           {tournament.status === "open" &&
             (tournament.schedule?.regClose &&

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "../../lib/api";
+import { api, updateMatchSchedule } from "../../lib/api";
 import {
   Edit,
   CheckCircle,
@@ -8,6 +8,7 @@ import {
   Link as LinkIcon,
   X,
   Plus,
+  Calendar,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import "../../styles/pages/admin-matches.css";
@@ -16,6 +17,7 @@ export default function AdminMatches() {
   const { t } = useTranslation();
   const [selectedTournament, setSelectedTournament] = useState("");
   const [editingMatch, setEditingMatch] = useState(null);
+  const [schedulingMatch, setSchedulingMatch] = useState(null);
   const [confirmReject, setConfirmReject] = useState({
     isOpen: false,
     matchId: null,
@@ -93,6 +95,7 @@ export default function AdminMatches() {
                 <th className="am-th">{t("Team1")}</th>
                 <th className="am-th-center">{t("Score")}</th>
                 <th className="am-th">{t("Team2")}</th>
+                <th className="am-th">{t("ScheduledAt")}</th>
                 <th className="am-th">{t("TableStatus")}</th>
                 <th className="am-th-right">{t("TableActions")}</th>
               </tr>
@@ -111,6 +114,26 @@ export default function AdminMatches() {
                   </td>
                   <td className="am-td-team">
                     {match.teamB?.name || t("TBD")}
+                  </td>
+                  <td className="am-td">
+                    <div className="am-schedule-cell">
+                      {match.scheduledAt ? (
+                        <span className="am-schedule-time">
+                          {new Date(match.scheduledAt).toLocaleString()}
+                        </span>
+                      ) : (
+                        <span className="am-no-schedule">
+                          {t("NoSchedule")}
+                        </span>
+                      )}
+                      <button
+                        onClick={() => setSchedulingMatch(match)}
+                        className="am-btn-schedule"
+                        title={t("SetSchedule")}
+                      >
+                        <Calendar size={14} />
+                      </button>
+                    </div>
                   </td>
                   <td className="am-td">
                     <span
@@ -154,7 +177,7 @@ export default function AdminMatches() {
               ))}
               {matches?.length === 0 && (
                 <tr>
-                  <td colSpan="6" className="am-table-empty">
+                  <td colSpan="7" className="am-table-empty">
                     {t("NoMatches")}
                   </td>
                 </tr>
@@ -171,6 +194,14 @@ export default function AdminMatches() {
           isOpen={!!editingMatch}
           onClose={() => setEditingMatch(null)}
           match={editingMatch}
+        />
+      )}
+
+      {schedulingMatch && (
+        <ScheduleModal
+          isOpen={!!schedulingMatch}
+          onClose={() => setSchedulingMatch(null)}
+          match={schedulingMatch}
         />
       )}
 
@@ -420,6 +451,117 @@ function MatchModal({ isOpen, onClose, match }) {
             {t("Close")}
           </button>
         </div>
+
+        <AlertModal
+          isOpen={alertState.isOpen}
+          onClose={() => setAlertState({ ...alertState, isOpen: false })}
+          title={alertState.title}
+          message={alertState.message}
+          type={alertState.type}
+        />
+      </div>
+    </div>
+  );
+}
+
+function ScheduleModal({ isOpen, onClose, match }) {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const [scheduledAt, setScheduledAt] = useState(
+    match?.scheduledAt
+      ? new Date(match.scheduledAt).toISOString().slice(0, 16)
+      : ""
+  );
+  const [alertState, setAlertState] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    type: "error",
+  });
+
+  const scheduleMutation = useMutation({
+    mutationFn: async (dateStr) => {
+      return await updateMatchSchedule(match._id, dateStr);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["matches"] });
+      onClose();
+    },
+    onError: (error) => {
+      const data = error.response?.data;
+      let message = data?.message || t("FailedToSetSchedule");
+
+      // Hiển thị chi tiết xung đột nếu có
+      if (data?.code === "MATCH_SCHEDULE_CONFLICT" && data?.conflicts) {
+        const conflictsList = data.conflicts
+          .map(
+            (c) =>
+              `• ${c.teamA} vs ${c.teamB} (${new Date(
+                c.scheduledAt
+              ).toLocaleString()})`
+          )
+          .join("\n");
+        message = `${message}\n\n${conflictsList}`;
+      }
+
+      setAlertState({
+        isOpen: true,
+        title: t("ScheduleConflict"),
+        message: message,
+        type: "error",
+      });
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!scheduledAt) {
+      setAlertState({
+        isOpen: true,
+        title: t("Error"),
+        message: t("PleaseSelectDateTime"),
+        type: "error",
+      });
+      return;
+    }
+    scheduleMutation.mutate(scheduledAt);
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="amm-overlay">
+      <div className="amm-content asm-content">
+        <h3 className="amm-title">{t("ScheduleMatch")}</h3>
+        <p className="asm-match-name">
+          {match.teamA?.name || t("TBD")} vs {match.teamB?.name || t("TBD")}
+        </p>
+        <p className="asm-round">{t("RoundN", { count: match.round })}</p>
+
+        <form onSubmit={handleSubmit} className="asm-form">
+          <div className="asm-input-group">
+            <label className="asm-label">{t("ScheduledAt")}</label>
+            <input
+              type="datetime-local"
+              value={scheduledAt}
+              onChange={(e) => setScheduledAt(e.target.value)}
+              className="asm-datetime-input"
+            />
+          </div>
+
+          <div className="amm-footer">
+            <button
+              type="submit"
+              disabled={scheduleMutation.isPending}
+              className="amm-btn-update"
+            >
+              {scheduleMutation.isPending ? t("Saving") : t("SetSchedule")}
+            </button>
+            <button type="button" onClick={onClose} className="amm-btn-close">
+              {t("Cancel")}
+            </button>
+          </div>
+        </form>
 
         <AlertModal
           isOpen={alertState.isOpen}

@@ -29,13 +29,12 @@ export async function reportMatch(req, res) {
   const existing = await Match.findById(id);
   if (!existing) return res.status(404).json({ message: "Match not found" });
 
-  // Validate Score Limits
-  // Validate Score Limits
-  // Strict Enforcement: Round 1 = BO3, Round > 1 = BO5
+  // Kiểm tra giới hạn tỉ số
+  // Bắt buộc nghiêm ngặt: Vòng 1 = BO3, Vòng > 1 = BO5
   const requiredBestOf = existing.round === 1 ? 3 : 5;
   const bestOf = requiredBestOf;
 
-  // Auto-heal if DB is wrong
+  // Tự động sửa nếu DB sai
   if (existing.bestOf !== requiredBestOf) {
     await Match.findByIdAndUpdate(id, { $set: { bestOf: requiredBestOf } });
   }
@@ -161,7 +160,7 @@ export async function rejectMatchResult(req, res) {
     });
   }
 
-  // Reset state to live, clear scores and report data
+  // Đặt lại trạng thái về live, xóa điểm số và dữ liệu báo cáo
   const m = await Match.findByIdAndUpdate(
     id,
     {
@@ -175,20 +174,20 @@ export async function rejectMatchResult(req, res) {
     { new: true }
   );
 
-  // Notify clients about score reset
+  // Thông báo cho clients về việc đặt lại điểm số
   io.to(`match:${id}`).emit("score:update", {
     matchId: id,
     scoreA: 0,
     scoreB: 0,
   });
 
-  // Notify about state change
+  // Thông báo về thay đổi trạng thái
   io.to(`tournament:${m.tournamentId}`).emit("match:state", {
     matchId: id,
     state: "live",
   });
 
-  // Also emit score update to tournament room for bracket view
+  // Gửi cập nhật điểm số đến room giải đấu cho bracket view
   io.to(`tournament:${m.tournamentId}`).emit("score:update", {
     matchId: id,
     scoreA: 0,
@@ -288,4 +287,80 @@ export async function confirmMatch(req, res) {
   }
 
   res.json(m);
+}
+
+const scheduleSchema = z.object({
+  scheduledAt: z.string().datetime().or(z.string().min(1)),
+});
+
+/**
+ * Xếp lịch cho trận đấu (Tầng Vận hành)
+ * Kiểm tra xung đột lịch với các trận khác của cùng đội
+ */
+export async function updateMatchSchedule(req, res) {
+  const { id } = req.params;
+  const parse = scheduleSchema.safeParse(req.body);
+
+  if (!parse.success) {
+    return res.status(400).json({ message: "Invalid scheduledAt format" });
+  }
+
+  const match = await Match.findById(id);
+  if (!match) return res.status(404).json({ message: "Match not found" });
+
+  const scheduledAt = new Date(parse.data.scheduledAt);
+  if (isNaN(scheduledAt.getTime())) {
+    return res.status(400).json({ message: "Invalid date" });
+  }
+
+  // Thời gian buffer (2 giờ trước và sau trận)
+  const MATCH_DURATION_MS = 2 * 60 * 60 * 1000; // 2 hours
+  const timeRangeStart = new Date(scheduledAt.getTime() - MATCH_DURATION_MS);
+  const timeRangeEnd = new Date(scheduledAt.getTime() + MATCH_DURATION_MS);
+
+  // Tìm các trận khác có cùng đội trong khoảng thời gian xung đột
+  const teamIds = [match.teamA, match.teamB].filter(Boolean);
+
+  if (teamIds.length > 0) {
+    const conflictingMatches = await Match.find({
+      _id: { $ne: id },
+      scheduledAt: {
+        $gte: timeRangeStart,
+        $lte: timeRangeEnd,
+      },
+      $or: [{ teamA: { $in: teamIds } }, { teamB: { $in: teamIds } }],
+    })
+      .populate("teamA", "name")
+      .populate("teamB", "name");
+
+    if (conflictingMatches.length > 0) {
+      return res.status(409).json({
+        message: "Schedule conflict detected with other matches",
+        code: "MATCH_SCHEDULE_CONFLICT",
+        conflicts: conflictingMatches.map((m) => ({
+          id: m._id,
+          teamA: m.teamA?.name || "TBD",
+          teamB: m.teamB?.name || "TBD",
+          scheduledAt: m.scheduledAt,
+          round: m.round,
+        })),
+      });
+    }
+  }
+
+  const updated = await Match.findByIdAndUpdate(
+    id,
+    { $set: { scheduledAt } },
+    { new: true }
+  )
+    .populate("teamA", "name")
+    .populate("teamB", "name");
+
+  // Thông báo cho clients
+  io.to(`tournament:${match.tournamentId}`).emit("match:schedule", {
+    matchId: id,
+    scheduledAt: updated.scheduledAt,
+  });
+
+  res.json(updated);
 }
