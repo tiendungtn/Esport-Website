@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../../lib/api";
+import { translateBackendError } from "../../lib/errorTranslations";
 import { Search, Plus, Pencil, Trash2, X, AlertTriangle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import "../../styles/pages/admin-players.css";
@@ -33,7 +34,13 @@ export default function AdminPlayers() {
       closeModal();
     },
     onError: (err) =>
-      alert(err.response?.data?.message || t("FailedCreateUser")),
+      alert(
+        translateBackendError(
+          err.response?.data?.message,
+          t,
+          "FailedCreateUser"
+        )
+      ),
   });
 
   const updateMutation = useMutation({
@@ -43,7 +50,13 @@ export default function AdminPlayers() {
       closeModal();
     },
     onError: (err) =>
-      alert(err.response?.data?.message || t("FailedUpdateUser")),
+      alert(
+        translateBackendError(
+          err.response?.data?.message,
+          t,
+          "FailedUpdateUser"
+        )
+      ),
   });
 
   const deleteMutation = useMutation({
@@ -53,7 +66,13 @@ export default function AdminPlayers() {
       closeDeleteModal();
     },
     onError: (err) =>
-      alert(err.response?.data?.message || t("FailedDeleteUser")),
+      alert(
+        translateBackendError(
+          err.response?.data?.message,
+          t,
+          "FailedDeleteUser"
+        )
+      ),
   });
 
   const openCreateModal = () => {
@@ -146,7 +165,7 @@ export default function AdminPlayers() {
                     <div className="ap-user-avatar">
                       {p.profile?.displayName?.[0] || "?"}
                     </div>
-                    {p.profile?.displayName || "N/A"}
+                    {p.profile?.displayName || t("NotAvailable")}
                   </div>
                 </td>
                 <td className="ap-td">{p.email}</td>
@@ -178,7 +197,7 @@ export default function AdminPlayers() {
                     <button
                       onClick={() => openDeleteModal(p)}
                       className="ap-action-btn-danger"
-                      title="Delete"
+                      title={t("Delete")}
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>

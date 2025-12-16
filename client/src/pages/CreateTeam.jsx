@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { api } from "../lib/api";
 import { getGameNames, gameNameToDB } from "../lib/gameTranslations";
+import { translateBackendError } from "../lib/errorTranslations";
 import "../styles/pages/create-team.css";
 
 export default function CreateTeam() {
@@ -31,7 +32,13 @@ export default function CreateTeam() {
       navigate(`/teams/${res.data._id}`);
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.message || t("FailedToCreateTeam"));
+      setError(
+        translateBackendError(
+          err.response?.data?.message,
+          t,
+          "FailedToCreateTeam"
+        )
+      );
     } finally {
       setLoading(false);
     }

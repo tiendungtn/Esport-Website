@@ -6,6 +6,8 @@ import { useAuth } from "../context/AuthContext";
 import { useTranslation } from "react-i18next";
 import { Trash2, UserPlus, Search, X, Edit } from "lucide-react";
 import { translateGameName } from "../lib/gameTranslations";
+import { translateBackendError } from "../lib/errorTranslations";
+import AlertModal from "../components/AlertModal";
 import "../styles/pages/public-team-profile.css";
 
 export default function PublicTeamProfile() {
@@ -21,6 +23,12 @@ export default function PublicTeamProfile() {
   const [searchError, setSearchError] = useState("");
   const [memberToRemove, setMemberToRemove] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+  const [alertState, setAlertState] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    type: "error",
+  });
 
   const {
     data: team,
@@ -42,7 +50,16 @@ export default function PublicTeamProfile() {
       setIsModalOpen(false);
     },
     onError: (err) => {
-      alert(err.response?.data?.message || t("FailedToAddMember"));
+      setAlertState({
+        isOpen: true,
+        title: t("Error"),
+        message: translateBackendError(
+          err.response?.data?.message,
+          t,
+          "FailedToAddMember"
+        ),
+        type: "error",
+      });
     },
   });
 
@@ -59,7 +76,16 @@ export default function PublicTeamProfile() {
       setSuccessMessage(t("MemberRemovedSuccess"));
     },
     onError: (err) => {
-      alert(err.response?.data?.message || t("FailedToRemoveMember"));
+      setAlertState({
+        isOpen: true,
+        title: t("Error"),
+        message: translateBackendError(
+          err.response?.data?.message,
+          t,
+          "FailedToRemoveMember"
+        ),
+        type: "error",
+      });
     },
   });
 
@@ -87,6 +113,13 @@ export default function PublicTeamProfile() {
 
   return (
     <div className="ptp-container">
+      <AlertModal
+        isOpen={alertState.isOpen}
+        onClose={() => setAlertState({ ...alertState, isOpen: false })}
+        title={alertState.title}
+        message={alertState.message}
+        type={alertState.type}
+      />
       <div className="ptp-header">
         {team.logoUrl ? (
           <img src={team.logoUrl} alt={team.name} className="ptp-logo" />
@@ -313,12 +346,20 @@ export default function PublicTeamProfile() {
           queryClient.invalidateQueries(["team", id]);
           setIsEditTeamModalOpen(false);
         }}
+        onError={(msg) =>
+          setAlertState({
+            isOpen: true,
+            title: t("Error"),
+            message: translateBackendError(msg, t, "FailedToUpdateTeam"),
+            type: "error",
+          })
+        }
       />
     </div>
   );
 }
 
-function EditTeamModal({ isOpen, onClose, team, onSuccess }) {
+function EditTeamModal({ isOpen, onClose, team, onSuccess, onError }) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
@@ -337,7 +378,7 @@ function EditTeamModal({ isOpen, onClose, team, onSuccess }) {
       onSuccess();
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || t("FailedToUpdateTeam"));
+      onError(err.response?.data?.message || "");
     } finally {
       setLoading(false);
     }
@@ -358,7 +399,7 @@ function EditTeamModal({ isOpen, onClose, team, onSuccess }) {
       setForm({ ...form, logoUrl: res.data.url });
     } catch (err) {
       console.error("Upload failed", err);
-      alert(t("UploadImageFailed"));
+      onError(t("UploadImageFailed"));
     } finally {
       setLoading(false);
     }

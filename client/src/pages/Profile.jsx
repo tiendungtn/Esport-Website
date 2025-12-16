@@ -166,7 +166,7 @@ export default function Profile() {
                       console.error("Upload failed", err);
                       setMessage({
                         type: "error",
-                        text: "Failed to upload avatar",
+                        text: t("FailedToUploadAvatar"),
                       });
                     } finally {
                       // setLoading(false);
@@ -200,9 +200,9 @@ export default function Profile() {
       </div>
 
       <div className="profile-section-title">
-        {t("MyTeams") || "My Teams"}
+        {t("MyTeams")}
         <a href="/teams/create" className="profile-create-team-btn">
-          + {t("CreateTeam") || "Create Team"}
+          + {t("CreateTeam")}
         </a>
       </div>
 
@@ -231,17 +231,15 @@ export default function Profile() {
                   {team.ownerUser === profile._id ||
                   (typeof team.ownerUser === "object" &&
                     team.ownerUser._id === profile._id)
-                    ? "Owner/Captain"
-                    : "Member"}
+                    ? t("OwnerCaptain")
+                    : t("MemberRole")}
                 </div>
               </div>
             </a>
           ))}
         </div>
       ) : (
-        <div className="profile-empty-teams">
-          {t("NoTeamsJoined") || "You haven't joined any teams yet."}
-        </div>
+        <div className="profile-empty-teams">{t("NoTeamsJoined")}</div>
       )}
     </div>
   );

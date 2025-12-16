@@ -129,6 +129,30 @@ const resources = {
       Error_CONFIRM_WINS_NEEDED:
         "Match cannot be finished. Requires {{needed}} wins (Best of {{bestOf}}).",
       Error: "Error",
+      Success: "Success",
+
+      // Backend Error Messages
+      BE_InvalidPayload: "Invalid payload",
+      BE_UserNotFound: "User not found",
+      BE_TeamNotFound: "Team not found",
+      BE_TournamentNotFound: "Tournament not found",
+      BE_MatchNotFound: "Match not found",
+      BE_RegistrationNotFound: "Registration not found",
+      BE_Unauthorized: "Unauthorized",
+      BE_EmailInUse: "Email already in use",
+      BE_InvalidCredentials: "Invalid credentials",
+      BE_InvalidStatus: "Invalid status",
+      BE_TeamAlreadyRegistered: "Team already registered",
+      BE_RegistrationClosed: "Registration is closed",
+      BE_MaxTeamsReached: "Maximum teams limit reached",
+      BE_GameMismatch: "Team game does not match tournament game",
+      BE_OnlyCaptainCanRegister:
+        "Only the team captain can register for tournaments",
+      BE_MemberAlreadyInTeam:
+        "User is already a member of a team for this game",
+      BE_InvalidDate: "Invalid date",
+      BE_NoWinnerDetermined: "No winner determined",
+      GenericError: "An error occurred. Please try again.",
       FailedToUpdateMatch: "Failed to update match",
       FailedToConfirmMatch: "Failed to confirm match",
       RejectResult: "Reject Result",
@@ -146,6 +170,7 @@ const resources = {
       MatchStatus_disputed: "Disputed",
       MatchStatus_live: "Live",
       MatchStatus_final: "Final",
+      NotAvailable: "N/A",
       Loading: "Loading...",
       FailedToLoadTeam: "Failed to load team",
       TeamNotFound: "Team not found",
@@ -261,6 +286,10 @@ const resources = {
       GenerateBracket: "Generate Bracket",
       BracketGenerated: "Bracket generated successfully!",
       FailedGenerateBracket: "Failed to generate bracket",
+      Error_BracketExists: "Bracket already exists",
+      Error_NotEnoughTeams: "Not enough teams to generate bracket",
+      Error_PendingRegistrations:
+        "Cannot generate bracket while there are pending registrations.",
 
       // Trang hồ sơ
       ProfileManagement: "Profile Management",
@@ -274,6 +303,12 @@ const resources = {
       EnterDisplayName: "Enter your display name",
       EnterAvatarURL: "https://example.com/avatar.jpg",
       EnterPhoneNumber: "Enter your phone number",
+      Avatar: "Avatar",
+      MyTeams: "My Teams",
+      NoTeamsJoined: "You haven't joined any teams yet.",
+      OwnerCaptain: "Owner/Captain",
+      MemberRole: "Member",
+      FailedToUploadAvatar: "Failed to upload avatar",
 
       // Đăng nhập / Đăng ký
       SignInTitle: "Sign in",
@@ -425,6 +460,30 @@ const resources = {
       Error_CONFIRM_WINS_NEEDED:
         "Chưa đủ điều kiện kết thúc. Cần thắng {{needed}} ván (BO{{bestOf}}).",
       Error: "Lỗi",
+      Success: "Thành công",
+
+      // Backend Error Messages
+      BE_InvalidPayload: "Dữ liệu không hợp lệ",
+      BE_UserNotFound: "Không tìm thấy người dùng",
+      BE_TeamNotFound: "Không tìm thấy đội",
+      BE_TournamentNotFound: "Không tìm thấy giải đấu",
+      BE_MatchNotFound: "Không tìm thấy trận đấu",
+      BE_RegistrationNotFound: "Không tìm thấy đơn đăng ký",
+      BE_Unauthorized: "Không có quyền truy cập",
+      BE_EmailInUse: "Email đã được sử dụng",
+      BE_InvalidCredentials: "Thông tin đăng nhập không hợp lệ",
+      BE_InvalidStatus: "Trạng thái không hợp lệ",
+      BE_TeamAlreadyRegistered: "Đội đã đăng ký rồi",
+      BE_RegistrationClosed: "Đã hết hạn đăng ký",
+      BE_MaxTeamsReached: "Đã đạt giới hạn số đội tối đa",
+      BE_GameMismatch: "Game của đội không khớp với giải đấu",
+      BE_OnlyCaptainCanRegister:
+        "Chỉ có đội trưởng mới được phép đăng ký tham gia giải đấu",
+      BE_MemberAlreadyInTeam:
+        "Người dùng đã là thành viên của một đội cho game này",
+      BE_InvalidDate: "Ngày không hợp lệ",
+      BE_NoWinnerDetermined: "Chưa xác định được người thắng",
+      GenericError: "Đã xảy ra lỗi. Vui lòng thử lại.",
       FailedToUpdateMatch: "Cập nhật trận đấu thất bại",
       FailedToConfirmMatch: "Xác nhận trận đấu thất bại",
       RejectResult: "Từ chối kết quả",
@@ -442,6 +501,7 @@ const resources = {
       MatchStatus_disputed: "Đang tranh chấp",
       MatchStatus_live: "Đang diễn ra",
       MatchStatus_final: "Đã kết thúc",
+      NotAvailable: "Không có",
       Loading: "Đang tải...",
       FailedToLoadTeam: "Không thể tải thông tin đội",
       TeamNotFound: "Không tìm thấy đội",
@@ -557,6 +617,10 @@ const resources = {
       GenerateBracket: "Tạo nhánh đấu",
       BracketGenerated: "Đã tạo nhánh đấu thành công!",
       FailedGenerateBracket: "Tạo nhánh đấu thất bại",
+      Error_BracketExists: "Nhánh đấu đã tồn tại",
+      Error_NotEnoughTeams: "Không đủ đội để tạo nhánh đấu",
+      Error_PendingRegistrations:
+        "Không thể tạo nhánh đấu khi còn đơn đăng ký chưa duyệt.",
 
       // Profile Page
       ProfileManagement: "Quản lý Hồ sơ",
@@ -570,6 +634,12 @@ const resources = {
       EnterDisplayName: "Nhập tên hiển thị của bạn",
       EnterAvatarURL: "https://example.com/avatar.jpg",
       EnterPhoneNumber: "Nhập số điện thoại của bạn",
+      Avatar: "Ảnh đại diện",
+      MyTeams: "Đội của tôi",
+      NoTeamsJoined: "Bạn chưa tham gia đội nào.",
+      OwnerCaptain: "Chủ đội/Đội trưởng",
+      MemberRole: "Thành viên",
+      FailedToUploadAvatar: "Tải ảnh đại diện thất bại",
 
       // Login / Register
       SignInTitle: "Đăng nhập",

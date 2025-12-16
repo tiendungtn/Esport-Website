@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import AlertModal from "./AlertModal";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../lib/api";
+import { translateBackendError } from "../lib/errorTranslations";
 import { useTranslation } from "react-i18next";
 import "../styles/components/registration-modal.css";
 
@@ -50,15 +51,11 @@ export default function RegistrationModal({ tournamentId, onClose }) {
       });
     },
     onError: (err) => {
-      let errorMessage = err.response?.data?.message || t("RegistrationFailed");
-
-      if (
-        errorMessage === "Only the team captain can register for tournaments"
-      ) {
-        errorMessage = t("OnlyCaptainCanRegister");
-      }
-      // setError(errorMessage); // We can just use the AlertModal for the error now, or both.
-      // Let's use AlertModal for better consistency as requested.
+      const errorMessage = translateBackendError(
+        err.response?.data?.message,
+        t,
+        "RegistrationFailed"
+      );
       setAlertState({
         isOpen: true,
         title: t("RegistrationErrorTitle"),

@@ -10,6 +10,8 @@ import {
   translateGameName,
   gameNameToDB,
 } from "../../lib/gameTranslations";
+import { translateBackendError } from "../../lib/errorTranslations";
+import AlertModal from "../../components/AlertModal";
 import "../../styles/pages/admin-teams.css";
 
 export default function AdminTeams() {
@@ -23,6 +25,12 @@ export default function AdminTeams() {
   const [selectedGame, setSelectedGame] = useState("");
   const [teamToDelete, setTeamToDelete] = useState(null);
   const [deleteSuccessMessage, setDeleteSuccessMessage] = useState("");
+  const [alertState, setAlertState] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    type: "error",
+  });
 
   const { data: teams, isLoading } = useQuery({
     queryKey: ["teams", selectedGame],
@@ -112,7 +120,7 @@ export default function AdminTeams() {
               <tr key={team._id} className="ate-tr">
                 <td className="ate-td-name">{team.name}</td>
                 <td className="ate-td-game">
-                  {translateGameName(team.game) || "-"}
+                  {translateGameName(team.game) || t("NotAvailable")}
                 </td>
                 <td className="ate-td">{team.tag}</td>
                 <td className="ate-td">
@@ -236,6 +244,14 @@ export default function AdminTeams() {
           </div>
         </div>
       )}
+
+      <AlertModal
+        isOpen={alertState.isOpen}
+        onClose={() => setAlertState({ ...alertState, isOpen: false })}
+        title={alertState.title}
+        message={alertState.message}
+        type={alertState.type}
+      />
     </div>
   );
 }
@@ -409,7 +425,10 @@ function MembersModal({ isOpen, onClose, team }) {
       setEmail("");
       setSearchResult([]);
     },
-    onError: (err) => alert(err.response?.data?.message || t("AddMemberError")),
+    onError: (err) =>
+      alert(
+        translateBackendError(err.response?.data?.message, t, "AddMemberError")
+      ),
   });
 
   const removeMemberMutation = useMutation({

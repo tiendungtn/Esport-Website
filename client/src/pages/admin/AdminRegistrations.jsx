@@ -45,6 +45,15 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
     type: "info", // thành công, lỗi, thông tin
   });
 
+  // Helper: dịch thông báo lỗi bracket từ backend
+  const translateBracketError = (msg) => {
+    if (msg.includes("pending registrations"))
+      return t("Error_PendingRegistrations");
+    if (msg.includes("already exists")) return t("Error_BracketExists");
+    if (msg.includes("Not enough teams")) return t("Error_NotEnoughTeams");
+    return t("FailedGenerateBracket");
+  };
+
   // Lấy danh sách đăng ký khi tournamentId thay đổi
   useEffect(() => {
     if (!tournamentId) return;
@@ -157,7 +166,7 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
         isOpen: true,
         type: "error",
         title: t("Error"),
-        message: err.response?.data?.message || t("FailedGenerateBracket"),
+        message: translateBracketError(err.response?.data?.message || ""),
       });
     } finally {
       setGeneratingBracket(false);

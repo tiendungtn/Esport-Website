@@ -2,6 +2,7 @@ import React from "react";
 import { X } from "lucide-react";
 import Modal from "../components/Model.jsx";
 import { api } from "../lib/api";
+import { translateBackendError } from "../lib/errorTranslations";
 import { useAuth } from "../context/AuthContext";
 import { useTranslation } from "react-i18next";
 import "../styles/pages/login.css";
@@ -70,7 +71,9 @@ export default function LoginModal({ open = false, onClose }) {
         setInfo(t("ForgotDemoMessage"));
       }
     } catch (err) {
-      setError(err?.response?.data?.message || t("GenericError"));
+      setError(
+        translateBackendError(err?.response?.data?.message, t, "GenericError")
+      );
     } finally {
       setLoading(false);
     }
