@@ -484,7 +484,20 @@ function MembersModal({ isOpen, onClose, team }) {
                 {searchResult.map((u) => (
                   <div key={u._id} className="atem-result-item">
                     <div className="atem-result-user">
-                      <div className="atem-avatar"></div>
+                      <div className="atem-avatar">
+                        {u.profile?.avatar ? (
+                          <img
+                            src={u.profile.avatar}
+                            alt=""
+                            className="atem-avatar-img"
+                          />
+                        ) : (
+                          <span className="atem-avatar-placeholder">
+                            {(u.profile?.displayName ||
+                              u.email)?.[0]?.toUpperCase() || "?"}
+                          </span>
+                        )}
+                      </div>
                       <span className="atem-user-name">
                         {u.profile?.displayName || u.email}
                       </span>
@@ -509,7 +522,20 @@ function MembersModal({ isOpen, onClose, team }) {
             {teamData.members?.map((member) => (
               <div key={member._id} className="atem-member-item">
                 <div className="atem-member-info">
-                  <div className="atem-member-avatar"></div>
+                  <div className="atem-member-avatar">
+                    {member.profile?.avatar ? (
+                      <img
+                        src={member.profile.avatar}
+                        alt=""
+                        className="atem-member-avatar-img"
+                      />
+                    ) : (
+                      <span className="atem-member-avatar-placeholder">
+                        {(member.profile?.displayName ||
+                          member.email)?.[0]?.toUpperCase() || "?"}
+                      </span>
+                    )}
+                  </div>
                   <div>
                     <p className="atem-member-name">
                       {member.profile?.displayName || t("Unnamed")}

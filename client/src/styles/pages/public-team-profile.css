@@ -87,6 +87,10 @@
     @apply flex h-full w-full items-center justify-center bg-slate-700 font-bold text-slate-400;
 }
 
+.ptp-member-avatar-img {
+    @apply h-full w-full object-cover;
+}
+
 .ptp-member-info {
     @apply min-w-0 flex-1;
 }

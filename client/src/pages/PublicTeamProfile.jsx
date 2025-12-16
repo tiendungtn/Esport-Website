@@ -167,11 +167,19 @@ export default function PublicTeamProfile() {
             team.members.map((member) => (
               <div key={member._id} className="ptp-member-card group">
                 <div className="ptp-member-avatar-container">
-                  <div className="ptp-member-avatar-placeholder">
-                    {member.profile?.displayName
-                      ? member.profile.displayName.charAt(0).toUpperCase()
-                      : "?"}
-                  </div>
+                  {member.profile?.avatar ? (
+                    <img
+                      src={member.profile.avatar}
+                      alt=""
+                      className="ptp-member-avatar-img"
+                    />
+                  ) : (
+                    <div className="ptp-member-avatar-placeholder">
+                      {member.profile?.displayName
+                        ? member.profile.displayName.charAt(0).toUpperCase()
+                        : "?"}
+                    </div>
+                  )}
                 </div>
                 <div className="ptp-member-info">
                   <div className="ptp-member-name">

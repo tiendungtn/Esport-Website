@@ -159,7 +159,15 @@
 }
 
 .atem-avatar {
-    @apply h-6 w-6 rounded-full bg-slate-700;
+    @apply h-6 w-6 rounded-full bg-slate-700 overflow-hidden flex items-center justify-center;
+}
+
+.atem-avatar-img {
+    @apply w-full h-full object-cover;
+}
+
+.atem-avatar-placeholder {
+    @apply text-xs font-medium text-slate-400;
 }
 
 .atem-user-name {
@@ -191,7 +199,15 @@
 }
 
 .atem-member-avatar {
-    @apply h-8 w-8 rounded-full bg-slate-700;
+    @apply h-8 w-8 rounded-full bg-slate-700 overflow-hidden flex items-center justify-center;
+}
+
+.atem-member-avatar-img {
+    @apply w-full h-full object-cover;
+}
+
+.atem-member-avatar-placeholder {
+    @apply text-sm font-medium text-slate-400;
 }
 
 .atem-member-name {
