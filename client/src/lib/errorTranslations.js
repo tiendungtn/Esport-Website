@@ -29,11 +29,15 @@ export function translateBackendError(
     { pattern: "already registered", key: "BE_TeamAlreadyRegistered" },
     { pattern: "registration is closed", key: "BE_RegistrationClosed" },
     { pattern: "maximum teams", key: "BE_MaxTeamsReached" },
-    { pattern: "game does not match", key: "BE_GameMismatch" },
+    { pattern: "does not match tournament game", key: "BE_GameMismatch" },
     { pattern: "only the team captain", key: "BE_OnlyCaptainCanRegister" },
     { pattern: "already a member", key: "BE_MemberAlreadyInTeam" },
     { pattern: "invalid date", key: "BE_InvalidDate" },
     { pattern: "no winner determined", key: "BE_NoWinnerDetermined" },
+    // Registration errors
+    { pattern: "must have at least", key: "BE_MinMembersRequired" },
+    { pattern: "at least", key: "BE_MinMembersRequired" },
+    { pattern: "schedule conflict", key: "Error_SCHEDULE_CONFLICT" },
     // Bracket generation errors
     { pattern: "pending registrations", key: "Error_PendingRegistrations" },
     { pattern: "already exists", key: "Error_BracketExists" },
@@ -46,6 +50,6 @@ export function translateBackendError(
     }
   }
 
-  // Fallback: return original message or fallback key
-  return t(fallbackKey);
+  // Fallback: return original message if available, otherwise use fallback key
+  return backendMsg || t(fallbackKey);
 }
