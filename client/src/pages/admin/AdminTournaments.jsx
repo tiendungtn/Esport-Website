@@ -32,9 +32,7 @@ export default function AdminTournaments() {
 
   const regenerateBracketMutation = useMutation({
     mutationFn: async (id) => {
-      console.log('[DEBUG] Calling regenerate-bracket API for:', id);
       const response = await api.post(`/api/tournaments/${id}/regenerate-bracket`);
-      console.log('[DEBUG] Response:', response.data);
       return response.data;
     },
     onSuccess: (data) => {
@@ -43,7 +41,6 @@ export default function AdminTournaments() {
       setDeleteSuccessMessage(t("BracketRegeneratedSuccess") || `Đã tạo lại bracket thành công! (${data.newMatches} trận)`);
     },
     onError: (error) => {
-      console.error('[DEBUG] Error:', error);
       setDeleteSuccessMessage(error.response?.data?.message || t("BracketRegenerateFailed") || "Không thể tạo lại bracket");
     },
   });
