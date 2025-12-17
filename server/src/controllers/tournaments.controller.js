@@ -1,11 +1,10 @@
 import { z } from "zod";
-import Tournament from "../models/Tournament.js";
-import Team from "../models/Team.js";
-import Registration from "../models/Registration.js";
 import Match from "../models/Match.js";
+import Registration from "../models/Registration.js";
+import Team from "../models/Team.js";
+import Tournament from "../models/Tournament.js";
 import {
-  seedingByRegistration,
-  generateSERoundPairs,
+  seedingByRegistration
 } from "../utils/bracket.js";
 
 const createSchema = z.object({
@@ -140,18 +139,34 @@ const registerSchema = z.object({
  * Kiểm tra xung đột lịch thi đấu cho team
  * @param {string} teamId - ID của đội
  * @param {object} newTournament - Giải đấu mới muốn đăng ký
+ * @param {object} options - Các tùy chọn
+ * @param {boolean} options.includePending - Bao gồm cả đăng ký pending
+ * @param {string} options.excludeTournamentId - ID giải đấu cần loại trừ
  * @returns {Promise<Array>} - Danh sách các giải đấu có xung đột
  */
-async function checkScheduleConflict(teamId, newTournament) {
-  // Tìm các giải đấu mà team đã đăng ký (approved)
-  const approvedRegs = await Registration.find({
+async function checkScheduleConflict(teamId, newTournament, options = {}) {
+  const { includePending = false, excludeTournamentId = null } = options;
+  
+  // Tìm các giải đấu mà team đã đăng ký
+  const statusFilter = includePending 
+    ? { $in: ["approved", "pending"] }
+    : "approved";
+  
+  const registrationQuery = {
     teamId,
-    status: "approved",
-  }).lean();
+    status: statusFilter,
+  };
+  
+  // Loại trừ giải đấu nếu được chỉ định (dùng khi approve)
+  if (excludeTournamentId) {
+    registrationQuery.tournamentId = { $ne: excludeTournamentId };
+  }
+  
+  const registrations = await Registration.find(registrationQuery).lean();
 
-  if (approvedRegs.length === 0) return [];
+  if (registrations.length === 0) return [];
 
-  const tournamentIds = approvedRegs.map((r) => r.tournamentId);
+  const tournamentIds = registrations.map((r) => r.tournamentId);
 
   // Lấy các giải đấu đang ongoing hoặc có lịch trùng
   const conflictConditions = [{ status: "ongoing" }];
@@ -250,19 +265,20 @@ export async function registerTeam(req, res) {
       });
     }
 
-    // Kiểm tra xung đột lịch thi đấu (Tầng Đăng ký)
-    const conflictingTournaments = await checkScheduleConflict(
+    // Kiểm tra xung đột lịch thi đấu với các giải đã APPROVED (Block)
+    const approvedConflicts = await checkScheduleConflict(
       parse.data.teamId,
-      tournament
+      tournament,
+      { includePending: false }
     );
-    if (conflictingTournaments.length > 0) {
-      const conflictNames = conflictingTournaments
+    if (approvedConflicts.length > 0) {
+      const conflictNames = approvedConflicts
         .map((t) => t.name)
         .join(", ");
       return res.status(409).json({
         message: `Schedule conflict detected. Team is already participating in: ${conflictNames}`,
         code: "SCHEDULE_CONFLICT",
-        conflicts: conflictingTournaments.map((t) => ({
+        conflicts: approvedConflicts.map((t) => ({
           id: t._id,
           name: t.name,
           status: t.status,
@@ -270,12 +286,33 @@ export async function registerTeam(req, res) {
       });
     }
 
+    // Kiểm tra xung đột với các giải PENDING (Warning only)
+    const pendingConflicts = await checkScheduleConflict(
+      parse.data.teamId,
+      tournament,
+      { includePending: true }
+    );
+
     const reg = await Registration.create({
       tournamentId: id,
       teamId: parse.data.teamId,
       status: "pending", // Chờ duyệt status: "pending"
     });
-    res.status(201).json(reg);
+
+    // Trả về kết quả với warning nếu có xung đột pending
+    const response = { ...reg.toObject() };
+    if (pendingConflicts.length > 0) {
+      response.warning = {
+        message: `Potential schedule conflict with pending tournaments: ${pendingConflicts.map(t => t.name).join(", ")}`,
+        code: "PENDING_SCHEDULE_CONFLICT",
+        conflicts: pendingConflicts.map((t) => ({
+          id: t._id,
+          name: t.name,
+          status: t.status,
+        })),
+      };
+    }
+    res.status(201).json(response);
   } catch (err) {
     if (err.code === 11000) {
       return res
@@ -464,12 +501,44 @@ export async function updateRegistrationStatus(req, res) {
     return res.status(400).json({ message: "Invalid status" });
   }
 
+  // Lấy thông tin registration hiện tại
+  const existingReg = await Registration.findOne({ _id: regId, tournamentId: id });
+  if (!existingReg) {
+    return res.status(404).json({ message: "Registration not found" });
+  }
+
+  // Lấy thông tin tournament
+  const tournament = await Tournament.findById(id);
+  if (!tournament) {
+    return res.status(404).json({ message: "Tournament not found" });
+  }
+
+  // Kiểm tra quyền
   if (req.user.role !== "admin") {
-    const tournament = await Tournament.findById(id);
-    if (!tournament)
-      return res.status(404).json({ message: "Tournament not found" });
     if (tournament.organizerUser?.toString() !== req.user.id) {
       return res.status(403).json({ message: "Unauthorized" });
+    }
+  }
+
+  // Kiểm tra xung đột lịch khi APPROVE
+  if (status === "approved" && existingReg.status !== "approved") {
+    const conflicts = await checkScheduleConflict(
+      existingReg.teamId,
+      tournament,
+      { includePending: false, excludeTournamentId: id }
+    );
+    
+    if (conflicts.length > 0) {
+      const conflictNames = conflicts.map((t) => t.name).join(", ");
+      return res.status(409).json({
+        message: `Cannot approve. Team has schedule conflict with: ${conflictNames}`,
+        code: "APPROVAL_SCHEDULE_CONFLICT",
+        conflicts: conflicts.map((t) => ({
+          id: t._id,
+          name: t.name,
+          status: t.status,
+        })),
+      });
     }
   }
 

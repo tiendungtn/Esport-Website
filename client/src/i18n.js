@@ -191,6 +191,10 @@ const resources = {
       ConflictDetected: "Conflict detected with {{count}} other match(es)",
       Error_SCHEDULE_CONFLICT:
         "Schedule conflict detected. Team is already participating in another tournament.",
+      Error_APPROVAL_SCHEDULE_CONFLICT:
+        "Cannot approve. Team has schedule conflict with another tournament.",
+      Error_PENDING_SCHEDULE_CONFLICT:
+        "Warning: Team has pending registration for another tournament with overlapping schedule.",
       Error_MATCH_SCHEDULE_CONFLICT: "Schedule conflict with another match",
 
       // Trang giải đấu
@@ -523,6 +527,10 @@ const resources = {
       ConflictDetected: "Phát hiện xung đột với {{count}} trận đấu khác",
       Error_SCHEDULE_CONFLICT:
         "Xung đột lịch. Đội đang tham gia giải đấu khác.",
+      Error_APPROVAL_SCHEDULE_CONFLICT:
+        "Không thể duyệt. Đội đang có xung đột lịch với giải đấu khác.",
+      Error_PENDING_SCHEDULE_CONFLICT:
+        "Cảnh báo: Đội có đơn đăng ký chờ duyệt cho giải đấu khác có lịch trùng.",
       Error_MATCH_SCHEDULE_CONFLICT: "Xung đột lịch với trận đấu khác",
 
       // Tournament Page

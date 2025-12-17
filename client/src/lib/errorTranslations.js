@@ -38,6 +38,7 @@ export function translateBackendError(
     { pattern: "must have at least", key: "BE_MinMembersRequired" },
     { pattern: "at least", key: "BE_MinMembersRequired" },
     { pattern: "schedule conflict", key: "Error_SCHEDULE_CONFLICT" },
+    { pattern: "cannot approve", key: "Error_APPROVAL_SCHEDULE_CONFLICT" },
     // Bracket generation errors
     { pattern: "pending registrations", key: "Error_PendingRegistrations" },
     { pattern: "already exists", key: "Error_BracketExists" },
