@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Check, X, AlertCircle, RefreshCw, Trophy } from "lucide-react";
+import { AlertCircle, Calendar, Check, RefreshCw, Trophy, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { api, seedTournament } from "../../lib/api";
 import AlertModal from "../../components/AlertModal";
+import { api, seedTournament } from "../../lib/api";
 import "../../styles/pages/admin-registrations.css";
 
 // Component hỗ trợ cho badge trạng thái
@@ -38,6 +38,7 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
   const [seeds, setSeeds] = useState({}); // { teamId: giá trị seed }
   const [savingSeeds, setSavingSeeds] = useState(false);
   const [generatingBracket, setGeneratingBracket] = useState(false);
+  const [regeneratingSchedule, setRegeneratingSchedule] = useState(false);
   const [alertState, setAlertState] = useState({
     isOpen: false,
     title: "",
@@ -173,6 +174,39 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
     }
   };
 
+  const handleRegenerateSchedule = async () => {
+    setRegeneratingSchedule(true);
+    try {
+      const res = await api.post(`/api/tournaments/${tournamentId}/regenerate-schedule`);
+      setAlertState({
+        isOpen: true,
+        type: "success",
+        title: t("Success"),
+        message: t("ScheduleRegenerated", { count: res.data.matchesUpdated }),
+      });
+    } catch (err) {
+      console.error("Failed to regenerate schedule", err);
+      const data = err.response?.data;
+      let message = t("FailedRegenerateSchedule");
+      
+      // Translate error based on code
+      if (data?.code === "NO_START_AT") {
+        message = t("Error_NoStartAt");
+      } else if (data?.code === "NO_MATCHES") {
+        message = t("Error_NoMatches");
+      }
+      
+      setAlertState({
+        isOpen: true,
+        type: "error",
+        title: t("Error"),
+        message: message,
+      });
+    } finally {
+      setRegeneratingSchedule(false);
+    }
+  };
+
   const filteredRegistrations = registrations.filter((reg) => {
     if (filter === "all") return true;
     return reg.status === filter;
@@ -231,6 +265,31 @@ export default function AdminRegistrations({ tournamentId, onClose }) {
                   <Trophy className="h-4 w-4" />
                 )}
                 {t("GenerateBracket")}
+              </button>
+              <button
+                onClick={handleRegenerateSchedule}
+                disabled={regeneratingSchedule}
+                title={t("RegenerateScheduleHint")}
+                style={{
+                  padding: "6px 12px",
+                  backgroundColor: "#8b5cf6",
+                  color: "white",
+                  borderRadius: "4px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  fontSize: "14px",
+                  border: "none",
+                  cursor: "pointer",
+                  opacity: regeneratingSchedule ? 0.7 : 1,
+                }}
+              >
+                {regeneratingSchedule ? (
+                  <RefreshCw className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Calendar className="h-4 w-4" />
+                )}
+                {t("RegenerateSchedule")}
               </button>
               <button onClick={onClose} className="atem-close-btn">
                 <X size={24} />

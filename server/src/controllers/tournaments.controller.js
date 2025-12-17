@@ -17,6 +17,7 @@ const createSchema = z.object({
     .object({
       regOpen: z.string().optional(),
       regClose: z.string().optional(),
+      startAt: z.string().optional(),
     })
     .optional(),
 });
@@ -37,6 +38,9 @@ export async function createTournament(req, res) {
     }
     if (parse.data.schedule.regClose) {
       tournamentData.schedule.regClose = new Date(parse.data.schedule.regClose);
+    }
+    if (parse.data.schedule.startAt) {
+      tournamentData.schedule.startAt = new Date(parse.data.schedule.startAt);
     }
   }
 
@@ -97,6 +101,11 @@ export async function updateTournament(req, res) {
     if (parse.data.schedule.regClose) {
       scheduleUpdates["schedule.regClose"] = new Date(
         parse.data.schedule.regClose
+      );
+    }
+    if (parse.data.schedule.startAt) {
+      scheduleUpdates["schedule.startAt"] = new Date(
+        parse.data.schedule.startAt
       );
     }
 
@@ -418,6 +427,12 @@ export async function seedTournament(req, res) {
 
 /* Hàm hỗ trợ cho việc tạo bracket */
 async function generateBracketInternal(tournamentId) {
+  // Lấy thông tin tournament để lấy startAt
+  const tournament = await Tournament.findById(tournamentId);
+  if (!tournament) {
+    return { skipped: true, reason: "Tournament not found" };
+  }
+
   // Kiểm tra xem các trận đấu đã tồn tại chưa
   const existingMatches = await Match.countDocuments({ tournamentId });
   if (existingMatches > 0) {
@@ -435,8 +450,14 @@ async function generateBracketInternal(tournamentId) {
   }
 
   // Sử dụng thuật toán tạo bracket
-  const { generateFullSEBracket } = await import("../utils/bracket.js");
+  const { generateFullSEBracket, generateMatchSchedule } = await import("../utils/bracket.js");
   const matchesData = generateFullSEBracket(seeds, tournamentId);
+
+  // Sinh lịch thi đấu nếu có startAt
+  if (tournament.schedule?.startAt) {
+    generateMatchSchedule(matchesData, tournament.schedule.startAt);
+    console.log(`Generated match schedule for tournament ${tournamentId} starting from ${tournament.schedule.startAt}`);
+  }
 
   // Lưu vào DB
   const created = await Match.insertMany(matchesData);
@@ -445,6 +466,56 @@ async function generateBracketInternal(tournamentId) {
   await Tournament.findByIdAndUpdate(tournamentId, { status: "ongoing" });
 
   return { skipped: false, matches: created };
+}
+
+/**
+ * Cập nhật lịch thi đấu cho các matches đã tồn tại
+ */
+export async function regenerateSchedule(req, res) {
+  const { id } = req.params;
+
+  try {
+    const tournament = await Tournament.findById(id);
+    if (!tournament) {
+      return res.status(404).json({ message: "Tournament not found" });
+    }
+
+    if (!tournament.schedule?.startAt) {
+      return res.status(400).json({ 
+        message: "Tournament must have a start date (startAt) to generate schedule",
+        code: "NO_START_AT"
+      });
+    }
+
+    // Lấy tất cả matches của giải
+    const matches = await Match.find({ tournamentId: id }).lean();
+    if (matches.length === 0) {
+      return res.status(400).json({ 
+        message: "No matches found for this tournament",
+        code: "NO_MATCHES"
+      });
+    }
+
+    // Import và sử dụng generateMatchSchedule
+    const { generateMatchSchedule } = await import("../utils/bracket.js");
+    generateMatchSchedule(matches, tournament.schedule.startAt);
+
+    // Cập nhật scheduledAt cho từng match
+    const updatePromises = matches.map(match => 
+      Match.findByIdAndUpdate(match._id, { scheduledAt: match.scheduledAt })
+    );
+    await Promise.all(updatePromises);
+
+    console.log(`Regenerated schedule for tournament ${id} with ${matches.length} matches`);
+
+    res.json({ 
+      message: "Schedule regenerated successfully", 
+      matchesUpdated: matches.length 
+    });
+  } catch (error) {
+    console.error("Schedule regeneration error:", error);
+    res.status(500).json({ message: "Failed to regenerate schedule" });
+  }
 }
 
 export async function generateBracket(req, res) {

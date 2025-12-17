@@ -1,15 +1,15 @@
-import React from "react";
-import { useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import {
-  translateGameName,
-  translateTournamentName,
-} from "../lib/gameTranslations";
-import { api } from "../lib/api";
-import { socket } from "../lib/socket";
+import { useParams } from "react-router-dom";
 import BracketViewer from "../components/BracketViewer.jsx";
 import RegistrationModal from "../components/RegistrationModal.jsx";
+import { api } from "../lib/api";
+import {
+    translateGameName,
+    translateTournamentName,
+} from "../lib/gameTranslations";
+import { socket } from "../lib/socket";
 import "../styles/pages/tournament.css";
 
 export default function Tournament() {
@@ -135,6 +135,65 @@ export default function Tournament() {
           <BracketViewer matches={matches || []} />
         )}
       </section>
+
+      {/* Match Schedule Section */}
+      {!loadingMatches && !errorMatches && matches && matches.length > 0 && (
+        <MatchScheduleSection matches={matches} t={t} />
+      )}
     </div>
+  );
+}
+
+// Component hiển thị lịch thi đấu chi tiết theo Round
+function MatchScheduleSection({ matches, t }) {
+  // Nhóm matches theo round
+  const matchesByRound = matches.reduce((acc, match) => {
+    if (!acc[match.round]) acc[match.round] = [];
+    acc[match.round].push(match);
+    return acc;
+  }, {});
+
+  // Lọc chỉ các trận có lịch
+  const scheduledMatches = matches.filter(m => m.scheduledAt);
+
+  if (scheduledMatches.length === 0) return null;
+
+  const sortedRounds = Object.keys(matchesByRound).map(Number).sort((a, b) => a - b);
+
+  return (
+    <section className="match-schedule-section">
+      <h2 className="match-schedule-title">{t("MatchSchedule")}</h2>
+      <div className="match-schedule-rounds">
+        {sortedRounds.map(round => {
+          const roundMatches = matchesByRound[round].filter(m => m.scheduledAt);
+          if (roundMatches.length === 0) return null;
+          
+          return (
+            <div key={round} className="match-schedule-round">
+              <h3 className="round-title">{t("RoundN", { count: round })}</h3>
+              <div className="round-matches">
+                {roundMatches.map(match => (
+                  <div key={match._id} className="schedule-match-card">
+                    <div className="match-teams">
+                      <span className="team-name">{match.teamA?.name || t("TBD")}</span>
+                      <span className="vs-label">vs</span>
+                      <span className="team-name">{match.teamB?.name || t("TBD")}</span>
+                    </div>
+                    <div className="match-time">
+                      📅 {new Date(match.scheduledAt).toLocaleDateString()}
+                      <span className="time-separator">•</span>
+                      ⏰ {new Date(match.scheduledAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                    <span className={`match-status-badge status-${match.state}`}>
+                      {t(`MatchStatus_${match.state}`)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }

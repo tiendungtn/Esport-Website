@@ -41,3 +41,68 @@
 .tournament-reg-item {
     @apply flex items-center gap-1 text-slate-300 bg-slate-800/50 px-3 py-1.5 rounded-lg border border-slate-700/50;
 }
+
+/* Match Schedule Section */
+.match-schedule-section {
+    @apply rounded-xl border border-slate-800 bg-slate-900/40 p-4 md:p-6;
+}
+
+.match-schedule-title {
+    @apply mb-4 text-sm font-semibold uppercase tracking-wide text-slate-400;
+}
+
+.match-schedule-rounds {
+    @apply space-y-6;
+}
+
+.match-schedule-round {
+    @apply space-y-3;
+}
+
+.round-title {
+    @apply text-base font-semibold text-sky-400 border-b border-slate-700/50 pb-2;
+}
+
+.round-matches {
+    @apply grid gap-3 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+.schedule-match-card {
+    @apply flex flex-col gap-2 rounded-lg border border-slate-700/50 bg-slate-800/50 p-4 transition-all hover:border-sky-500/30 hover:bg-slate-800/80;
+}
+
+.schedule-match-card .match-teams {
+    @apply flex items-center justify-center gap-2 text-sm font-medium text-slate-100;
+}
+
+.schedule-match-card .team-name {
+    @apply truncate max-w-[120px];
+}
+
+.schedule-match-card .vs-label {
+    @apply text-xs text-slate-500;
+}
+
+.schedule-match-card .match-time {
+    @apply flex items-center justify-center gap-2 text-xs text-slate-400;
+}
+
+.schedule-match-card .time-separator {
+    @apply text-slate-600;
+}
+
+.schedule-match-card .match-status-badge {
+    @apply mx-auto mt-1 rounded-full px-2.5 py-0.5 text-xs font-medium;
+}
+
+.schedule-match-card .status-scheduled {
+    @apply bg-slate-700/50 text-slate-300;
+}
+
+.schedule-match-card .status-live {
+    @apply bg-green-500/20 text-green-400 animate-pulse;
+}
+
+.schedule-match-card .status-final {
+    @apply bg-sky-500/20 text-sky-400;
+}

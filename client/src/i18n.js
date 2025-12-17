@@ -61,6 +61,7 @@ const resources = {
       FormDescription: "Description",
       FormRegOpen: "Registration Open Time",
       FormRegClose: "Registration Close Time",
+      FormStartAt: "Tournament Start Date",
       RegistrationTimeSettings: "Registration Time Settings",
       Cancel: "Cancel",
       Save: "Save Changes",
@@ -207,6 +208,7 @@ const resources = {
       BracketSE: "Single Elimination Bracket",
       LoadingMatches: "Loading matches...",
       ErrorLoadingMatches: "Failed to load matches.",
+      MatchSchedule: "Match Schedule",
 
       // Registration Modal
       RegistrationSuccessTitle: "Success",
@@ -295,6 +297,12 @@ const resources = {
       Error_NotEnoughTeams: "Not enough teams to generate bracket",
       Error_PendingRegistrations:
         "Cannot generate bracket while there are pending registrations.",
+      RegenerateSchedule: "Regenerate Schedule",
+      RegenerateScheduleHint: "Update match times based on tournament start date",
+      ScheduleRegenerated: "Schedule regenerated for {{count}} matches",
+      FailedRegenerateSchedule: "Failed to regenerate schedule",
+      Error_NoStartAt: "Tournament must have a start date to generate schedule",
+      Error_NoMatches: "No matches found for this tournament",
 
       // Trang hồ sơ
       ProfileManagement: "Profile Management",
@@ -396,6 +404,7 @@ const resources = {
       FormDescription: "Mô tả",
       FormRegOpen: "Thời gian mở đăng ký",
       FormRegClose: "Thời hạn đóng đăng ký",
+      FormStartAt: "Ngày bắt đầu giải",
       RegistrationTimeSettings: "Cài đặt thời gian đăng ký",
       Cancel: "Hủy",
       Save: "Lưu thay đổi",
@@ -543,6 +552,7 @@ const resources = {
       BracketSE: "Bảng đấu loại trực tiếp",
       LoadingMatches: "Đang tải lịch thi đấu...",
       ErrorLoadingMatches: "Không thể tải lịch thi đấu.",
+      MatchSchedule: "Lịch thi đấu",
 
       // Registration Modal
       RegistrationSuccessTitle: "Thành công",
@@ -631,6 +641,12 @@ const resources = {
       Error_NotEnoughTeams: "Không đủ đội để tạo nhánh đấu",
       Error_PendingRegistrations:
         "Không thể tạo nhánh đấu khi còn đơn đăng ký chưa duyệt.",
+      RegenerateSchedule: "Tạo lại lịch",
+      RegenerateScheduleHint: "Cập nhật thời gian thi đấu theo ngày bắt đầu giải",
+      ScheduleRegenerated: "Đã tạo lịch cho {{count}} trận đấu",
+      FailedRegenerateSchedule: "Tạo lại lịch thất bại",
+      Error_NoStartAt: "Giải đấu cần có ngày bắt đầu để tạo lịch thi đấu",
+      Error_NoMatches: "Không tìm thấy trận đấu nào trong giải",
 
       // Profile Page
       ProfileManagement: "Quản lý Hồ sơ",

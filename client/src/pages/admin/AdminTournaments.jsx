@@ -1,11 +1,11 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ClipboardCheck, Edit, Plus, Trash2 } from "lucide-react";
 import React, { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "../../lib/api";
-import { Plus, Edit, Trash2, ClipboardCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { api } from "../../lib/api";
 import { translateGameName } from "../../lib/gameTranslations";
-import AdminRegistrations from "./AdminRegistrations";
 import "../../styles/pages/admin-tournaments.css";
+import AdminRegistrations from "./AdminRegistrations";
 
 export default function AdminTournaments() {
   const { t } = useTranslation();
@@ -234,6 +234,7 @@ function TournamentModal({ isOpen, onClose, tournament }) {
     schedule: {
       regOpen: "",
       regClose: "",
+      startAt: "",
     },
   });
 
@@ -249,6 +250,7 @@ function TournamentModal({ isOpen, onClose, tournament }) {
         schedule: {
           regOpen: formatDateForInput(tournament.schedule?.regOpen),
           regClose: formatDateForInput(tournament.schedule?.regClose),
+          startAt: formatDateForInput(tournament.schedule?.startAt),
         },
       });
     } else {
@@ -261,6 +263,7 @@ function TournamentModal({ isOpen, onClose, tournament }) {
         schedule: {
           regOpen: "",
           regClose: "",
+          startAt: "",
         },
       });
     }
@@ -275,6 +278,7 @@ function TournamentModal({ isOpen, onClose, tournament }) {
       const schedule = {};
       if (data.schedule.regOpen) schedule.regOpen = data.schedule.regOpen;
       if (data.schedule.regClose) schedule.regClose = data.schedule.regClose;
+      if (data.schedule.startAt) schedule.startAt = data.schedule.startAt;
 
       // Chỉ bao gồm schedule nếu có giá trị
       if (Object.keys(schedule).length > 0) {
@@ -364,8 +368,8 @@ function TournamentModal({ isOpen, onClose, tournament }) {
             >
               {t("RegistrationTimeSettings") || "Cài đặt thời gian đăng ký"}
             </legend>
-            <div style={{ display: "flex", gap: "1rem" }}>
-              <div style={{ flex: 1 }}>
+            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+              <div style={{ flex: 1, minWidth: "150px" }}>
                 <label className="atm-label">{t("FormRegOpen")}</label>
                 <input
                   type="datetime-local"
@@ -380,7 +384,7 @@ function TournamentModal({ isOpen, onClose, tournament }) {
                   style={{ colorScheme: "dark" }}
                 />
               </div>
-              <div style={{ flex: 1 }}>
+              <div style={{ flex: 1, minWidth: "150px" }}>
                 <label className="atm-label">{t("FormRegClose")}</label>
                 <input
                   type="datetime-local"
@@ -389,6 +393,21 @@ function TournamentModal({ isOpen, onClose, tournament }) {
                     setForm({
                       ...form,
                       schedule: { ...form.schedule, regClose: e.target.value },
+                    })
+                  }
+                  className="atm-input"
+                  style={{ colorScheme: "dark" }}
+                />
+              </div>
+              <div style={{ flex: 1, minWidth: "150px" }}>
+                <label className="atm-label">{t("FormStartAt")}</label>
+                <input
+                  type="datetime-local"
+                  value={form.schedule.startAt}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      schedule: { ...form.schedule, startAt: e.target.value },
                     })
                   }
                   className="atm-input"

@@ -1,18 +1,19 @@
 import { Router } from "express";
-import { auth } from "../middleware/auth.js";
-import {
-  createTournament,
-  listTournaments,
-  getTournament,
-  registerTeam,
-  seedTournament,
-  generateBracket,
-  updateTournament,
-  deleteTournament,
-  getTournamentRegistrations,
-  updateRegistrationStatus,
-} from "../controllers/tournaments.controller.js";
 import { listMatches } from "../controllers/matches.controller.js";
+import {
+    createTournament,
+    deleteTournament,
+    generateBracket,
+    getTournament,
+    getTournamentRegistrations,
+    listTournaments,
+    regenerateSchedule,
+    registerTeam,
+    seedTournament,
+    updateRegistrationStatus,
+    updateTournament
+} from "../controllers/tournaments.controller.js";
+import { auth } from "../middleware/auth.js";
 
 const r = Router();
 
@@ -29,6 +30,7 @@ r.post(
 );
 r.post("/:id/seed", auth(["organizer", "admin"]), seedTournament);
 r.post("/:id/generate-bracket", auth(["organizer", "admin"]), generateBracket);
+r.post("/:id/regenerate-schedule", auth(["organizer", "admin"]), regenerateSchedule);
 
 r.get(
   "/:id/registrations",

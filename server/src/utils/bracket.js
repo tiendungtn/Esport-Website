@@ -135,3 +135,68 @@ export function generateFullSEBracket(teamIds, tournamentId) {
 
   return allMatches;
 }
+
+/**
+ * Sinh lịch thi đấu cho bracket
+ * @param {object[]} matches - Mảng trận đấu đã tạo
+ * @param {Date|string} startDate - Ngày bắt đầu giải
+ * @param {object} options - Tùy chọn
+ * @returns {object[]} Mảng trận đấu có scheduledAt
+ */
+export function generateMatchSchedule(matches, startDate, options = {}) {
+  const {
+    matchDurationMinutes = 90,      // Thời gian ước tính mỗi trận
+    breakBetweenMinutes = 30,       // Nghỉ giữa các trận
+    matchesPerDay = 4,              // Số trận tối đa mỗi ngày
+    startHour = 14,                 // Giờ bắt đầu (14:00)
+    endHour = 22,                   // Giờ kết thúc (22:00)
+  } = options;
+
+  // Nhóm theo round
+  const roundGroups = {};
+  matches.forEach(m => {
+    if (!roundGroups[m.round]) roundGroups[m.round] = [];
+    roundGroups[m.round].push(m);
+  });
+
+  const baseDate = new Date(startDate);
+  let currentDate = new Date(baseDate);
+  currentDate.setHours(startHour, 0, 0, 0);
+
+  const totalMatchTime = matchDurationMinutes + breakBetweenMinutes;
+
+  // Xử lý từng round theo thứ tự
+  const sortedRounds = Object.keys(roundGroups).map(Number).sort((a, b) => a - b);
+
+  sortedRounds.forEach((roundNum, roundIdx) => {
+    const roundMatches = roundGroups[roundNum];
+    
+    // Vòng sau = ngày sau
+    if (roundIdx > 0) {
+      currentDate.setDate(currentDate.getDate() + 1);
+      currentDate.setHours(startHour, 0, 0, 0);
+    }
+
+    let matchesScheduledToday = 0;
+
+    roundMatches.forEach(match => {
+      // Bỏ qua trận đã bye (state = final và không có cả 2 đội)
+      if (match.state === 'final' && (!match.teamA || !match.teamB)) {
+        return;
+      }
+
+      // Kiểm tra nếu vượt quá số trận/ngày hoặc quá giờ
+      if (matchesScheduledToday >= matchesPerDay || currentDate.getHours() >= endHour) {
+        currentDate.setDate(currentDate.getDate() + 1);
+        currentDate.setHours(startHour, 0, 0, 0);
+        matchesScheduledToday = 0;
+      }
+
+      match.scheduledAt = new Date(currentDate);
+      currentDate.setMinutes(currentDate.getMinutes() + totalMatchTime);
+      matchesScheduledToday++;
+    });
+  });
+
+  return matches;
+}
