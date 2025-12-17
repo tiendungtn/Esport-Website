@@ -303,6 +303,10 @@ const resources = {
       FailedRegenerateSchedule: "Failed to regenerate schedule",
       Error_NoStartAt: "Tournament must have a start date to generate schedule",
       Error_NoMatches: "No matches found for this tournament",
+      RegenerateBracket: "Regenerate Bracket",
+      ConfirmRegenerateBracket: "Are you sure you want to regenerate the bracket? All existing matches will be deleted.",
+      BracketRegeneratedSuccess: "Bracket regenerated successfully!",
+      BracketRegenerateFailed: "Failed to regenerate bracket",
 
       // Trang hồ sơ
       ProfileManagement: "Profile Management",
@@ -647,6 +651,10 @@ const resources = {
       FailedRegenerateSchedule: "Tạo lại lịch thất bại",
       Error_NoStartAt: "Giải đấu cần có ngày bắt đầu để tạo lịch thi đấu",
       Error_NoMatches: "Không tìm thấy trận đấu nào trong giải",
+      RegenerateBracket: "Tạo lại Bracket",
+      ConfirmRegenerateBracket: "Bạn có chắc muốn tạo lại bracket? Tất cả trận đấu cũ sẽ bị xóa.",
+      BracketRegeneratedSuccess: "Đã tạo lại bracket thành công!",
+      BracketRegenerateFailed: "Không thể tạo lại bracket",
 
       // Profile Page
       ProfileManagement: "Quản lý Hồ sơ",

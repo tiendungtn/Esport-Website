@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ClipboardCheck, Edit, Plus, Trash2 } from "lucide-react";
+import { ClipboardCheck, Edit, Plus, RefreshCw, Trash2 } from "lucide-react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { api } from "../../lib/api";
@@ -27,6 +27,24 @@ export default function AdminTournaments() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tournaments"] });
       setDeleteSuccessMessage(t("TournamentDeletedSuccess"));
+    },
+  });
+
+  const regenerateBracketMutation = useMutation({
+    mutationFn: async (id) => {
+      console.log('[DEBUG] Calling regenerate-bracket API for:', id);
+      const response = await api.post(`/api/tournaments/${id}/regenerate-bracket`);
+      console.log('[DEBUG] Response:', response.data);
+      return response.data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["tournaments"] });
+      queryClient.invalidateQueries({ queryKey: ["matches"] });
+      setDeleteSuccessMessage(t("BracketRegeneratedSuccess") || `Đã tạo lại bracket thành công! (${data.newMatches} trận)`);
+    },
+    onError: (error) => {
+      console.error('[DEBUG] Error:', error);
+      setDeleteSuccessMessage(error.response?.data?.message || t("BracketRegenerateFailed") || "Không thể tạo lại bracket");
     },
   });
 
@@ -102,6 +120,18 @@ export default function AdminTournaments() {
                       title={t("ViewRegistrations")}
                     >
                       <ClipboardCheck size={16} />
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (window.confirm(t("ConfirmRegenerateBracket") || "Bạn có chắc muốn tạo lại bracket? Tất cả trận đấu cũ sẽ bị xóa.")) {
+                          regenerateBracketMutation.mutate(tournament._id);
+                        }
+                      }}
+                      disabled={regenerateBracketMutation.isPending}
+                      className="p-1.5 rounded-md bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 transition-colors disabled:opacity-50"
+                      title={t("RegenerateBracket") || "Tạo lại Bracket"}
+                    >
+                      <RefreshCw size={16} className={regenerateBracketMutation.isPending ? "animate-spin" : ""} />
                     </button>
                     <button
                       onClick={() => handleEdit(tournament)}
