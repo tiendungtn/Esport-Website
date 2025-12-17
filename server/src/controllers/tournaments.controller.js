@@ -4,6 +4,8 @@ import Registration from "../models/Registration.js";
 import Team from "../models/Team.js";
 import Tournament from "../models/Tournament.js";
 import {
+  generateFullSEBracket,
+  generateMatchSchedule,
   seedingByRegistration
 } from "../utils/bracket.js";
 
@@ -449,8 +451,7 @@ async function generateBracketInternal(tournamentId) {
     return { skipped: true, reason: "Not enough teams to generate bracket" };
   }
 
-  // Sử dụng thuật toán tạo bracket
-  const { generateFullSEBracket, generateMatchSchedule } = await import("../utils/bracket.js");
+  // Sử dụng thuật toán tạo bracket (đã import ở đầu file)
   const matchesData = generateFullSEBracket(seeds, tournamentId);
 
   // Sinh lịch thi đấu nếu có startAt
@@ -496,8 +497,7 @@ export async function regenerateSchedule(req, res) {
       });
     }
 
-    // Import và sử dụng generateMatchSchedule
-    const { generateMatchSchedule } = await import("../utils/bracket.js");
+    // Sử dụng generateMatchSchedule (đã import ở đầu file)
     generateMatchSchedule(matches, tournament.schedule.startAt);
 
     // Cập nhật scheduledAt cho từng match
@@ -544,6 +544,68 @@ export async function generateBracket(req, res) {
     res.status(500).json({ message: "Failed to generate bracket" });
   }
 }
+
+/**
+ * Xóa bracket cũ và tạo lại bracket mới
+ */
+export async function regenerateBracket(req, res) {
+  const { id } = req.params;
+
+  try {
+    // Kiểm tra tournament tồn tại
+    const tournament = await Tournament.findById(id);
+    if (!tournament) {
+      return res.status(404).json({ message: "Tournament not found" });
+    }
+
+    // Kiểm tra quyền
+    if (req.user.role !== "admin") {
+      if (tournament.organizerUser?.toString() !== req.user.id) {
+        return res.status(403).json({ message: "Unauthorized" });
+      }
+    }
+
+    // Xóa tất cả matches cũ của tournament này
+    const deleteResult = await Match.deleteMany({ tournamentId: id });
+    console.log(`Deleted ${deleteResult.deletedCount} old matches for tournament ${id}`);
+
+    // Sinh bracket mới
+    const regs = await Registration.find({
+      tournamentId: id,
+      status: "approved",
+    }).lean();
+
+    const seeds = seedingByRegistration(regs);
+    if (seeds.length < 2) {
+      return res.status(400).json({ message: "Not enough approved teams to generate bracket" });
+    }
+
+    // Sử dụng thuật toán tạo bracket (đã import ở đầu file)
+    const matchesData = generateFullSEBracket(seeds, id);
+
+    // Sinh lịch thi đấu nếu có startAt
+    if (tournament.schedule?.startAt) {
+      generateMatchSchedule(matchesData, tournament.schedule.startAt);
+    }
+
+    // Lưu vào DB
+    const created = await Match.insertMany(matchesData);
+
+    // Cập nhật trạng thái giải đấu
+    await Tournament.findByIdAndUpdate(id, { status: "ongoing" });
+
+    res.status(201).json({ 
+      message: "Bracket regenerated successfully",
+      deletedMatches: deleteResult.deletedCount,
+      newMatches: created.length,
+      matches: created 
+    });
+  } catch (error) {
+    console.error("Bracket regeneration error:", error);
+    res.status(500).json({ message: "Failed to regenerate bracket" });
+  }
+}
+
 
 export async function getTournamentRegistrations(req, res) {
   const { id } = req.params;

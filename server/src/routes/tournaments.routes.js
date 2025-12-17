@@ -7,6 +7,7 @@ import {
     getTournament,
     getTournamentRegistrations,
     listTournaments,
+    regenerateBracket,
     regenerateSchedule,
     registerTeam,
     seedTournament,
@@ -30,6 +31,7 @@ r.post(
 );
 r.post("/:id/seed", auth(["organizer", "admin"]), seedTournament);
 r.post("/:id/generate-bracket", auth(["organizer", "admin"]), generateBracket);
+r.post("/:id/regenerate-bracket", auth(["organizer", "admin"]), regenerateBracket);
 r.post("/:id/regenerate-schedule", auth(["organizer", "admin"]), regenerateSchedule);
 
 r.get(

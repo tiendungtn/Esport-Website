@@ -1,17 +1,17 @@
 import "dotenv/config";
 import mongoose from "mongoose";
 import { connectDB } from "../config/db.js";
-import Tournament from "../models/Tournament.js";
-import Team from "../models/Team.js";
-import Registration from "../models/Registration.js";
 import Match from "../models/Match.js";
+import Registration from "../models/Registration.js";
+import Team from "../models/Team.js";
+import Tournament from "../models/Tournament.js";
 
 async function updateData() {
   try {
     await connectDB(process.env.MONGO_URI);
     console.log("Đã kết nối MongoDB");
 
-    // 1. Cập nhật tất cả giải: maxTeams = 8, thời gian đăng ký từ 15/12 đến 20/12
+    // 1. Cập nhật tất cả giải: maxTeams = 9, thời gian đăng ký từ 15/12 đến 20/12
     const regOpen = new Date("2025-12-15T00:00:00+07:00");
     const regClose = new Date("2025-12-20T23:59:59+07:00");
 
@@ -19,14 +19,14 @@ async function updateData() {
       {},
       {
         $set: {
-          maxTeams: 8,
+          maxTeams: 9,
           "schedule.regOpen": regOpen,
           "schedule.regClose": regClose,
         },
       }
     );
     console.log(
-      `Đã cập nhật ${updateResult.modifiedCount} giải đấu: maxTeams=8, regOpen=15/12, regClose=20/12`
+      `Đã cập nhật ${updateResult.modifiedCount} giải đấu: maxTeams=9, regOpen=15/12, regClose=20/12`
     );
 
     // 2. Lấy danh sách các game có trong hệ thống

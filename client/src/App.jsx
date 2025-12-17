@@ -1,26 +1,27 @@
 import React from "react";
-import {
-  Routes,
-  Route,
-  useLocation,
-  useNavigate,
-  Link,
-  Outlet,
-  Navigate,
-} from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import {
+    Link,
+    Navigate,
+    Outlet,
+    Route,
+    Routes,
+    useLocation,
+    useNavigate,
+} from "react-router-dom";
 import LanguageSwitcher from "./components/LanguageSwitcher";
-import Home from "./pages/Home.jsx";
-import Tournament from "./pages/Tournament.jsx";
+import NotificationBell from "./components/NotificationBell";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import humgLogo from "./img/icon-humg.png";
 import Admin from "./pages/Admin.jsx";
-import Login from "./pages/Login.jsx";
+import CreateTeam from "./pages/CreateTeam.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
+import Home from "./pages/Home.jsx";
+import Login from "./pages/Login.jsx";
 import LoginModal from "./pages/LoginModal.jsx";
 import Profile from "./pages/Profile.jsx";
 import PublicTeamProfile from "./pages/PublicTeamProfile.jsx";
-import CreateTeam from "./pages/CreateTeam.jsx";
-import humgLogo from "./img/icon-humg.png";
+import Tournament from "./pages/Tournament.jsx";
 import "./styles/components/shell-layout.css";
 
 import { Menu, X } from "lucide-react";
@@ -74,6 +75,7 @@ function ShellLayout() {
 
           <div className="shell-user-actions">
             <div className="shell-desktop-actions">
+              <NotificationBell />
               {isAuthenticated ? (
                 <>
                   <Link to="/profile" className="shell-profile-link">
@@ -114,6 +116,9 @@ function ShellLayout() {
                 </Link>
               )}
               <hr className="shell-mobile-hr" />
+              <div className="shell-mobile-nav-item">
+                <NotificationBell />
+              </div>
               {isAuthenticated ? (
                 <>
                   <Link to="/profile" className="shell-nav-link">

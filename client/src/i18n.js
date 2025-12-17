@@ -348,6 +348,17 @@ const resources = {
       PasswordLabel: "Password",
       ForgotPasswordSent:
         "If the email exists, a password reset link has been sent.",
+
+      // Notifications
+      Notifications: "Notifications",
+      UpcomingMatches: "Upcoming Matches",
+      NoUpcomingMatches: "No upcoming matches.",
+      MatchStartsIn: "Starts in",
+      MatchStarted: "Started",
+      InMinutes: "min",
+      InHours: "hours",
+      InDays: "days",
+      LoginToViewNotifications: "Please sign in to view notifications.",
     },
   },
   vi: {
@@ -696,6 +707,17 @@ const resources = {
       PasswordLabel: "Mật khẩu",
       ForgotPasswordSent:
         "Nếu email tồn tại, một liên kết đặt lại mật khẩu đã được gửi.",
+
+      // Notifications
+      Notifications: "Thông báo",
+      UpcomingMatches: "Trận đấu sắp tới",
+      NoUpcomingMatches: "Không có trận đấu sắp tới.",
+      MatchStartsIn: "Bắt đầu trong",
+      MatchStarted: "Đã bắt đầu",
+      InMinutes: "phút",
+      InHours: "giờ",
+      InDays: "ngày",
+      LoginToViewNotifications: "Vui lòng đăng nhập để xem thông báo.",
     },
   },
 };

@@ -1,6 +1,6 @@
 import { z } from "zod";
-import Match from "../models/Match.js";
 import { io } from "../index.js";
+import Match from "../models/Match.js";
 
 export async function listMatches(req, res) {
   const { id } = req.params; // ID giải đấu
@@ -194,6 +194,12 @@ export async function rejectMatchResult(req, res) {
     scoreB: 0,
   });
 
+  // Notify teams
+  const teamAId = m.teamA?._id || m.teamA;
+  const teamBId = m.teamB?._id || m.teamB;
+  if (teamAId) io.to(`team:${teamAId}`).emit("match:state", { matchId: id, state: "live" });
+  if (teamBId) io.to(`team:${teamBId}`).emit("match:state", { matchId: id, state: "live" });
+
   res.json(m);
 }
 
@@ -247,6 +253,12 @@ export async function confirmMatch(req, res) {
     matchId: id,
     state: m.state,
   });
+
+  // Notify teams
+  const teamAId = m.teamA?._id || m.teamA;
+  const teamBId = m.teamB?._id || m.teamB;
+  if (teamAId) io.to(`team:${teamAId}`).emit("match:state", { matchId: id, state: "final" });
+  if (teamBId) io.to(`team:${teamBId}`).emit("match:state", { matchId: id, state: "final" });
 
   // 4. Đưa người thắng vào vòng trong (nếu có)
   if (winnerId) {
@@ -361,6 +373,13 @@ export async function updateMatchSchedule(req, res) {
     matchId: id,
     scheduledAt: updated.scheduledAt,
   });
+
+  // Notify teams
+  const teamAId = updated.teamA?._id || updated.teamA;
+  const teamBId = updated.teamB?._id || updated.teamB;
+  
+  if (teamAId) io.to(`team:${teamAId}`).emit("match:schedule", { matchId: id, scheduledAt: updated.scheduledAt });
+  if (teamBId) io.to(`team:${teamBId}`).emit("match:schedule", { matchId: id, scheduledAt: updated.scheduledAt });
 
   res.json(updated);
 }

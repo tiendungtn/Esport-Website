@@ -2,8 +2,30 @@ import mongoose from "mongoose";
 
 /** Tiện ích tạo nhánh đấu */
 
+/**
+ * Kiểm tra xem n có phải là lũy thừa của 2 không
+ */
+function isPowerOfTwo(n) {
+  return n > 0 && (n & (n - 1)) === 0;
+}
+
+/**
+ * Tìm lũy thừa 2 nhỏ nhất >= n
+ */
+function nextPowerOfTwo(n) {
+  if (n <= 1) return 2; // Bracket cần ít nhất 2 đội
+  if (isPowerOfTwo(n)) return n; // Đã là lũy thừa 2, không cần thay đổi
+  
+  // Tìm lũy thừa 2 tiếp theo bằng bitwise
+  let power = 1;
+  while (power < n) {
+    power <<= 1;
+  }
+  return power;
+}
+
 export function padToPowerOfTwo(list) {
-  const size = 1 << Math.ceil(Math.log2(Math.max(list.length, 1)));
+  const size = nextPowerOfTwo(list.length);
   return list.concat(Array(Math.max(0, size - list.length)).fill(null));
 }
 
